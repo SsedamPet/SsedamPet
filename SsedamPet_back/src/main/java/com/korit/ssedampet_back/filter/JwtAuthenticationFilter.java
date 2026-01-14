@@ -66,6 +66,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        // SecurityContextHolder 에 인증객체를 저장해줌 = 팔찌 채우기
 //        SecurityContextHolder.getContext().setAuthentication(authentication);  //팔찌를 채우는 행위, setAuthentication(인증객체)
 //
-//        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 }
