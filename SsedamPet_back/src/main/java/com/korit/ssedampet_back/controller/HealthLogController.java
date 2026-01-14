@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/healthlog/")
+@RequestMapping("api/healthlog")
 public class HealthLogController {
 
     private final HealthLogService healthLogService;
