@@ -1,0 +1,85 @@
+package com.korit.ssedampet_back.config;
+
+import com.korit.ssedampet_back.filter.JwtAuthenticationFilter;
+import com.korit.ssedampet_back.security.JwtAuthenticationEntryPoint;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
+
+import java.util.List;
+
+
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    //TODO: OAuth2SuccessHandler 구현하고 가져오기
+
+    @Bean
+    public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
+
+        // CrossOrigin 적용
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
+        // 세션 비활성화(무상태)
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // http 기본 로그인 비활성화
+        http.httpBasic(httpBasic -> httpBasic.disable());
+
+        //form 로그인 비활성화
+        http.formLogin(formLogin -> formLogin.disable());
+
+        http.csrf(csrf -> csrf.disable());
+
+        //TODO: Oauth2 로그인 설정
+//        http.oauth2Login(oauth2
+//                -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
+//                .successHandler(oAuth2SuccessHandler));
+
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/api/auth/**").permitAll();
+            auth.requestMatchers("/v3/api-docs/**").permitAll();
+            auth.requestMatchers("/swagger-ui/**").permitAll();
+            auth.requestMatchers("/swagger-ui.html").permitAll();
+            auth.requestMatchers("/doc").permitAll();
+            auth.anyRequest().authenticated();
+        });
+
+        http.exceptionHandling(exception ->
+                exception.authenticationEntryPoint(jwtAuthenticationEntryPoint));
+
+        return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration cors = new CorsConfiguration();
+
+        cors.setAllowedOrigins(List.of("http://localhost:5173"));
+        cors.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        cors.setAllowedHeaders(List.of("*"));
+        cors.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cors);
+        return source;
+    }
+
+
+}
