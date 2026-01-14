@@ -20,7 +20,7 @@
             healthlog_tb
         WHERE
             pet_id = #{petId}
-            AND write_date = #{date}
+            AND write_date = #{writeDate}
         LIMIT 1
     </select>
 </mapper>
