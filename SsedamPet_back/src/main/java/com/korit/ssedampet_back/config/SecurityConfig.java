@@ -55,7 +55,7 @@ public class SecurityConfig {
 //                -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
 //                .successHandler(oAuth2SuccessHandler));
 
-//        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/auth/**").permitAll();
@@ -69,6 +69,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/users/**").permitAll();
             auth.requestMatchers("/api/healthlog/**").permitAll();
             auth.requestMatchers("/api/mypage/**").permitAll();
+            auth.requestMatchers("/api/posts/**").permitAll();
 
             auth.anyRequest().authenticated();
         });
