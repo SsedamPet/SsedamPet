@@ -69,6 +69,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/users/**").permitAll();
             auth.requestMatchers("/api/healthlog/**").permitAll();
             auth.requestMatchers("/api/mypage/**").permitAll();
+            auth.requestMatchers("/api/posts/**").permitAll();
 
             auth.anyRequest().authenticated();
         });
