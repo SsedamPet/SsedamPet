@@ -1,11 +1,15 @@
 package com.korit.ssedampet_back.service;
 
+import com.korit.ssedampet_back.dto.response.mypage.MyPageRespDto;
 import com.korit.ssedampet_back.dto.response.mypage.PetDto;
+import com.korit.ssedampet_back.dto.response.mypage.SummaryDto;
 import com.korit.ssedampet_back.dto.response.mypage.UserDto;
 import com.korit.ssedampet_back.mapper.MypageMapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,18 +18,44 @@ public class MypageService {
 
     private final MypageMapper mypageMapper;
 
-    public void getMypage(int userId) {
-        // 1) user 정보
-        UserDto user = mypageMapper.findMypageUser(userId);
+    public MyPageRespDto getMypage(int userId) {
 
-        // 2) 카운트 (내 게시글 수 / 내가 좋아요 누른 게시글 수)
+        UserDto user = getUser(userId);
+        SummaryDto summary = getSummary(userId);
+        List<PetDto> pets = getPets(userId);
+
+        return MyPageRespDto.builder()
+                .user(user)
+                .summary(summary)
+                .pets(pets)
+                .build();
+    }
+
+    public UserDto getUser(int userId) {
+        UserDto user = mypageMapper.findMypageUser(userId);
+        if (user == null) {
+            try {
+                throw new NotFoundException("user notfound!!");
+            } catch (NotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return user;
+    }
+
+    private SummaryDto getSummary(int userId) {
         int myPostCount = mypageMapper.countMyPosts(userId);
         int myLikedPostCount = mypageMapper.countMyLikedPosts(userId);
 
-        // 3) 펫 목록
+        return SummaryDto.builder()
+                .myPostCount(myPostCount)
+                .myLikedPostCount(myLikedPostCount)
+                .build();
+    }
+
+    private List<PetDto> getPets(int userId) {
         List<PetDto> pets = mypageMapper.findMyPets(userId);
-
-
+        return pets == null ? Collections.emptyList() : pets;
     }
 
 

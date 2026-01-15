@@ -1,5 +1,6 @@
 package com.korit.ssedampet_back.controller;
 
+import com.korit.ssedampet_back.dto.response.mypage.MyPageRespDto;
 import com.korit.ssedampet_back.dto.response.mypage.UserDto;
 import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class MypageController {
     public UserDto getMypage(@RequestParam int userId) {
         return mypageService.getMypagemit(userId);
     }*/
+
+    @GetMapping("/mypage")
+    public MyPageRespDto getMypage(@RequestParam int userId) {
+        return mypageService.getMypage(userId);
+    }
 
 
 }

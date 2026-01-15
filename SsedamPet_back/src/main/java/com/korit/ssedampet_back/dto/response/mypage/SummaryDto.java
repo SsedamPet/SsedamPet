@@ -1,13 +1,11 @@
 package com.korit.ssedampet_back.dto.response.mypage;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class SummaryDto {
     private int myPostCount;              // 내가 올린 게시글 수

@@ -1,13 +1,11 @@
 package com.korit.ssedampet_back.dto.response.mypage;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
+
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class PetDto {
     private int petId;                   // pet_tb.pet_id
