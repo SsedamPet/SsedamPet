@@ -1,10 +1,7 @@
 package com.korit.ssedampet_back.controller;
 
-import com.korit.ssedampet_back.dto.response.MypageRespDto;
 import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,11 +18,9 @@ public class MypageController {
 
     // 로그인 없으니 userId를 쿼리스트링으로 받음
     @GetMapping("/mypage/getUser")
-    public MypageRespDto getMypage(@RequestParam Long userId) {
+    public MypageRespDto getMypage(@RequestParam int userId) {
         return mypageService.getMypage(userId);
     }
 
-    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createPost();
 
 }

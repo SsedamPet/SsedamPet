@@ -6,7 +6,7 @@
 <mapper namespace="com.korit.ssedampet_back.mapper.MypageMapper">
 
     <!-- 1) 마이페이지 유저 정보 -->
-    <select id="findMypageUser" resultType="com.korit.ssedampet_back.dto.response.MypageRespDto$UserDto">
+    <select id="findMypageUser" resultType="com.korit.ssedampet_back.dto.response.mypage.MypageRespDto$UserDto">
         SELECT
             u.user_id        AS userId,
             u.username       AS username,
@@ -31,7 +31,7 @@
     </select>
 
     <!-- 4) 내 반려동물 목록 -->
-    <select id="findMyPets" resultType="com.korit.ssedampet_back.dto.response.MypageRespDto$PetDto">
+    <select id="findMyPets" resultType="com.korit.ssedampet_back.dto.response.mypage.MypageRespDto$PetDto">
         SELECT
             p.pet_id AS petId,
             p.pet_name AS petName,
