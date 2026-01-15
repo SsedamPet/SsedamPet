@@ -1,0 +1,20 @@
+package com.korit.ssedampet_back.dto.response.main;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MainDashboardRespDto {
+
+    // TODO: PetDto 가져오기
+//    private List <PetDto> myPets;  // 내 펫 목록 -> Mypage 내 PetDto
+    private HealthLogSummaryDto todayHealthLog; // 오늘 건강 요약
+    private List<PostPreviewDto> popularPosts; // 인기 게시물 미리보기
+}

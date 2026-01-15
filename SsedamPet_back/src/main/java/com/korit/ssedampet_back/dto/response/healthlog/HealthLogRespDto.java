@@ -1,4 +1,4 @@
-package com.korit.ssedampet_back.dto.response;
+package com.korit.ssedampet_back.dto.response.healthlog;
 
 import lombok.Data;
 
