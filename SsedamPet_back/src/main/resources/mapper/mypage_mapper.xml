@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.ssedampet_back.mapper.MypageMapper">
+
+    <!-- 1) 마이페이지 유저 정보 -->
+    <select id="findMypageUser" resultType="com.korit.ssedampet_back.dto.response.MypageRespDto$UserDto">
+        SELECT
+            u.user_id        AS userId,
+            u.username       AS username,
+            u.email          AS email,
+            u.user_profile_img_url AS userProfileImgUrl
+        FROM user_tb u
+        WHERE u.user_id = #{userId}
+    </select>
+
+    <!-- 2) 내가 작성한 게시글 수 -->
+    <select id="countMyPosts" resultType="int">
+        SELECT COUNT(*)
+        FROM post_tb p
+        WHERE p.user_id = #{userId}
+    </select>
+
+    <!-- 3) 내가 좋아요 누른 게시글 수 -->
+    <select id="countMyLikedPosts" resultType="int">
+        SELECT COUNT(*)
+        FROM like_tb l
+        WHERE l.user_id = #{userId}
+    </select>
+
+    <!-- 4) 내 반려동물 목록 -->
+    <select id="findMyPets" resultType="com.korit.ssedampet_back.dto.response.MypageRespDto$PetDto">
+        SELECT
+            p.pet_id AS petId,
+            p.pet_name AS petName,
+            p.pet_gender AS petGender,
+            p.pet_profile_img_url AS petProfileImgUrl
+        FROM pet_tb p
+        WHERE p.user_id = #{userId}
+        ORDER BY p.pet_id DESC
+    </select>
+    
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into user_tb
+        values (#default, username, email, user_birth, phone, display_nickname, user_profile_img_url, )
+
+    </insert>
+
+</mapper>
