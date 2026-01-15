@@ -1,7 +1,6 @@
 package com.korit.ssedampet_back.controller;
 
-import com.korit.ssedampet_back.dto.response.HealthLogRespDto;
-import com.korit.ssedampet_back.mapper.HealthLogMapper;
+import com.korit.ssedampet_back.dto.response.healthlog.HealthLogRespDto;
 import com.korit.ssedampet_back.service.HealthLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

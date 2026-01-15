@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korit.ssedampet_back.mapper.HealthLogMapper">
 
-    <select id="findByPetIdAndDate" resultType="com.korit.ssedampet_back.dto.response.HealthLogRespDto">
+    <select id="findByPetIdAndDate" resultType="com.korit.ssedampet_back.dto.response.healthlog.HealthLogRespDto">
         select
             healthlog_Id,
             pet_id,
