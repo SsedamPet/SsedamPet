@@ -5,97 +5,116 @@
 
 <mapper namespace="com.korit.ssedampet_back.mapper.MypageMapper">
 
-    <!-- 1) 마이페이지 유저 정보 -->
-    <select id="findMypageUser" resultType="com.korit.ssedampet_back.dto.response.mypage.UserDto">
+
+    <resultMap id="UserDtoMap" type="com.korit.ssedampet_back.dto.response.mypage.UserDto">
+        <id     property="userId"            column="user_id"/>
+        <result property="username"          column="username"/>
+        <result property="email"             column="email"/>
+        <result property="userProfileImgUrl" column="user_profile_img_url"/>
+    </resultMap>
+
+    <resultMap id="PetDtoMap" type="com.korit.ssedampet_back.dto.response.mypage.PetDto">
+        <id     property="petId"             column="pet_id"/>
+        <result property="petName"           column="pet_name"/>
+        <result property="petGender"         column="pet_gender"/>
+        <result property="petProfileImgUrl"  column="pet_profile_img_url"/>
+    </resultMap>
+
+    <resultMap id="PostDtoMap" type="com.korit.ssedampet_back.dto.response.mypage.PostDto">
+        <id     property="postId"            column="post_id"/>
+        <result property="userId"            column="user_id"/>
+        <result property="postImgUrl"        column="post_img_url"/>
+        <result property="postContent"       column="post_content"/>
+        <result property="postLikeCnt"       column="post_like_cnt"/>
+        <result property="postCommentCnt"    column="post_comment_cnt"/>
+        <result property="postLocationTag"   column="post_location_tag"/>
+        <result property="createdDt"         column="created_dt"/>
+        <result property="updatedDt"         column="updated_dt"/>
+    </resultMap>
+
+   <!--select-->
+
+    <!-- 유저 1명 조회 -->
+    <select id="findMypageUser" resultMap="UserDtoMap">
         SELECT
-        user_id AS userId,
-        username AS username,
-        email AS email,
-        user_profile_img_url AS userProfileImgUrl
+            user_id,
+            username,
+            email,
+            user_profile_img_url
         FROM user_tb
         WHERE user_id = #{userId}
     </select>
 
-    <!-- 2) 전체 유저 목록 -->
-    <select id="findAllUsers" resultType="com.korit.ssedampet_back.dto.response.mypage.UserDto">
+    <!-- 전체 유저 목록 -->
+    <select id="findAllUsers" resultMap="UserDtoMap">
         SELECT
-        user_id AS userId,
-        username AS username,
-        email AS email,
-        user_profile_img_url AS userProfileImgUrl
+            user_id,
+            username,
+            email,
+            user_profile_img_url
         FROM user_tb
         ORDER BY user_id DESC
     </select>
 
-    <!-- 3) 내가 작성한 게시글 수 -->
+    <!-- 내가 작성한 게시글 수 -->
     <select id="countMyPosts" resultType="int">
         SELECT COUNT(*)
-        FROM post_tb p
-        WHERE p.user_id = #{userId}
+        FROM post_tb
+        WHERE user_id = #{userId}
     </select>
 
-    <!-- 4) 내가 좋아요 누른 게시글 수 -->
+    <!-- 내가 좋아요 누른 게시글 수 -->
     <select id="countMyLikedPosts" resultType="int">
         SELECT COUNT(*)
-        FROM like_tb l
-        WHERE l.user_id = #{userId}
+        FROM like_tb
+        WHERE user_id = #{userId}
     </select>
 
-    <!-- 5) 내 반려동물 목록 -->
-    <select id="findMyPets" resultType="com.korit.ssedampet_back.dto.response.mypage.PetDto">
+    <!-- 내 반려동물 목록 -->
+    <select id="findMyPets" resultMap="PetDtoMap">
         SELECT
-            p.pet_id AS petId,
-            p.pet_name AS petName,
-            p.pet_gender AS petGender,
-            p.pet_profile_img_url AS petProfileImgUrl
-        FROM pet_tb p
-        WHERE p.user_id = #{userId}
-        ORDER BY p.pet_id DESC
+            pet_id,
+            pet_name,
+            pet_gender,
+            pet_profile_img_url
+        FROM pet_tb
+        WHERE user_id = #{userId}
+        ORDER BY pet_id DESC
     </select>
 
-    <!-- 6) 내 게시물 목록-->
-    <select id="findMyPosts" resultType="com.korit.ssedampet_back.dto.response.mypage.PostDto">
+    <!-- 내가 작성한 게시글 목록 (myPosts) -->
+    <select id="findMyPosts" resultMap="PostDtoMap">
         SELECT
-            post_id AS postId,
-            user_id AS userId,
-            post_img_url AS postImgUrl,
-            post_content AS postContent,
-            post_like_cnt AS postLikeCnt,
-            post_comment_cnt AS postCommentCnt,
-            post_location_tag AS postLocationTag,
-            DATE_FORMAT(created_dt, '%Y-%m-%d %H:%i:%s') AS createdDt,
-            DATE_FORMAT(updated_dt, '%Y-%m-%d %H:%i:%s') AS updatedDt
+            post_id,
+            user_id,
+            post_img_url,
+            post_content,
+            post_like_cnt,
+            post_comment_cnt,
+            post_location_tag,
+            created_dt,
+            updated_dt
         FROM post_tb
         WHERE user_id = #{userId}
         ORDER BY post_id DESC
-            LIMIT 20
     </select>
 
-    <select id="findMyLikedPosts" resultType="com.korit.ssedampet_back.dto.response.mypage.PostDto">
-        select
-            p.post_id AS postId,
-            p.user_id AS userId,
-            p.post_img_url AS postImgUrl,
-            p.post_content AS postContent,
-            p.post_like_cnt AS postLikeCnt,
-            p.post_comment_cnt AS postCommentCnt,
-            p.post_location_tag AS postLocationTag,
-            DATE_FORMAT(p.created_dt, '%Y-%m-%d %H:%i:%s') AS createdDt,
-            DATE_FORMAT(p.updated_dt, '%Y-%m-%d %H:%i:%s') AS updatedDt
-        from like_tb l
-        join post_tb p on p.post_id = l.post_id
-        where l.user_id = #{userId}
-        order by l.like_id desc
-
+    <!-- 내가 좋아요 누른 게시글 목록 (likedPosts) -->
+    <select id="findMyLikedPosts" resultMap="PostDtoMap">
+        SELECT
+            p.post_id,
+            p.user_id,
+            p.post_img_url,
+            p.post_content,
+            p.post_like_cnt,
+            p.post_comment_cnt,
+            p.post_location_tag,
+            p.created_dt,
+            p.updated_dt
+        FROM like_tb l
+                 JOIN post_tb p ON p.post_id = l.post_id
+        WHERE l.user_id = #{userId}
+        ORDER BY l.like_id DESC
     </select>
-
-
-
-
-
-
-
-    
-
 
 </mapper>
