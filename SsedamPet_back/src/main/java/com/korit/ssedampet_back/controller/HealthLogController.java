@@ -40,11 +40,11 @@ public class HealthLogController {
     }
 
     // 주간 건강기록 요약
-    @GetMapping("/weekly/")
-    public ResponseEntity<?> weeklyHealthLog(
-            @PathVariable int petId,@RequestParam LocalDate writeDate) {
-        return ResponseEntity.ok(healthLogService.)
-    }
+//    @GetMapping("/weekly/")
+//    public ResponseEntity<?> weeklyHealthLog(
+//            @PathVariable int petId,@RequestParam LocalDate writeDate) {
+//        return ResponseEntity.ok(healthLogService.)
+//    }
 
 
 }

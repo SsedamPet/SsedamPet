@@ -3,6 +3,7 @@ package com.korit.ssedampet_back.mapper;
 import com.korit.ssedampet_back.dto.request.HealthLogCreateReqDto;
 import com.korit.ssedampet_back.dto.request.HealthLogUpdateReqDto;
 import com.korit.ssedampet_back.dto.response.healthlog.HealthLogRespDto;
+import com.korit.ssedampet_back.dto.response.healthlog.HealthWeeklyAvgDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,11 @@ public interface HealthLogMapper {
 
     // 3. 기존 HealthLog 수정 - PATCH
     int updateHealthLog(HealthLogUpdateReqDto healthLogUpdateReqDto);
+
+    // 4. 주간 평균치 비교
+    HealthWeeklyAvgDto getWeeklyAverage (
+            @Param("petId") int petId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 }
