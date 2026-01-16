@@ -68,7 +68,7 @@
 
 <!--    주간 평균 비교 -->
     <select id="getWeeklyAverage" resultType="com.korit.ssedampet_back.dto.response.healthlog.HealthWeeklyAvgDto">
-        selcet
+        select
             AVG(poop_cnt) as avgPoopCnt,
             -- 상태값을 점수로 변환하여 평균 산출 (매우좋음: 3, 보통: 2, 나쁨: 1)
             AVG(CASE
