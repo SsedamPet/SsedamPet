@@ -60,11 +60,18 @@
             AVG(CASE
                 WHEN water_status = '"매우 좋음"' THEN 3
                 WHEN water_status = '"보통"' THEN 2
-                ELSE 1 END) AS avgWaterScore,
-                AVG(CASE
+                ELSE 1 END)
+                AS avgWaterScore,
+            AVG(CASE
                 WHEN food_status = '"평소보다 많이 먹음"' THEN 3
                 WHEN food_status = '"평소와 같음"' THEN 2
-                ELSE 1 END) AS avgFoodScore
+                ELSE 1 END)
+                AS avgFoodScore
+        from
+            healthlog_tb
+        where
+            petId = #{petId}
+            and write_date = #{writeDate}
 
     </select>
 
