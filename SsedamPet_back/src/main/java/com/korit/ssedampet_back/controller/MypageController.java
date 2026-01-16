@@ -1,5 +1,6 @@
 package com.korit.ssedampet_back.controller;
 
+import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,11 @@ public class MypageController {
     public ResponseEntity<List<PetDto>> pets(@RequestParam int userId) {
         return ResponseEntity.ok(mypageService.getPets(userId));
     }
+
+    /*@PostMapping("/pets")
+    public ResponseEntity<CreatePetRespDto> createPet(@RequestParam int userId, @RequestBody CreatePetReqDto dto) {
+        return ResponseEntity.ok(mypageService.createPet(userId, dto));
+    }*/
 
     @GetMapping("/my-posts")
     public ResponseEntity<List<PostDto>> posts(@RequestParam int userId) {
