@@ -11,5 +11,7 @@ import java.util.List;
 public class MyPageRespDto {
     private UserDto user;
     private SummaryDto summary;
+    private List<UserDto> users;
     private List<PetDto> pets;
+    private List<PostDto> posts;
 }

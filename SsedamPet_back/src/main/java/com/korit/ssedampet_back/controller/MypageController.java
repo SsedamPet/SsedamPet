@@ -1,27 +1,42 @@
 package com.korit.ssedampet_back.controller;
 
-import com.korit.ssedampet_back.dto.response.mypage.MyPageRespDto;
-import com.korit.ssedampet_back.dto.response.mypage.UserDto;
+import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/mypage")
 public class MypageController {
 
     private final MypageService mypageService;
 
-    // 로그인 없으니 userId를 쿼리스트링으로 받음
-    /*@GetMapping("/mypage/getUser")
-    public UserDto getMypage(@RequestParam int userId) {
-        return mypageService.getMypagemit(userId);
-    }*/
+    @GetMapping("/user")
+    public UserDto user(@RequestParam int userId) {
+        return mypageService.getUser(userId);
+    }
 
-    @GetMapping("/mypage")
-    public MyPageRespDto getMypage(@RequestParam int userId) {
-        return mypageService.getMypage(userId);
+    @GetMapping("/users")
+    public List<UserDto> users() {
+        return mypageService.getUsers();
+    }
+
+    @GetMapping("/summary")
+    public SummaryDto summary(@RequestParam int userId) {
+        return mypageService.getSummary(userId);
+    }
+
+    @GetMapping("/pets")
+    public List<PetDto> pets(@RequestParam int userId) {
+        return mypageService.getPets(userId);
+    }
+
+    @GetMapping("/posts")
+    public List<PostDto> posts(@RequestParam int userId) {
+        return mypageService.getPosts(userId);
     }
 
 

@@ -1,9 +1,6 @@
 package com.korit.ssedampet_back.service;
 
-import com.korit.ssedampet_back.dto.response.mypage.MyPageRespDto;
-import com.korit.ssedampet_back.dto.response.mypage.PetDto;
-import com.korit.ssedampet_back.dto.response.mypage.SummaryDto;
-import com.korit.ssedampet_back.dto.response.mypage.UserDto;
+import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.mapper.MypageMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -18,18 +15,15 @@ public class MypageService {
 
     private final MypageMapper mypageMapper;
 
-    public MyPageRespDto getMypage(int userId) {
-
-        UserDto user = getUser(userId);
-        SummaryDto summary = getSummary(userId);
-        List<PetDto> pets = getPets(userId);
-
-        return MyPageRespDto.builder()
-                .user(user)
-                .summary(summary)
-                .pets(pets)
+    // TODO: 마이페이지 전체 정보 조회
+    /*public MypageRespDto getMypage(int userId) {
+        return MypageRespDto.builder()
+                .user(getUser(userId))
+                .summary(getSummary(userId))
+                .pets(getPets(userId))
+                .posts(getPosts(userId))
                 .build();
-    }
+    }*/
 
     public UserDto getUser(int userId) {
         UserDto user = mypageMapper.findMypageUser(userId);
@@ -43,19 +37,31 @@ public class MypageService {
         return user;
     }
 
-    private SummaryDto getSummary(int userId) {
-        int myPostCount = mypageMapper.countMyPosts(userId);
-        int myLikedPostCount = mypageMapper.countMyLikedPosts(userId);
+    public List<UserDto> getUsers() {
+        List<UserDto> users = mypageMapper.findAllUsers();
+        return users == null ? Collections.emptyList() : users;
+    }
+
+
+
+    public SummaryDto getSummary(int userId) {
+        int myPostCnt = mypageMapper.countMyPosts(userId);
+        int myLikedPostCnt = mypageMapper.countMyLikedPosts(userId);
 
         return SummaryDto.builder()
-                .myPostCount(myPostCount)
-                .myLikedPostCount(myLikedPostCount)
+                .myPostCnt(myPostCnt)
+                .myLikedPostCnt(myLikedPostCnt)
                 .build();
     }
 
-    private List<PetDto> getPets(int userId) {
+    public List<PetDto> getPets(int userId) {
         List<PetDto> pets = mypageMapper.findMyPets(userId);
         return pets == null ? Collections.emptyList() : pets;
+    }
+
+    public List<PostDto> getPosts(int userId) {
+        List<PostDto> posts = mypageMapper.findMyPosts(userId);
+        return posts == null ? Collections.emptyList() : posts;
     }
 
 
