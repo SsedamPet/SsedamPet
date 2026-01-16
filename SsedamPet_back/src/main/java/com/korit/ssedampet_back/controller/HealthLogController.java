@@ -3,6 +3,7 @@ package com.korit.ssedampet_back.controller;
 import com.korit.ssedampet_back.dto.request.HealthLogCreateReqDto;
 import com.korit.ssedampet_back.dto.request.HealthLogUpdateReqDto;
 import com.korit.ssedampet_back.dto.response.healthlog.HealthLogRespDto;
+import com.korit.ssedampet_back.dto.response.healthlog.HealthWeeklyComparisonDto;
 import com.korit.ssedampet_back.service.HealthLogService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -40,11 +41,11 @@ public class HealthLogController {
     }
 
     // 주간 건강기록 요약
-//    @GetMapping("/weekly/")
-//    public ResponseEntity<?> weeklyHealthLog(
-//            @PathVariable int petId,@RequestParam LocalDate writeDate) {
-//        return ResponseEntity.ok(healthLogService.)
-//    }
+    @GetMapping("/weekly/{petId}")
+    public ResponseEntity<HealthWeeklyComparisonDto> weeklyHealthLog(
+            @PathVariable int petId) {
+        return ResponseEntity.ok(healthLogService.getWeeklyAverage(petId));
+    }
 
 
 }
