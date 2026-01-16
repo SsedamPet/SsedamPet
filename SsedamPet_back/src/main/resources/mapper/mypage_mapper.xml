@@ -54,8 +54,7 @@
     </select>
 
     <!-- 6) 내 게시물 목록-->
-    <select id="findMyPosts"
-            resultType="com.korit.ssedampet_back.dto.response.mypage.PostDto">
+    <select id="findMyPosts" resultType="com.korit.ssedampet_back.dto.response.mypage.PostDto">
         SELECT
             post_id AS postId,
             user_id AS userId,
@@ -63,11 +62,31 @@
             post_content AS postContent,
             post_like_cnt AS postLikeCnt,
             post_comment_cnt AS postCommentCnt,
-            DATE_FORMAT(created_dt, '%Y-%m-%d %H:%i:%s') AS createdDt
+            post_location_tag AS postLocationTag,
+            DATE_FORMAT(created_dt, '%Y-%m-%d %H:%i:%s') AS createdDt,
+            DATE_FORMAT(updated_dt, '%Y-%m-%d %H:%i:%s') AS updatedDt
         FROM post_tb
         WHERE user_id = #{userId}
         ORDER BY post_id DESC
             LIMIT 20
+    </select>
+
+    <select id="findMyLikedPosts" resultType="com.korit.ssedampet_back.dto.response.mypage.PostDto">
+        select
+            p.post_id AS postId,
+            p.user_id AS userId,
+            p.post_img_url AS postImgUrl,
+            p.post_content AS postContent,
+            p.post_like_cnt AS postLikeCnt,
+            p.post_comment_cnt AS postCommentCnt,
+            p.post_location_tag AS postLocationTag,
+            DATE_FORMAT(p.created_dt, '%Y-%m-%d %H:%i:%s') AS createdDt,
+            DATE_FORMAT(p.updated_dt, '%Y-%m-%d %H:%i:%s') AS updatedDt
+        from like_tb l
+        join post_tb p on p.post_id = l.post_id
+        where l.user_id = #{userId}
+        order by l.like_id desc
+
     </select>
 
 

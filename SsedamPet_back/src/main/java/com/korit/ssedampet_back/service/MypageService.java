@@ -59,8 +59,13 @@ public class MypageService {
         return pets == null ? Collections.emptyList() : pets;
     }
 
-    public List<PostDto> getPosts(int userId) {
+    public List<PostDto> getMyPosts(int userId) {
         List<PostDto> posts = mypageMapper.findMyPosts(userId);
+        return posts == null ? Collections.emptyList() : posts;
+    }
+
+    public List<PostDto> getLikedPosts(int userId) {
+        List<PostDto> posts = mypageMapper.findMyLikedPosts(userId);
         return posts == null ? Collections.emptyList() : posts;
     }
 
