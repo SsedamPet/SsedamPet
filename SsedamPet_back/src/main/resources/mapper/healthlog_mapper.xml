@@ -15,9 +15,8 @@
         <result property="healthLogMemo" column="healthlog_memo" />
         <result property="createdDt" column="created_dt" />
         <result property="updateDt" column="updated_dt" />
-
-
     </resultMap>
+
 
 <!--    특정 펫, 날짜 기록 조회-->
     <select id="findByPetIdAndDate" resultType="com.korit.ssedampet_back.dto.response.healthlog.HealthLogRespDto">
@@ -86,8 +85,7 @@
             healthlog_tb
         where
             petId = #{petId}
-            and write_date = #{writeDate}
-
+            and write_date BETWEEN #{startDate} AND #{endDate}
     </select>
 
 </mapper>
