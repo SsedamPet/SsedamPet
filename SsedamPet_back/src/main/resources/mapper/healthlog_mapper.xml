@@ -84,7 +84,7 @@
         from
             healthlog_tb
         where
-            petId = #{petId}
+            pet_id = #{petId}
             and write_date BETWEEN #{startDate} AND #{endDate}
     </select>
 
