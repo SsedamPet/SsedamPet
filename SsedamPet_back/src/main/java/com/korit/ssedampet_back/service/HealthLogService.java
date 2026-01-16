@@ -32,4 +32,6 @@ public class HealthLogService {
     public int updateHealthLog(HealthLogUpdateReqDto updateReqDto) {
         return healthLogMapper.updateHealthLog(updateReqDto);
     }
+
+
 }
