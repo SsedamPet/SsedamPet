@@ -12,4 +12,7 @@ import lombok.NoArgsConstructor;
 public class HealthWeeklyComparisonDto {
     private HealthWeeklyAvgDto lastWeek;  // 지난 주 평균
     private HealthWeeklyAvgDto thisWeek;  // 이번 주 평균
+
+    // 비교 후 상태
+    private String waterCompareLabel;
 }

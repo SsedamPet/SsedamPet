@@ -48,20 +48,35 @@ public class HealthLogService {
         LocalDate lastWeekStart = today.minusDays(13);
         LocalDate lastWeekEnd = today.minusDays(7);
 
-        // 4. 매퍼를 두 번 호출하여 각각의 평균 데이터 조회
         // MyBatis 쿼리에서 AVG()를 사용해 7일치 평균을 1줄로 가져옴
         HealthWeeklyAvgDto thisWeekAvg = healthLogMapper.getWeeklyAverage(petId, thisWeekStart, thisWeekEnd);
         HealthWeeklyAvgDto lastWeekAvg = healthLogMapper.getWeeklyAverage(petId, lastWeekStart, lastWeekEnd);
 
-        // 5. 조회 결과가 null일 경우를 대비해 기본 객체 생성 (데이터 없을 경우 방지)
+        // 조회 결과가 null일 경우를 대비해 기본 객체 생성 (데이터 없을 경우 방지)
         if (thisWeekAvg == null) thisWeekAvg = new HealthWeeklyAvgDto();
         if (lastWeekAvg == null) lastWeekAvg = new HealthWeeklyAvgDto();
+
+        // 항목별 라벨 (오차 기준 각각 다름)
+        String waterScoreLabel = avgCompare(thisWeekAvg.getAvgWaterScore(), lastWeekAvg.getAvgWaterScore(), 0.3, "음수량");
 
         // 비교 데이터 조립 - 최종 응답 DTO
         return HealthWeeklyComparisonDto.builder()
                 .thisWeek(thisWeekAvg)
                 .lastWeek(lastWeekAvg)
+                .waterCompareLabel(waterScoreLabel)
                 .build();
+    }
+
+    private String avgCompare(double current, double previous, double baseline, String title) {
+       if (previous == 0) return "데이터 분석 중";
+
+       double diff = current - previous;
+       if (Math.abs(diff) <= baseline) {
+           return "평소와 비슷해요";
+       }
+
+       return diff > 0 ? "저번 주보다 늘었어요" : "저번 주보다 줄었어요";
+
     }
 
 
