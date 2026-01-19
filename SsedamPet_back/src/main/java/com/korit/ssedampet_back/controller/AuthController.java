@@ -1,5 +1,6 @@
 package com.korit.ssedampet_back.controller;
 
+import com.korit.ssedampet_back.dto.request.AdditionalInfoReqDto;
 import com.korit.ssedampet_back.dto.request.PetCreateReqDto;
 import com.korit.ssedampet_back.dto.request.LoginReqDto;
 import com.korit.ssedampet_back.service.PetService;
@@ -33,6 +34,14 @@ public class AuthController {
         petService.registerPet(dto);
 
         return ResponseEntity.ok("반려동물이 등록되었습니다.");
+    }
+
+    // 통합 회원가입 완료 (유저 추가정보  + 펫 등록)
+    @PostMapping("/signup/complete")
+    public ResponseEntity<String> completeSignup(@RequestBody AdditionalInfoReqDto dto) {
+        // 한 번에 유저 업데이트와 펫 등록
+        userService.completeSignup(dto);
+        return ResponseEntity.ok("회원가입 및 반려동물 등록이 완료되었습니다.");
     }
 
 

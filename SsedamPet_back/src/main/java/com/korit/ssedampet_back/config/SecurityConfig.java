@@ -3,7 +3,7 @@ package com.korit.ssedampet_back.config;
 import com.korit.ssedampet_back.config.oauth.OAuth2SuccessHandler;
 import com.korit.ssedampet_back.filter.JwtAuthenticationFilter;
 import com.korit.ssedampet_back.security.JwtAuthenticationEntryPoint;
-import com.korit.ssedampet_back.service.OAuth2UserService;
+import com.korit.ssedampet_back.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class SecurityConfig {
     //TODO: OAuth2SuccessHandler 구현하고 가져오기
 
     @Bean
-    public SecurityFilterChain FilterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2UserService oAuth2UserService) throws Exception {
+    public SecurityFilterChain FilterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2Service oAuth2Service) throws Exception {
 
         // CrossOrigin 적용
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
@@ -48,6 +47,10 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         //TODO: Oauth2 로그인 설정
+        http.oauth2Login(oauth2 -> oauth2
+                .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2Service)) // 소셜 유저 정보 처리 서비스 등록
+                .successHandler(oAuth2SuccessHandler) // 로그인 성공 후 로직 처리 핸들러 등록
+        );
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

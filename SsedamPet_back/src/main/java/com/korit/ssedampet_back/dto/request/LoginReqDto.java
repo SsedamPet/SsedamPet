@@ -13,11 +13,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class LoginReqDto {
 
-    private String username;
+    //소셜 로그인 직후 백엔드로 넘어오는 최소 정
+
     private String email;
-    private LocalDate userBirth;
-    private String phone;
-    private String displayNickname;
+    private String name;
     private String userProfileImgUrl;
+    private String provider;
+    private String providerUserId;
 
 }

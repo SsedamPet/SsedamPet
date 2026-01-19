@@ -6,12 +6,21 @@ import com.korit.ssedampet_back.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.time.LocalDate;
+
 @Mapper
 public interface UserMapper {
     int addUser(User user);
-    int existsByProviderAndProviderId(@Param("provider") String provider, @Param("providerId") String providerId);
+
     User findByUserId(int userId);
 
-    // 가입 시 펫 정보 입력
-    int savePet(PetCreateReqDto dto);
+    // 추가 정보 입력 단계에서의 정보 업데이트
+    int addUserInfo(
+            @Param("userId") int userId,
+            @Param("displayNickname") String displayNickname,
+            @Param("userBirth") LocalDate userBirth,
+            @Param("phone") String phone,
+            @Param("userProfileImgUrl") String userProfileImgUrl
+    );
+
 }

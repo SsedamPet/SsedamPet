@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreatePetRespDto {
+public class PetAddRespDto {
     private int petId;
 }

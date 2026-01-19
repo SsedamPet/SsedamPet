@@ -37,11 +37,11 @@ public class MypageController {
     }
 
     @PostMapping("/pets")
-    public ResponseEntity<CreatePetRespDto> createPet(@RequestParam int userId, @RequestBody PetAddReqDto dto) {
+    public ResponseEntity<PetAddRespDto> createPet(@RequestParam int userId, @RequestBody PetAddReqDto dto) {
         // TODO: 로그인 로직 구현시 userId 직접 받아와서 전달
         // int userId = principal.getUserId();
         dto.setUserId(userId);
-        return ResponseEntity.ok(mypageService.createPet(dto));
+        return ResponseEntity.ok(mypageService.addPet(dto));
     }
 
     @GetMapping("/my-posts")
