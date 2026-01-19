@@ -1,7 +1,9 @@
 package com.korit.ssedampet_back.config;
 
+import com.korit.ssedampet_back.config.oauth.OAuth2SuccessHandler;
 import com.korit.ssedampet_back.filter.JwtAuthenticationFilter;
 import com.korit.ssedampet_back.security.JwtAuthenticationEntryPoint;
+import com.korit.ssedampet_back.service.OAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +31,7 @@ public class SecurityConfig {
     //TODO: OAuth2SuccessHandler 구현하고 가져오기
 
     @Bean
-    public SecurityFilterChain FilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain FilterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2UserService oAuth2UserService) throws Exception {
 
         // CrossOrigin 적용
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
@@ -46,19 +48,13 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         //TODO: Oauth2 로그인 설정
-        http.oauth2Login(oauth2 -> {});
-
-        // TODO: successHandler 구현 후 수정할 부분
-//        http.oauth2Login(oauth2 -> oauth2.successHandler(oAuth2SuccessHandler));
-
-//        http.oauth2Login(oauth2
-//                -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
-//                .successHandler(oAuth2SuccessHandler));
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/auth/**").permitAll();
+            auth.requestMatchers("/api/user/register").permitAll();
+            auth.requestMatchers("/api/pet/register").permitAll();
             auth.requestMatchers("/v3/api-docs/**").permitAll();
             auth.requestMatchers("/swagger-ui/**").permitAll();
             auth.requestMatchers("/swagger-ui.html").permitAll();
@@ -67,9 +63,11 @@ public class SecurityConfig {
             auth.requestMatchers("/oauth2/**").permitAll();
             auth.requestMatchers("/login/**").permitAll();
             auth.requestMatchers("/api/users/**").permitAll();
+            auth.requestMatchers("/api/healthlog").permitAll();
             auth.requestMatchers("/api/healthlog/**").permitAll();
             auth.requestMatchers("/api/mypage/**").permitAll();
             auth.requestMatchers("/api/posts/**").permitAll();
+
 
             auth.anyRequest().authenticated();
         });

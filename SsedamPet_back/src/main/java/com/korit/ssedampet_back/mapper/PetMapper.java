@@ -1,5 +1,4 @@
 package com.korit.ssedampet_back.mapper;
-
 import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
 import org.apache.ibatis.annotations.Mapper;
 
