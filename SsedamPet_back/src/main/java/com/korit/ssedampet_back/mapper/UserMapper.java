@@ -10,8 +10,13 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
     int addUser(User user);
     int existsByProviderAndProviderId(@Param("provider") String provider, @Param("providerId") String providerId);
-    User findByUserId(int userId);
 
     // 가입 시 펫 정보 입력
     int savePet(PetCreateReqDto dto);
+
+    int insert(User user);
+    User findByUserId(int userId);
+    User findByOauth2Id(String oauth2Id);
+    User findByNickname(String newNickname);
+    String createNickname();
 }
