@@ -3,7 +3,6 @@ package com.korit.ssedampet_back.service;
 import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.mapper.MypageMapper;
-import com.korit.ssedampet_back.mapper.PetMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;

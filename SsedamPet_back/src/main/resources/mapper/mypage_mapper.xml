@@ -117,4 +117,30 @@
         ORDER BY l.like_id DESC
     </select>
 
+    <insert id="insertPet" parameterType="com.korit.ssedampet_back.dto.request.CreatePetReqDto" useGeneratedKeys="true" keyProperty="petId">
+        insert into pet_tb (
+            user_id,
+            pet_type,
+            pet_name,
+            pet_breed,
+            pet_birth,
+            pet_gender,
+            pet_weight,
+            pet_profile_img_url,
+            created_dt,
+            updated_dt
+        ) values (
+            #{userId},
+            #{petType},
+            #{petName},
+            #{petBreed},
+            #{petBirth},
+            #{petGender},
+            #{petWeight},
+            #{petProfileImgUrl},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
 </mapper>

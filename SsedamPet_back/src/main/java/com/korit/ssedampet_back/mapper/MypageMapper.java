@@ -20,9 +20,9 @@ public interface MypageMapper {
 
     int countMyLikedPosts(@Param("userId") int userId);
 
-    List<PetDto> findMyPets(@Param("userId") int userId);
-
     int insertPet(CreatePetReqDto dto);
+
+    List<PetDto> findMyPets(@Param("userId") int userId);
 
     List<PostDto> findMyPosts(@Param("userId") int userId);
 

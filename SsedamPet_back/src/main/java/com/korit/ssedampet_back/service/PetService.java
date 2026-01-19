@@ -2,11 +2,8 @@ package com.korit.ssedampet_back.service;
 
 import com.korit.ssedampet_back.dto.request.PetRequestDto;
 import com.korit.ssedampet_back.entity.PetEntity;
-import com.korit.ssedampet_back.mapper.PetMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor // final 필드 자동 주입

@@ -10,12 +10,11 @@ public class CreatePetReqDto {
     // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(hidden = true)
     private Integer petId;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
-    private Integer userId;
-    // insert에 필요한 userId
+    @Schema(hidden = true)
+    private Integer userId;             // insert에 필요한 userId
 
     private String petType;            // "DOG" / "CAT"
     private String petName;
