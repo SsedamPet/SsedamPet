@@ -2,6 +2,7 @@ package com.korit.ssedampet_back.filter;
 
 import com.korit.ssedampet_back.entity.User;
 import com.korit.ssedampet_back.jwt.JwtTokenProvider;
+import com.korit.ssedampet_back.mapper.UserMapper;
 import com.korit.ssedampet_back.security.PrincipalUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,6 +26,7 @@ import java.util.Map;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final UserMapper userMapper;
 
 
     @Override
@@ -58,14 +60,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //principalUser, password, authorities
         //TODO: UserMapper 내 foundUser 구현
 
-//        Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(foundUser.getRole()));
-//        PrincipalUser principalUser = new PrincipalUser(authorities, Map.of("id", foundUser.getOauth2Id()), "id", foundUser);
+        User foundUser = userMapper.findByUserId(userId);
+
+        if (foundUser != null) {
+            Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+            PrincipalUser principalUser = new PrincipalUser(authorities, Map.of("id", foundUser.getEmail()), "id", foundUser);
 //
 //        //인증 객체(Authentication) 생성
-//        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalUser, null, authorities);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalUser, null, authorities);
 //        // SecurityContextHolder 에 인증객체를 저장해줌 = 팔찌 채우기
-//        SecurityContextHolder.getContext().setAuthentication(authentication);  //팔찌를 채우는 행위, setAuthentication(인증객체)
-//
+
         filterChain.doFilter(request, response);
     }
 }
