@@ -18,7 +18,7 @@ public class JwtTokenProvider {
 
     //
     //${jwt.secret} : application.yml 에 있는 비밀키
-    public JwtTokenProvider(@Value("${jwt.secret}")String secret) {
+    public JwtTokenProvider(@Value("${jwt.secret:default_secret_key_1234567890_abcdefg}")String secret) {
         key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 

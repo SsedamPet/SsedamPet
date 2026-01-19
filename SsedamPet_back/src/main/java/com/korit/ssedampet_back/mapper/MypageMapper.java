@@ -1,5 +1,6 @@
 package com.korit.ssedampet_back.mapper;
 
+import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.PetDto;
 import com.korit.ssedampet_back.dto.response.mypage.PostDto;
 import com.korit.ssedampet_back.dto.response.mypage.SummaryDto;
@@ -20,6 +21,8 @@ public interface MypageMapper {
     int countMyLikedPosts(@Param("userId") int userId);
 
     List<PetDto> findMyPets(@Param("userId") int userId);
+
+    int insertPet(CreatePetReqDto dto);
 
     List<PostDto> findMyPosts(@Param("userId") int userId);
 
