@@ -24,6 +24,28 @@
             NOW()
         )
     </insert>
+    <select id="createNickname" resultType="java.lang.String">
+        select
+            concat(
+                (select
+                word as adjective_word
+        from
+            nickname_words_tb
+        where
+            word_type = 'adjective'
+        order by
+            rand()
+        limit 0, 1),
+        (select
+        word as noun_word
+        from
+            nickname_words_tb
+        where
+            word_type = 'noun'
+        order by
+            rand()
+        limit 0, 1)) as nickname;
+    </select>
     <select id="existsByProviderAndProviderId" resultType="int">
         select
             COUNT(*)
@@ -35,24 +57,72 @@
             provider_id = #{providerId}
     </select>
 
-    <select id="findByUserId" resultType="com.korit.ssedampet_back.entity.User">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="userId">
+        insert into
+            user_tb
+        values (
+            #{username},
+            #{email},
+            #{phone},
+            #{userBirth},
+            #{displayNickname},
+            #{userProfileImgUrl},
+            now(),
+            now(),
+            now())
+    </insert>
+    <select id="findByUserId" resultType="User">
         select
-            user_id as userId,
+            userId,
             username,
             email,
-            user_birth as userBirth,
+            userBirth,
             phone,
-            display_nickname as displayNickname,
-            user_profile_img_url as userProfileImgUrl,
-            last_login_dt as lastLoginDt,
-            created_dt as createdDt,
-            updated_dt as updatedDt
+            displayNickname,
+            userProfileImgUrl,
+            lastLoginDt,
+            createdDt,
+            updatedDt
         from
             user_tb
         where
             user_id = #{userId}
     </select>
-    <insert id="savePet" parameterType="com.korit.ssedampet_back.entity.Pet">
+    <select id="findByOauth2Id" resultType="User">
+        select
+            userId,
+            username,
+            email,
+            userBirth,
+            phone,
+            displayNickname,
+            userProfileImgUrl,
+            lastLoginDt,
+            createdDt,
+            updatedDt,
+        from
+            user_tb
+        where
+            oauth2_Id = #{oauth2Id}
+    </select>
+    <select id="findByNickname" resultType="User">
+        select
+            userId,
+            username,
+            email,
+            userBirth,
+            phone,
+            displayNickname,
+            userProfileImgUrl,
+            lastLoginDt,
+            createdDt,
+            updatedDt,
+        from
+            user_tb
+        where
+            nickname = #{nickname}
+    </select>
+    <insert id="savePet" parameterType="Pet">
         insert into
             pet_tb (
             user_id,
@@ -77,8 +147,8 @@
             #{petBreed},
             #{petWeight},
             #{petProfileImgUrl},
-            NOW(),
-            NOW()
+            now(),
+            now()
         )
     </insert>
 </mapper>
