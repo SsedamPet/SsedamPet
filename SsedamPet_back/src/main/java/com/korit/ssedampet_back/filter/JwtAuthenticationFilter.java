@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        PrincipalUser principalUser = new PrincipalUser(foundUser, authorities);
+        PrincipalUser principalUser = new PrincipalUser(authorities, null, foundUser.getUsername(), foundUser);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(
@@ -74,11 +74,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         principalUser.getAuthorities()
                 );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-//        //인증 객체(Authentication) 생성
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalUser, null, authorities);
-//        // SecurityContextHolder 에 인증객체를 저장해줌 = 팔찌 채우기
-
 
         filterChain.doFilter(request, response);
     }

@@ -1,9 +1,8 @@
 package com.korit.ssedampet_back.service;
 
-import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
+import com.korit.ssedampet_back.dto.request.PetAddReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.mapper.MypageMapper;
-import com.korit.ssedampet_back.mapper.PetMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import java.util.List;
 public class MypageService {
 
     private final MypageMapper mypageMapper;
-    private final PetMapper petMapper;
 
     // TODO: 마이페이지 전체 정보 조회
     /*public MypageRespDto getMypage(int userId) {
@@ -62,8 +60,8 @@ public class MypageService {
         return pets == null ? Collections.emptyList() : pets;
     }
 
-    public CreatePetRespDto createPet(CreatePetReqDto dto) {
-        petMapper.insertPet(dto);
+    public CreatePetRespDto createPet(PetAddReqDto dto) {
+        mypageMapper.insertPet(dto);
 
         return new CreatePetRespDto(dto.getPetId());
     }

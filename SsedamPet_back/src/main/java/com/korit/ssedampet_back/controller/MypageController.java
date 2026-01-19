@@ -1,6 +1,6 @@
 package com.korit.ssedampet_back.controller;
 
-import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
+import com.korit.ssedampet_back.dto.request.PetAddReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class MypageController {
     }
 
     @PostMapping("/pets")
-    public ResponseEntity<CreatePetRespDto> createPet(@RequestParam int userId, @RequestBody CreatePetReqDto dto) {
+    public ResponseEntity<CreatePetRespDto> createPet(@RequestParam int userId, @RequestBody PetAddReqDto dto) {
         // TODO: 로그인 로직 구현시 userId 직접 받아와서 전달
         // int userId = principal.getUserId();
         dto.setUserId(userId);

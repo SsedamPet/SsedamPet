@@ -1,9 +1,8 @@
 package com.korit.ssedampet_back.mapper;
 
-import com.korit.ssedampet_back.dto.request.CreatePetReqDto;
+import com.korit.ssedampet_back.dto.request.PetAddReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.PetDto;
 import com.korit.ssedampet_back.dto.response.mypage.PostDto;
-import com.korit.ssedampet_back.dto.response.mypage.SummaryDto;
 import com.korit.ssedampet_back.dto.response.mypage.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -22,7 +21,7 @@ public interface MypageMapper {
 
     List<PetDto> findMyPets(@Param("userId") int userId);
 
-    int insertPet(CreatePetReqDto dto);
+    int insertPet(PetAddReqDto dto);
 
     List<PostDto> findMyPosts(@Param("userId") int userId);
 

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class HealthLogRespDto {
     private int healthLogId;
     private int petId;
-    private LocalDate wrtieDate;
+    private LocalDate writeDate;
     private String waterStatus;
     private String foodStatus;
     private int poopCnt;

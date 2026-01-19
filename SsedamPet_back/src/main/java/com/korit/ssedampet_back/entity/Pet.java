@@ -24,7 +24,7 @@ public class Pet {
         M, F
     }
     private String petBreed;
-    private DecimalFormat petWeight;
+    private Double petWeight;
     private String petProfileImgUrl;
     private LocalDateTime createdDt;
     private LocalDateTime updatedDt;

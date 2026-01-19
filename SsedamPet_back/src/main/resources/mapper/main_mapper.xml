@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korit.ssedampet_back.mapper.MainMapper">
 
-    <resultMap id="PetResultMap" type="com.korit.ssedampet_back.dto.response.main.PetListDto">
+    <resultMap id="PetResultMap" type="com.korit.ssedampet_back.dto.response.mypage.PetDto">
         <id property="petId" column="pet_id" />
         <result property="petName" column="pet_name" />
         <result property="petGender" column="pet_gender" />
@@ -13,7 +13,7 @@
         <result property="petAge" column="pet_age" />
     </resultMap>
 
-    <select id="getMyPets" resultType="com.korit.ssedampet_back.dto.response.main.PetListDto">
+    <select id="getMyPets" resultType="com.korit.ssedampet_back.dto.response.mypage.PetDto">
         select
             pet_id,
             pet_name,

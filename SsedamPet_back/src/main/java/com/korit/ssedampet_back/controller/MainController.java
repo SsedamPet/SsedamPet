@@ -25,6 +25,5 @@ public class MainController {
         MainDashboardRespDto dashboardData = mainService.getMainDashboard(userId);
         return ResponseEntity.ok(dashboardData);
 
-
     }
 }

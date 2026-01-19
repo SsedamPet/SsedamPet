@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MainDashboardRespDto {
 
-    private List<PetListDto> myPets;  // 내 펫 목록
+    private List<PetDto> myPets;  // 내 펫 목록
     private HealthLogSummaryDto todayHealthLog; // 오늘 건강 요약
     private List<PostPreviewDto> popularPosts; // 인기 게시물 미리보기
 }

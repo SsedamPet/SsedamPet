@@ -36,55 +36,95 @@
 
     <!-- 유저 1명 조회 -->
     <select id="findMypageUser" resultMap="UserDtoMap">
-        SELECT
+        select
             user_id,
             username,
             email,
             user_profile_img_url
-        FROM user_tb
-        WHERE user_id = #{userId}
+        from
+            user_tb
+        where
+            user_id = #{userId}
     </select>
 
     <!-- 전체 유저 목록 -->
     <select id="findAllUsers" resultMap="UserDtoMap">
-        SELECT
+        select
             user_id,
             username,
             email,
             user_profile_img_url
-        FROM user_tb
-        ORDER BY user_id DESC
+        from
+            user_tb
+        order by
+            user_id desc
     </select>
 
     <!-- 내가 작성한 게시글 수 -->
     <select id="countMyPosts" resultType="int">
-        SELECT COUNT(*)
-        FROM post_tb
-        WHERE user_id = #{userId}
+        select
+            COUNT(*)
+        from
+            post_tb
+        where
+            user_id = #{userId}
     </select>
 
     <!-- 내가 좋아요 누른 게시글 수 -->
     <select id="countMyLikedPosts" resultType="int">
-        SELECT COUNT(*)
-        FROM like_tb
-        WHERE user_id = #{userId}
+        select
+            COUNT(*)
+        from
+            like_tb
+        where
+            user_id = #{userId}
     </select>
 
     <!-- 내 반려동물 목록 -->
     <select id="findMyPets" resultMap="PetDtoMap">
-        SELECT
+        select
             pet_id,
             pet_name,
             pet_gender,
             pet_profile_img_url
-        FROM pet_tb
-        WHERE user_id = #{userId}
-        ORDER BY pet_id DESC
+        from
+            pet_tb
+        where
+            user_id = #{userId}
+        order by pet_id desc
     </select>
+
+    <!--  반려동물 추가  -->
+    <insert id="insertPet" parameterType="com.korit.ssedampet_back.dto.request.PetAddReqDto" useGeneratedKeys="true" keyProperty="petId">
+        insert into
+            pet_tb (
+                user_id,
+                pet_type,
+                pet_name,
+                pet_breed,
+                pet_birth,
+                pet_gender,
+                pet_weight,
+                pet_profile_img_url,
+                created_dt,
+                updated_dt
+        ) values (
+                 #{userId},
+                 #{petType},
+                 #{petName},
+                 #{petBreed},
+                 #{petBirth},
+                 #{petGender},
+                 #{petWeight},
+                 #{petProfileImgUrl},
+                 NOW(),
+                 NOW()
+                 )
+    </insert>
 
     <!-- 내가 작성한 게시글 목록 (myPosts) -->
     <select id="findMyPosts" resultMap="PostDtoMap">
-        SELECT
+        select
             post_id,
             user_id,
             post_img_url,
@@ -94,14 +134,15 @@
             post_location_tag,
             created_dt,
             updated_dt
-        FROM post_tb
-        WHERE user_id = #{userId}
-        ORDER BY post_id DESC
+        from
+            post_tb
+        where user_id = #{userId}
+        order by post_id desc
     </select>
 
     <!-- 내가 좋아요 누른 게시글 목록 (likedPosts) -->
     <select id="findMyLikedPosts" resultMap="PostDtoMap">
-        SELECT
+        select
             p.post_id,
             p.user_id,
             p.post_img_url,
@@ -111,10 +152,11 @@
             p.post_location_tag,
             p.created_dt,
             p.updated_dt
-        FROM like_tb l
-                 JOIN post_tb p ON p.post_id = l.post_id
-        WHERE l.user_id = #{userId}
-        ORDER BY l.like_id DESC
+        from
+            like_tb l
+            join post_tb p on p.post_id = l.post_id
+        where l.user_id = #{userId}
+        order by l.like_id desc
     </select>
 
 </mapper>
