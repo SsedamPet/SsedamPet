@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -62,13 +63,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         User foundUser = userMapper.findByUserId(userId);
 
-        if (foundUser != null) {
-            Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-            PrincipalUser principalUser = new PrincipalUser(authorities, Map.of("id", foundUser.getEmail()), "id", foundUser);
-//
+
+        Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        PrincipalUser principalUser = new PrincipalUser(foundUser, authorities);
+
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(
+                        principalUser,
+                        null,
+                        principalUser.getAuthorities()
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
 //        //인증 객체(Authentication) 생성
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalUser, null, authorities);
 //        // SecurityContextHolder 에 인증객체를 저장해줌 = 팔찌 채우기
+
 
         filterChain.doFilter(request, response);
     }
