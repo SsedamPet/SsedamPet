@@ -13,15 +13,14 @@
         <result property="petAge" column="pet_age" />
     </resultMap>
 
-    <select id="getMyPets" resultType="com.korit.ssedampet_back.dto.response.mypage.PetDto">
+    <select id="getMyPets" resultType="com.korit.ssedampet_back.dto.response.main.PetListDto">
         select
             pet_id,
             pet_name,
             pet_gender,
             pet_profile_img_url,
             pet_birth,
-            /* 생년월일로 만 나이 계산 */
-            TIMESTAMPDIFF(YEAR, pet_birth, CURDATE()) as pet_age
+            timestampdiff(year, pet_birth, curdate()) as pet_age
         from
             pet_tb
         where
