@@ -17,7 +17,7 @@ public class User {
     private String email;
     private LocalDateTime userBirth;
     private String phone;
-    private String displayUsername;
+    private String displayNickname;
     private String userProfileImgUrl;
     private LocalDateTime lastLoginDt;
     private LocalDateTime createdDt;

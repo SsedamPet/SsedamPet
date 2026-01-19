@@ -54,17 +54,17 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                 .userProfileImgUrl(attributes.getPicture())
                 .userBirth(LocalDateTime.of(1900, 1, 1, 0, 0))
                 .phone("010-0000-0000")
-                .displayUsername(attributes.getName())
+                .displayNickname(attributes.getName())
                 .build();
 
         try {
-            userMapper.saveUser(user);
-            System.out.println("✅ DB 저장 성공: " + attributes.getEmail());
+            userMapper.addUser(user);
+            System.out.println("DB 저장 성공: " + attributes.getEmail());
         } catch (Exception e) {
-            System.out.println("❌ DB 저장 실패: " + e.getMessage());
+            System.out.println("DB 저장 실패: " + e.getMessage());
             e.printStackTrace(); // 에러 원인이 콘솔에 찍힙니다.
         }
 
-        userMapper.saveUser(user);
+        userMapper.addUser(user);
     }
 }

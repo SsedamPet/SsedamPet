@@ -11,14 +11,16 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PetRequestDto {
+public class PetCreateReqDto {
 
     private int userid;
-    private String pettype;
-    private String petname;
-    private LocalDate petbirth;
-    private String petgender;
-    private String petbreed;
-    private float petweight;
-    private String pet_profile_img_url;
+    private String petType;
+    private String petName;
+    private LocalDate petBirth;
+    private String petGender;
+    private String petBreed;
+    private Double petWeight;
+    private String petProfileImgUrl;
+
+
 }

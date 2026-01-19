@@ -2,8 +2,8 @@ package com.korit.ssedampet_back.service;
 
 import com.korit.ssedampet_back.dto.response.main.HealthLogSummaryDto;
 import com.korit.ssedampet_back.dto.response.main.MainDashboardRespDto;
-import com.korit.ssedampet_back.dto.response.main.PetListDto;
 import com.korit.ssedampet_back.dto.response.main.PostPreviewDto;
+import com.korit.ssedampet_back.dto.response.mypage.PetDto;
 import com.korit.ssedampet_back.mapper.MainMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class MainService {
 
     public MainDashboardRespDto getMainDashboard(int userId) {
         // 내 펫 목록
-        List<PetListDto> myPets = mainMapper.getMyPets(userId);
+        List<PetDto> myPets = mainMapper.getMyPets(userId);
 
         // 오늘 건강 요약
         HealthLogSummaryDto todayHealthLog = mainMapper.getTodayHealthLog(userId);

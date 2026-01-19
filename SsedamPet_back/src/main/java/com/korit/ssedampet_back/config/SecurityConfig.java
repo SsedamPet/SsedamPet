@@ -53,8 +53,6 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> {
             auth.requestMatchers("/api/auth/**").permitAll();
-            auth.requestMatchers("/api/user/register").permitAll();
-            auth.requestMatchers("/api/pet/register").permitAll();
             auth.requestMatchers("/v3/api-docs/**").permitAll();
             auth.requestMatchers("/swagger-ui/**").permitAll();
             auth.requestMatchers("/swagger-ui.html").permitAll();
@@ -63,6 +61,7 @@ public class SecurityConfig {
             auth.requestMatchers("/oauth2/**").permitAll();
             auth.requestMatchers("/login/**").permitAll();
             auth.requestMatchers("/image/**").permitAll();
+            auth.requestMatchers("/api/user/**").permitAll();
             auth.requestMatchers("/api/users/**").permitAll();
             auth.requestMatchers("/api/healthlog").permitAll();
             auth.requestMatchers("/api/healthlog/**").permitAll();

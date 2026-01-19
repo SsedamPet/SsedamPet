@@ -2,6 +2,8 @@ package com.korit.ssedampet_back.dto.response.mypage;
 
 import lombok.*;
 
+import java.time.LocalDate;
+
 
 @Builder
 @AllArgsConstructor
@@ -12,4 +14,8 @@ public class PetDto {
     private String petName;               // pet_tb.pet_name
     private String petGender;             // pet_tb.pet_gender ("M","F")
     private String petProfileImgUrl;      // pet_tb.pet_profile_img_url
+    private LocalDate petBirth;
+    private int petAge;          // SQL에서 계산해서 담아줄 나이
+
+
 }
