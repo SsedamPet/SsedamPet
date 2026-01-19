@@ -48,9 +48,6 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         //TODO: Oauth2 로그인 설정
-        http.oauth2Login(oauth2
-                -> oauth2.userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService))
-                .successHandler(oAuth2SuccessHandler));
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -62,9 +59,16 @@ public class SecurityConfig {
             auth.requestMatchers("/swagger-ui/**").permitAll();
             auth.requestMatchers("/swagger-ui.html").permitAll();
             auth.requestMatchers("/doc").permitAll();
+
             auth.requestMatchers("/oauth2/**").permitAll();
             auth.requestMatchers("/login/**").permitAll();
-            auth.requestMatchers("/image/**").permitAll();
+            auth.requestMatchers("/api/users/**").permitAll();
+            auth.requestMatchers("/api/healthlog").permitAll();
+            auth.requestMatchers("/api/healthlog/**").permitAll();
+            auth.requestMatchers("/api/mypage/**").permitAll();
+            auth.requestMatchers("/api/posts/**").permitAll();
+
+
             auth.anyRequest().authenticated();
         });
 

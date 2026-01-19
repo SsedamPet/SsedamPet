@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.korit.ssedampet_back.mapper.MainMapper">
+
+    <resultMap id="PetResultMap" type="com.korit.ssedampet_back.dto.response.main.PetListDto">
+        <id property="petId" column="pet_id" />
+        <result property="petName" column="pet_name" />
+        <result property="petGender" column="pet_gender" />
+        <result property="petProfileImgUrl" column="pet_profile_img_url" />
+        <result property="petBirth" column="pet_birth" />
+        <result property="petAge" column="pet_age" />
+    </resultMap>
+
+    <select id="getMyPets" resultType="com.korit.ssedampet_back.dto.response.mypage.PetDto">
+        select
+            pet_id,
+            pet_name,
+            pet_gender,
+            pet_profile_img_url,
+            pet_birth,
+            /* 생년월일로 만 나이 계산 */
+            TIMESTAMPDIFF(YEAR, pet_birth, CURDATE()) as pet_age
+        from
+            pet_tb
+        where
+            user_id = #{userId}
+    </select>
+    <select id="getTodayHealthLog" resultType="com.korit.ssedampet_back.dto.response.main.HealthLogSummaryDto">
+        select
+            healthlog_id,
+            water_status,
+            food_status,
+            poop_cnt
+        from
+            healthlog_tb
+        where
+            user_id = #{userId}
+            and DATE(created_dt
+    </select>
+    <select id="getPopularPosts" resultType="com.korit.ssedampet_back.dto.response.main.PostPreviewDto">
+
+    </select>
+</mapper>

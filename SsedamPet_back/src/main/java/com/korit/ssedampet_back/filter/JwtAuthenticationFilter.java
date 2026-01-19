@@ -69,8 +69,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 //        //인증 객체(Authentication) 생성
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalUser, null, authorities);
 //        // SecurityContextHolder 에 인증객체를 저장해줌 = 팔찌 채우기
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+
         filterChain.doFilter(request, response);
     }
 }
