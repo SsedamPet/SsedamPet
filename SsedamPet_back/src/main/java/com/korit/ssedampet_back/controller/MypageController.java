@@ -40,7 +40,8 @@ public class MypageController {
     public ResponseEntity<CreatePetRespDto> createPet(@RequestParam int userId, @RequestBody CreatePetReqDto dto) {
         // TODO: 로그인 로직 구현시 userId 직접 받아와서 전달
         // int userId = principal.getUserId();
-        return ResponseEntity.ok(mypageService.createPet(userId, dto));
+        dto.setUserId(userId);
+        return ResponseEntity.ok(mypageService.createPet(dto));
     }
 
     @GetMapping("/my-posts")

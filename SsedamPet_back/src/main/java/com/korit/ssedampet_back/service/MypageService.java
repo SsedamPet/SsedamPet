@@ -62,7 +62,7 @@ public class MypageService {
         return pets == null ? Collections.emptyList() : pets;
     }
 
-    public CreatePetRespDto createPet(int userId, CreatePetReqDto dto) {
+    public CreatePetRespDto createPet(CreatePetReqDto dto) {
         petMapper.insertPet(dto);
 
         return new CreatePetRespDto(dto.getPetId());
