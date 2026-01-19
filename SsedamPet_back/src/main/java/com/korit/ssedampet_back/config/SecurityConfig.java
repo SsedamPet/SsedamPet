@@ -66,6 +66,7 @@ public class SecurityConfig {
 
             auth.requestMatchers("/oauth2/**").permitAll();
             auth.requestMatchers("/login/**").permitAll();
+            auth.requestMatchers("/image/**").permitAll();
             auth.requestMatchers("/api/users/**").permitAll();
             auth.requestMatchers("/api/healthlog").permitAll();
             auth.requestMatchers("/api/healthlog/**").permitAll();

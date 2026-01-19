@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -58,14 +59,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //principalUser, password, authorities
         //TODO: UserMapper 내 foundUser 구현
 
-//        Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(foundUser.getRole()));
-//        PrincipalUser principalUser = new PrincipalUser(authorities, Map.of("id", foundUser.getOauth2Id()), "id", foundUser);
-//
-//        //인증 객체(Authentication) 생성
-//        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(principalUser, null, authorities);
-//        // SecurityContextHolder 에 인증객체를 저장해줌 = 팔찌 채우기
-//        SecurityContextHolder.getContext().setAuthentication(authentication);  //팔찌를 채우는 행위, setAuthentication(인증객체)
-//
+        User foundUser = userMapper.findByUserId(userId);
+
+        Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        PrincipalUser principalUser = new PrincipalUser(foundUser, authorities);
+
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(
+                        principalUser,
+                        null,
+                        principalUser.getAuthorities()
+                );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         filterChain.doFilter(request, response);
     }
 }
