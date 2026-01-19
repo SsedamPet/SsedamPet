@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.ssedampet_back.mapper.UserMapper">
+    <insert id="saveUser" parameterType="com.korit.ssedampet_back.entity.User">
+        INSERT INTO user_tb (
+            username,
+            email,
+            user_birth,
+            phone,
+            display_nickname,
+            user_profile_img_url,
+            created_dt
+        )
+        VALUES (
+            #{username},
+            #{email},
+            #{userBirth},
+            #{phone},
+            #{displayUsername},
+            #{userProfileImgUrl},
+            NOW()
+        )
+    </insert>
+    <select id="existsByProviderAndProviderId" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            oauth2_user_tb
+        WHERE
+            provider = #{provider}
+        AND
+            provider_id = #{providerId}
+    </select>
+
+    <select id="findByUserId" resultType="com.korit.ssedampet_back.entity.User">
+        SELECT
+            user_id as userId,
+            username,
+            email,
+            user_birth as userBirth,
+            phone,
+            display_nickname as displayUsername,
+            user_profile_img_url as userProfileImgUrl,
+            last_login_dt as lastLoginDt,
+            created_dt as createdDt,
+            updated_dt as updatedDt
+        FROM
+            user_tb
+        WHERE
+            user_id = #{userId}
+    </select>
+</mapper>
