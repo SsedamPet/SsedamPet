@@ -37,9 +37,25 @@
             healthlog_tb
         where
             user_id = #{userId}
-            and DATE(created_dt
+            and DATE(created_dt) = curdate()
+        limit
+            1
     </select>
     <select id="getPopularPosts" resultType="com.korit.ssedampet_back.dto.response.main.PostPreviewDto">
-
+        select
+            p.post_id,
+            p.title,
+            p.user_id,
+            u.nickname,
+            p.post_image_url,
+            p.like_count,
+            p.created_date
+        from
+            post_tb p
+            left join user_tb u on p.user_id = u.user_id
+        order by
+            p.like_count DESC
+        limit
+            4
     </select>
 </mapper>
