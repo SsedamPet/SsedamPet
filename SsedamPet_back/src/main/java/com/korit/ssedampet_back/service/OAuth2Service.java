@@ -54,7 +54,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                 providerUserId = response.get("id").toString();
                 email = (String) response.get("email");
                 profileImgUrl = (String) response.get("profile_image");
-                name = (attributes.get("name") != null) ? attributes.get("name").toString() : "네이버 유저";
+                name = (String) response.get("name");
                 break;
             case "KAKAO":
                 Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
@@ -65,6 +65,16 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                 name = (String) profile.get("nickname");
                 break;
         }
+
+        // username 추출 로직 (이메일 ID 우선)
+        String extractedUsername;
+        if (email != null && email.contains("@")) {
+            extractedUsername = email.split("@")[0];
+        } else {
+            // 이름도 없으면 최종적으로 [서비스_유저]로 설정
+            extractedUsername = (name != null) ? name : (provider + "_유저");
+        }
+
         OAuth2UserEntity oauth2UserEntity =
                 oAuth2UserMapper.findByProviderAndProviderUserId(provider, providerUserId);
 
@@ -73,9 +83,9 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         if (oauth2UserEntity == null) {
             // 신규 유저 생성 (user_tb)
             user = User.builder()
-                    .username(name == null ? "신규회원" : name)
+                    .username(name != null ? name : extractedUsername)
                     .email(email)
-                    .displayNickname(name)
+                    .displayNickname(name != null ? name : extractedUsername)
                     .userProfileImgUrl(profileImgUrl == null ? "default.png" : profileImgUrl)
                     .build();
 
