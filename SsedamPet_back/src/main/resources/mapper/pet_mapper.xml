@@ -4,7 +4,7 @@
     "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korit.ssedampet_back.mapper.PetMapper">
 
-    <insert id="addPet">
+    <insert id="addPet" useGeneratedKeys="true" keyProperty="petId" keyColumn="pet_id">
         insert into pet_tb
         (
             user_id,

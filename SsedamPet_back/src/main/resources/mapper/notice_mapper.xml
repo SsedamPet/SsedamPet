@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.korit.ssedampet_back.mapper.NoticeMapper">
+    <resultMap id="NoticeDtoMap" type="com.korit.ssedampet_back.dto.response.main.NoticeDto">
+        <id property="noticeId" column="notice_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="senderUserId" column="sender_user_id"/>
+        <result property="refId" column="ref_id"/>
+        <result property="title" column="title"/>
+        <result property="noticeType" column="notice_type"/>
+        <result property="noticeMessage" column="notice_message"/>
+        <result property="linkUrl" column="link_url"/>
+        <result property="isRead" column="is_read"/>
+        <result property="status" column="status"/>
+        <result property="createdDt" column="created_dt"/>
+        <result property="updatedDt" column="updated_dt"/>
+    </resultMap>
+
+    <insert id="insertNotice" useGeneratedKeys="true" keyProperty="noticeId" keyColumn="notice_id">
+        INSERT INTO notice_tb
+        (
+            user_id,
+            sender_user_id,
+            notice_type,
+            title,
+            notice_message,
+            ref_id,
+            link_url,
+            is_read,
+            status,
+            created_dt,
+            updated_dt
+        )
+        values
+        (
+            #{userId},
+            nullif(#{senderUserId}, 0),
+            #{noticeType},
+            #{title},
+            #{noticeMessage},
+            nullif(#{refId}, 0),
+            #{linkUrl},
+            #{isRead},
+            #{status},
+            now(),
+            now()
+        )
+
+    </insert>
+
+    <!-- 목록 최신순 -->
+    <select id="findByUserId" resultMap="NoticeDtoMap">
+        select
+            notice_id,
+            user_id,
+            ifnull(sender_user_id, 0) AS sender_user_id,
+            notice_type,
+            ifnull(title, '') AS title,
+            notice_message,
+            ifnull(ref_id, 0) AS ref_id,
+            ifnull(link_url, '') AS link_url,
+            is_read,
+            status,
+            created_dt,
+            updated_dt
+        from notice_tb
+        where user_id = #{userId}
+            and status = 1
+        order by notice_id desc
+        limit #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 미읽음 카운트 -->
+    <select id="countUnread" resultType="int">
+        select count(*)
+        from notice_tb
+        where user_id = #{userId}
+            and is_read = 0
+            and status = 1
+    </select>
+
+    <!-- 단건 읽음 처리 -->
+    <update id="markRead">
+        update notice_tb
+        set is_read = 1,
+            updated_dt = now()
+        where notice_id = #{noticeId}
+            and user_id = #{userId}
+            and is_read = 0
+    </update>
+
+    <!-- 전체 읽음 처리 -->
+    <update id="markReadAll">
+        update notice_tb
+        set is_read = 1,
+            updated_dt = now()
+        where notice_id = #{noticeId}
+            and user_id = #{userId}
+            and is_read = 0
+    </update>
+
+    <!-- SSE 유실 복구: lastNoticeId 이후 알림 -->
+    <select id="findAfterId" resultMap="NoticeDtoMap">
+        select
+            notice_id,
+            user_id,
+            ifnull(sender_user_id, 0) as sender_user_id,
+            notice_type,
+            ifnull(title, '') AS title,
+            notice_message,
+            ifnull(ref_id, 0) AS ref_id,
+            ifnull(link_url, '') AS link_url,
+            is_read,
+            status,
+            created_dt,
+            updated_dt
+        from notice_tb
+        where user_id = #{userId}
+            and status = 1
+            and notice_id &gt; #{lastNoticeId}
+        order by notice_id asc
+    </select>
+</mapper>
