@@ -15,7 +15,7 @@ public class LikeController {
     @Autowired
     private LikeService likeService;
 
-    @PostMapping("/post/{postId}/like")
+    @PostMapping("/post/{postId}/like/test")
     public ResponseEntity<?> toggleLike(@PathVariable int postId) {
         int userId = 1; // 테스트용 유저 ID
 

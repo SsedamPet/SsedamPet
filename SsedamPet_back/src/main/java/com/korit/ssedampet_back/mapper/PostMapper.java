@@ -16,12 +16,13 @@ public interface PostMapper {
     // 피드 작성
     void savePost(Map<String, Object> postData);
 
-    // 좋아요 기능
-    int checkLike(@Param("postId") int postId, @Param("userId") int userId);
-    // 좋아요 추가
-    void insertLike(@Param("postId") int postId, @Param("userId") int userId);
-    // 좋아요 삭제
-    void deleteLike(@Param("postId") int postId, @Param("userId") int userId);
+//    // 좋아요 기능
+//    int checkLike(@Param("postId") int postId, @Param("userId") int userId);
+//    // 좋아요 추가
+//    void insertLike(@Param("postId") int postId, @Param("userId") int userId);
+//    // 좋아요 삭제
+//    void deleteLike(@Param("postId") int postId, @Param("userId") int userId);
+
     // 좋아요 추가/삭제 시 post_tb에 카운트 업뎃
     void updateLikeCount(@Param("postId") int postId, @Param("amount") int amount);
 

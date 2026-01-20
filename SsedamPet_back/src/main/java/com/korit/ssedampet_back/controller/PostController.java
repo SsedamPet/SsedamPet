@@ -1,6 +1,8 @@
 package com.korit.ssedampet_back.controller;
 
 import com.korit.ssedampet_back.mapper.PostMapper;
+import com.korit.ssedampet_back.service.LikeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,11 +15,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/community")
 public class PostController {
 
-    @Autowired
-    private PostMapper postMapper; // service 없이 직접 연결
+    private final PostMapper postMapper; // service 없이 직접 연결
+
+    private final LikeService likeService;
 
     /*
     게시글 목록 가져오기 API
@@ -50,7 +54,7 @@ public class PostController {
             String imageUrl = null;
 
             if (image != null && !image.isEmpty()) {
-                String uploadDir = "C:/gov/project/SsedamPet/img_uploads";
+                String uploadDir = "C:/gov/project/SsedamPet/img_uploads/";
                 File dir = new File(uploadDir);
                 if (!dir.exists()) dir.mkdirs(); // 1. 파일 저장할 경로 설정
 
@@ -87,32 +91,16 @@ public class PostController {
             @PathVariable("postId") int postId,
             @RequestBody Map<String, Object> requestData) {
 
-        // 리액트의 userId 가져옴 어떤 숫자 형태든 int로
         int userId = ((Number) requestData.get("userId")).intValue();
+        boolean isLiked = likeService.toggleLike(userId, postId); // 서비스 호출
 
-        try {
-            // 눌렀나?
-            int isLiked = postMapper.checkLike(postId, userId);
-
-            if (isLiked > 0) {
-                // 이미 있을 경우 (좋아요 취소)
-                postMapper.deleteLike(postId, userId);
-                postMapper.updateLikeCount(postId, -1); // post_tb 쪼아요 감소
-                return ResponseEntity.ok(Map.of("status", "unliked"));
-            } else {
-                // 없으면 좋아요 -> e등록
-                postMapper.insertLike(postId, userId);
-                postMapper.updateLikeCount(postId, 1); // post_tb 쪼아요 증가
-                return ResponseEntity.ok(Map.of("status", "liked"));
-            }
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("좋아요 중 오류가 발생했습니다.");
-        }
+        return ResponseEntity.ok(Map.of("status", isLiked ? "liked" : "unliked"));
     }
-
-
-
 }
+
+
+
+
 
 // DB 테이블 체크 (중요!)
 //MySQL에서 posts 테이블에 이미지 경로를 담을 공간이 있는지 확인해 보세요. 없다면 아래 명령어로 추가해야 합니다.
