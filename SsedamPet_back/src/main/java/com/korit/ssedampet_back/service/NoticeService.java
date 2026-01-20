@@ -1,6 +1,7 @@
 package com.korit.ssedampet_back.service;
 
 import com.korit.ssedampet_back.dto.response.main.NoticeDto;
+import com.korit.ssedampet_back.mapper.NoticeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class NoticeService {
     // 연결이 살아있는지 확인하는 시간 20초. 연결 끊김 방지
     private static final long KEEP_ALIVE_CHECK_TIME = 20L;
 
-    // private final NoticeMapper noticeMapper;
+    private final NoticeMapper noticeMapper;
 
     // 연결 중인 유저들의 연결 객체(Emitter) 저장소
     private final Map<Integer, List<SseEmitter>> emitters = new ConcurrentHashMap<>();
@@ -34,12 +35,12 @@ public class NoticeService {
         addEmitter(userId, emitter);
 
         emitter.onCompletion(() -> removeEmitter(userId, emitter));
-        emitter.onTimeout(() -> removeEmiiter(userId, emitter));
+        emitter.onTimeout(() -> removeEmitter(userId, emitter));
         emitter.onError((e) -> removeEmitter(userId, emitter));
 
         try {
             emitter.send(SseEmitter.event().name("connected").data("ok"));
-        } catch (IOException) {
+        } catch (IOException e) {
             removeEmitter(userId, emitter);
             emitter.completeWithError(e);
             return emitter;
