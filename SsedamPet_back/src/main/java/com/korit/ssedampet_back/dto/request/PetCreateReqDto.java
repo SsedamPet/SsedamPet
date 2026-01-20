@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PetCreateReqDto {
 
-    private int userid;
+    private int userId;
     private String petType;
     private String petName;
     private LocalDate petBirth;

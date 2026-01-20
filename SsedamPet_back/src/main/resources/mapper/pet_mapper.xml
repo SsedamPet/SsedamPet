@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.korit.ssedampet_back.mapper.PetMapper">
+
+    <insert id="addPet">
+        insert into pet_tb
+        (
+            user_id,
+            post_id,
+            pet_type,
+            pet_name,
+            pet_birth,
+            pet_gender,
+            pet_breed,
+            pet_weight,
+            pet_profile_img_url,
+            created_dt,
+            updated_dt
+        )
+        values (
+            #{userid},
+            #{postId},
+            #{petType},
+            #{petName},
+            #{petBirth},
+            #{petGender},
+            #{petBreed},
+            #{petWeight},
+            #{petProfileImgUrl},
+            NOW(),
+            NOW()
+        )
+    </insert>
+    <insert id="insertPet">
+        insert into pet_tb
+        (
+            user_id,
+            pet_type,
+            pet_name,
+            pet_breed,
+            pet_birth,
+            pet_gender,
+            pet_weight,
+            pet_profile_img_url,
+            created_dt,
+            updated_dt
+        ) values (
+            #{userId},
+            #{petType},
+            #{petName},
+            #{petBreed},
+            #{petBirth},
+            #{petGender},
+            #{petWeight},
+            #{petProfileImgUrl},
+            NOW(),
+            NOW()
+        )
+    </insert>
+</mapper>

@@ -21,8 +21,6 @@ public interface MypageMapper {
 
     List<PetDto> findMyPets(@Param("userId") int userId);
 
-    int insertPet(PetAddReqDto dto);
-
     List<PostDto> findMyPosts(@Param("userId") int userId);
 
     List<PostDto> findMyLikedPosts(@Param("userId") int userId);
