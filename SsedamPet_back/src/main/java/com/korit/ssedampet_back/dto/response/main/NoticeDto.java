@@ -1,4 +1,4 @@
-package com.korit.ssedampet_back.dto.response.mypage;
+package com.korit.ssedampet_back.dto.response.main;
 
 import lombok.Builder;
 import lombok.Data;

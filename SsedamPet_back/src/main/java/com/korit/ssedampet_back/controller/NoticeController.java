@@ -1,16 +1,8 @@
 package com.korit.ssedampet_back.controller;
 
-import com.korit.ssedampet_back.dto.response.mypage.NoticeDto;
-import com.korit.ssedampet_back.security.PrincipalUser;
 import com.korit.ssedampet_back.service.NoticeService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

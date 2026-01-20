@@ -1,14 +1,12 @@
 package com.korit.ssedampet_back.service;
 
-import com.korit.ssedampet_back.dto.response.mypage.NoticeDto;
+import com.korit.ssedampet_back.dto.response.main.NoticeDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
