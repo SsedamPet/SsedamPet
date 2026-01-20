@@ -16,10 +16,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,8 +28,10 @@ public class OAuth2Service extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);  //attributes(provider 원본응답), authorities
-        String provider = userRequest.getClientRegistration().getClientName();
-        System.out.println(userRequest.getClientRegistration().getClientName());
+
+
+        String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+        System.out.println(provider);
 
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
@@ -41,19 +40,21 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         String profileImgUrl = null; // 이미지 추가
         String name = null;
 
+        System.out.println("로그인 시도 provider: " + provider);
+
         switch (provider) {
             case "GOOGLE":
-                providerUserId = attributes.get("sub").toString();
+                providerUserId = attributes.get("sub") != null ? attributes.get("sub").toString() : (String) attributes.get("id");
                 email = (String) attributes.get("email");
                 profileImgUrl = (String) attributes.get("picture");
-                name = (String) attributes.get("name");
+                name = (attributes.get("name") != null) ? attributes.get("name").toString() : "구글 유저";
                 break;
             case "NAVER":
                 Map<String, Object> response = (Map<String, Object>) attributes.get("response");
                 providerUserId = response.get("id").toString();
                 email = (String) response.get("email");
                 profileImgUrl = (String) response.get("profile_image");
-                name = (String) response.get("name");
+                name = (attributes.get("name") != null) ? attributes.get("name").toString() : "네이버 유저";
                 break;
             case "KAKAO":
                 Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
@@ -64,21 +65,49 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                 name = (String) profile.get("nickname");
                 break;
         }
+        OAuth2UserEntity oauth2UserEntity =
+                oAuth2UserMapper.findByProviderAndProviderUserId(provider, providerUserId);
 
-        // SuccessHandler에서 꺼내 쓰기 좋게 규격화된 Map 생성
-        Map<String, Object> newAttributes = Map.of(
-                "providerUserId", providerUserId,
-                "provider", provider,
-                "email", email,
-                "profileImgUrl", profileImgUrl, // 이미지 포함
-                "name", name
-        );
+        User user;
+
+        if (oauth2UserEntity == null) {
+            // 신규 유저 생성 (user_tb)
+            user = User.builder()
+                    .username(name == null ? "신규회원" : name)
+                    .email(email)
+                    .displayNickname(name)
+                    .userProfileImgUrl(profileImgUrl == null ? "default.png" : profileImgUrl)
+                    .build();
+
+            userMapper.addUser(user); // useGeneratedKeys로 userId 세팅
+
+            // oauth2_user_tb 매핑 저장
+            oAuth2UserMapper.addOAuth2User(
+                    OAuth2UserEntity.builder()
+                            .userId(user.getUserId())
+                            .provider(OAuth2UserEntity.Provider.valueOf(provider))
+                            .providerUserId(providerUserId)
+                            .build()
+            );
+        } else {
+            // 기존 유저
+            user = userMapper.findByUserId(oauth2UserEntity.getUserId());
+        }
+
+        // SuccessHandler에서 꺼내 쓰기 좋게 통합 Map 생성
+        Map<String, Object> newAttributes = new HashMap<>();
+        newAttributes.put("providerUserId", providerUserId);
+        newAttributes.put("provider", provider);
+        newAttributes.put("email", email);
+        newAttributes.put("profileImgUrl", profileImgUrl);
+        newAttributes.put("displayNickname", name);
 
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
-        return new DefaultOAuth2User(authorities, newAttributes, "providerUserId");
+        // 여기 user는 DB에서 조회/생성된 User로 넣어야 안정적
+        return new PrincipalUser(authorities, newAttributes, "providerUserId", user);
 
-        //  oauth2_user_tb에서 (provider + providerUserId)로 기존 매핑 조회
+
 
     }
 }

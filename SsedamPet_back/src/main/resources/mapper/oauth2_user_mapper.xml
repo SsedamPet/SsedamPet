@@ -6,9 +6,9 @@
     <!-- OAuth2 유저 신규추가 -->
     <insert id="addOAuth2User">
         insert into
-        oauth2_user_tb
+            oauth2_user_tb(user_id, provider, provider_user_id, created_dt, updated_dt)
         values
-        (0, #{userId}, #{provider}, #{providerUserId}, NOW(), NOW())
+        (#{userId}, #{provider}, #{providerUserId}, NOW(), NOW())
     </insert>
 
     <!-- OAuth2 유저 조회 -->
@@ -25,7 +25,7 @@
     </select>
     <select id="findByProviderAndProviderUserId" resultType="com.korit.ssedampet_back.entity.OAuth2UserEntity">
         select
-            oauth2_user_id, -- DB 컬럼명
+            oauth2_user_id,
             user_id,
             provider,
             provider_user_id,

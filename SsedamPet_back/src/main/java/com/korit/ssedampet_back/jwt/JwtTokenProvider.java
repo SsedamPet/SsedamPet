@@ -36,8 +36,22 @@ public class JwtTokenProvider {
                 .claim("userId", user.getUserId())   // 유저id 가 몇번인지
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+    }
 
+    // 토큰 만들기 (userId만)
+    public String createAccessToken(int userId) {
+        Date now = new Date();
+        long expiredTime = now.getTime() + (1000L * 60L * 60L * 24L);  // 1일
+        Date expiredDate = new Date(expiredTime);
 
+        return Jwts.builder()
+                .subject("Server access token")
+                .issuer("ssedampet")
+                .issuedAt(now)
+                .expiration(expiredDate)
+                .claim("userId", userId)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
     // validateToken - 토큰 검증
