@@ -61,20 +61,6 @@
         )
     </insert>
 
-    <select id="checkLike" resultType="int">
-        SELECT COUNT(*) FROM like_tb
-        WHERE post_id = #{postId} AND user_id = #{userId}
-    </select>
-
-    <insert id="insertLike">
-        INSERT INTO like_tb (user_id, post_id, created_dt)
-        VALUES (#{userId}, #{postId}, NOW())
-    </insert>
-
-    <delete id="deleteLike">
-        DELETE FROM like_tb
-        WHERE post_id = #{postId} AND user_id = #{userId}
-    </delete>
 
     <update id="updateLikeCount">
         UPDATE post_tb
