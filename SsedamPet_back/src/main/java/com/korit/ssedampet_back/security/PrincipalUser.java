@@ -21,7 +21,11 @@ public class PrincipalUser extends DefaultOAuth2User {
 
     public static PrincipalUser getAuthenticatedPrincipalUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalUser prinicipalUser = (PrincipalUser) authentication.getPrincipal();
-        return prinicipalUser;
+        if (authentication == null) return null;
+
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof PrincipalUser pu) return pu;
+
+        return null;
     }
 }

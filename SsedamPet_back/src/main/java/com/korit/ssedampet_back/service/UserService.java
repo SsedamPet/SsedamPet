@@ -41,6 +41,9 @@ public class UserService {
                              String provider,
                              String providerUserId) {
 
+        // [수정] provider가 null로 넘어올 경우를 대비한 2중 방어
+        String finalProvider = (provider != null) ? provider.toUpperCase() : "GOOGLE";
+
         User user = User.builder()
                 .username(name)
                 .email(email)
@@ -50,13 +53,11 @@ public class UserService {
 
         userMapper.addUser(user);
 
-        oAuth2UserMapper.addOAuth2User(
-                OAuth2UserEntity.builder()
-                        .userId(user.getUserId())
-                        .provider(OAuth2UserEntity.Provider.valueOf(provider.toUpperCase()))
-                        .providerUserId(providerUserId)
-                        .build()
-        );
+        oAuth2UserMapper.addOAuth2User(OAuth2UserEntity.builder()
+                .userId(user.getUserId())
+                .provider(OAuth2UserEntity.Provider.valueOf(finalProvider)) // 안전하게 변환
+                .providerUserId(providerUserId)
+                .build());
 
         return user;
     }
