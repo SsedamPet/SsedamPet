@@ -52,7 +52,7 @@
             user_profile_img_url = #{userProfileImgUrl},
             updated_dt = NOW()
         where
-            user_id = #{userId
+            user_id = #{userId}
     </insert>
 
 </mapper>
