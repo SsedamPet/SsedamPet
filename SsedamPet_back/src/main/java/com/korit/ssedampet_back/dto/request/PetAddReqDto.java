@@ -12,10 +12,10 @@ public class PetAddReqDto {
     // @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(hidden = true)
     private Integer petId;
 
-    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(hidden = true)
     private Integer userId;
     // insert에 필요한 userId
 
