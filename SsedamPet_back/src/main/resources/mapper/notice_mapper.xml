@@ -97,9 +97,9 @@
         update notice_tb
         set is_read = 1,
             updated_dt = now()
-        where notice_id = #{noticeId}
-            and user_id = #{userId}
+        where user_id = #{userId}
             and is_read = 0
+            and status = 1
     </update>
 
     <!-- SSE 유실 복구: lastNoticeId 이후 알림 -->

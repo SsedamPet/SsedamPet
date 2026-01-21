@@ -141,10 +141,11 @@ public class NoticeService {
                     .data(dto));
         } catch (Exception e) {
             removeEmitter(userId, emitter); // 전송 실패 시 연결 제거
+            try {
+                emitter.complete();
+            } catch (Exception ignored) {}
         }
-        try {
-            emitter.complete();
-        } catch (Exception ignored) {}
+
 
     }
 
