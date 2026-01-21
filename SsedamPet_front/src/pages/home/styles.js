@@ -11,46 +11,13 @@ export const rootContainer = css`
     gap: 0; 
 `;
 
-export const headerBar = css`
-    width: 100%;
-    max-width: 600px;
-    height: 60px;
-    background-color: #B7F2C9;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-`;
-
-export const headerTitle = css`
-    color: white;
-    font-size: 32px;
-    font-weight: 700;
-`;
-
-export const bellIcon = css`
-    position: absolute;
-    right: 20px;           
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-
-    svg {
-        fill: white;
-        width: 24px;
-        height: 24px;
-    }
-`;
-
 export const profileSection = css`
-    width: 600px;
-    height: 300px;
+    width: 100%;         /* 화면 너비에 맞춤 */
+    max-width: 600px;    /* 최대 크기 제한 */
+    height: auto;        /* 높이는 내용에 맞게 자동 조절 */
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding-top: 0;
-    margin-bottom: 0;
+    padding: 20px 0;
     overflow: hidden;
 `;
 
