@@ -33,7 +33,7 @@ public class PostController {
         // Mapper에게 데이터 가져오라 시키고 그 결과를 이액트에게 200(ok) 신호와 함께 보낸다.
     }
     @GetMapping("/post/{postId}")
-    public ResponseEntity<?> getPostById(@PathVariable("postId") Long postId) {
+    public ResponseEntity<?> getPostById(@PathVariable("postId") int postId) {
         // 이 ID 번호 게시글 하나 가져오기 Mapper 에게
         Map<String, Object> post = postMapper.getPostById(postId);
 

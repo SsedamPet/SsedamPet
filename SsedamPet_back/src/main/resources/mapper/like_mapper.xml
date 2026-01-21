@@ -9,13 +9,21 @@
     </select>
 
     <insert id="insertLike">
-        INSERT INTO like_tb (user_id, post_id, created_dt)
-        VALUES (#{userId}, #{postId}, NOW())
+        INSERT INTO like_tb (user_id, post_id, created_dt, updated_dt)
+        VALUES (#{userId}, #{postId}, NOW(), NOW())
     </insert>
 
     <delete id="deleteLike">
         DELETE FROM like_tb
         WHERE user_id = #{userId} AND post_id = #{postId}
     </delete>
+
+    <select id="findPostOwnerUserId" resultType="int">
+        SELECT user_id
+        FROM post_tb
+        WHERE post_id = #{postId}
+    </select>
+
+
 
 </mapper>

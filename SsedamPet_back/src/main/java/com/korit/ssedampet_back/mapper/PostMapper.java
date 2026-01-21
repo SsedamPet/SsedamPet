@@ -12,9 +12,11 @@ public interface PostMapper {
     List<PostResponseDto> getPostList(@Param("sortBy") String sortBy);
     //sortBy : 정렬
     // 상세 조회 (게시글 한 개)
-    Map<String, Object> getPostById(Long postId);
+    Map<String, Object> getPostById(int postId);
     // 피드 작성
     void savePost(Map<String, Object> postData);
+
+    int findPostOwnerUserId(@Param("postId") int postId);
 
 //    // 좋아요 기능
 //    int checkLike(@Param("postId") int postId, @Param("userId") int userId);

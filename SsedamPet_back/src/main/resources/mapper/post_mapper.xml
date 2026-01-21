@@ -61,6 +61,13 @@
         )
     </insert>
 
+    <select id="findPostOwnerUserId" resultType="int">
+        SELECT user_id
+        FROM post_tb
+        WHERE post_id = #{postId}
+    </select>
+
+
 
     <update id="updateLikeCount">
         UPDATE post_tb
