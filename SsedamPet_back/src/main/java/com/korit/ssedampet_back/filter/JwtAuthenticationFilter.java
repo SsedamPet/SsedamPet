@@ -63,9 +63,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         User foundUser = userMapper.findByUserId(userId);
 
+        Map<String, Object> attributes = Map.of(
+                "username", foundUser.getUsername(), // "username"이라는 열쇠로 실제 이름을 담음
+                "userId", foundUser.getUserId()
+        );
+
 
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        PrincipalUser principalUser = new PrincipalUser(authorities, null, foundUser.getUsername(), foundUser);
+        PrincipalUser principalUser = new PrincipalUser(authorities, attributes, "username", foundUser);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(
