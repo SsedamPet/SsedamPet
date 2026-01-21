@@ -2,6 +2,7 @@ package com.korit.ssedampet_back.controller;
 
 import com.korit.ssedampet_back.dto.request.PetAddReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
+import com.korit.ssedampet_back.security.PrincipalUser;
 import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,19 @@ public class MypageController {
 
     private final MypageService mypageService;
 
+    private int principalUser() {
+        PrincipalUser principalUser = PrincipalUser.getAuthenticatedPrincipalUser();
+
+        if (principalUser == null ) {
+            throw new RuntimeException("Unauthenticated");
+        }
+        return principalUser.getUser().getUserId();
+
+    }
+
     @GetMapping("/user")
-    public ResponseEntity<UserDto> user(@RequestParam int userId) {
-        return ResponseEntity.ok(mypageService.getUser(userId));
+    public ResponseEntity<UserDto> user() {
+        return ResponseEntity.ok(mypageService.getUser(principalUser()));
     }
 
     @GetMapping("/users")
@@ -27,31 +38,31 @@ public class MypageController {
     }
 
     @GetMapping("/summary")
-    public ResponseEntity<SummaryDto> summary(@RequestParam int userId) {
-        return ResponseEntity.ok(mypageService.getSummary(userId));
+    public ResponseEntity<SummaryDto> summary() {
+        return ResponseEntity.ok(mypageService.getSummary(principalUser()));
     }
 
     @GetMapping("/pets")
-    public ResponseEntity<List<PetDto>> pets(@RequestParam int userId) {
-        return ResponseEntity.ok(mypageService.getPets(userId));
+    public ResponseEntity<List<PetDto>> pets() {
+        return ResponseEntity.ok(mypageService.getPets(principalUser()));
     }
 
     @PostMapping("/pets")
-    public ResponseEntity<PetAddRespDto> createPet(@RequestParam int userId, @RequestBody PetAddReqDto dto) {
+    public ResponseEntity<PetAddRespDto> createPet(@RequestBody PetAddReqDto dto) {
         // TODO: 로그인 로직 구현시 userId 직접 받아와서 전달
         // int userId = principal.getUserId();
-        dto.setUserId(userId);
+        dto.setUserId(principalUser());
         return ResponseEntity.ok(mypageService.addPet(dto));
     }
 
     @GetMapping("/my-posts")
-    public ResponseEntity<List<PostDto>> posts(@RequestParam int userId) {
-        return ResponseEntity.ok(mypageService.getMyPosts(userId));
+    public ResponseEntity<List<PostDto>> posts() {
+        return ResponseEntity.ok(mypageService.getMyPosts(principalUser()));
     }
 
     @GetMapping("/liked-posts")
-    public ResponseEntity<List<PostDto>> likedPosts(@RequestParam int userId) {
-        return ResponseEntity.ok(mypageService.getLikedPosts(userId));
+    public ResponseEntity<List<PostDto>> likedPosts() {
+        return ResponseEntity.ok(mypageService.getLikedPosts(principalUser()));
     }
 
 
