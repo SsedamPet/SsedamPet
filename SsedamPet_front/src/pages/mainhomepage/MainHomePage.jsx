@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from 'react';
-import * as s from './style.js';
+import * as s from './styles.js';
 import { Home, Users, Image, User } from 'lucide-react';
 
 const WeeklyReportCard = ({ title, today, last }) => {

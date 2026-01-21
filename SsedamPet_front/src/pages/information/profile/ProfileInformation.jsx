@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState } from "react";
-import * as s from "./style";
+import * as s from "./styles";
 import { Home, Users, Image, User } from 'lucide-react'; 
 
 const ProfileInformation = () => {

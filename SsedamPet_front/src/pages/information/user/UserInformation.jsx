@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useRef } from "react";
-import * as s from "./style";
+import * as s from "./styles";
 import { Home, Users, Image, User, Calendar } from 'lucide-react'; 
 
 const PetDetails = () => {

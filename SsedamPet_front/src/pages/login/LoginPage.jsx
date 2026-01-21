@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react';
-import * as s from "./style";
+import * as s from "./styles";
 import { FcGoogle } from "react-icons/fc"; 
 import { RiKakaoTalkFill } from "react-icons/ri"; 
 import { SiNaver } from "react-icons/si";
