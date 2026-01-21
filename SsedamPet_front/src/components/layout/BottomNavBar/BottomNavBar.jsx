@@ -30,14 +30,14 @@ export default function BottomNavBar() {
         icon={<Home size={24} />}
       />
       <BottomNavigationAction
-        label="커뮤니티"
-        value="community"
-        icon={<Users size={24} />}
-      />
-      <BottomNavigationAction
         label="건강기록"
         value="health"
         icon={<ClipboardList size={24} />}
+      />
+      <BottomNavigationAction
+        label="커뮤니티"
+        value="community"
+        icon={<Users size={24} />}
       />
       <BottomNavigationAction
         label="마이페이지"
