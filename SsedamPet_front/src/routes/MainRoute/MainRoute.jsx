@@ -8,13 +8,13 @@ function MainRoute() {
       <Routes>
         <Route path="/" element={<Home />} />
         {/* 정보 관리 페이지들 */}
-      {/* <Route path="/info/pet" element={<PetInformation />} />
+        {/* <Route path="/info/pet" element={<PetInformation />} />
         <Route path="/info/profile" element={<ProfileInformation />} />
         <Route path="/info/user" element={<UserInformation />} /> */}
-      {/* 커뮤니티 페이지들 */}
-      {/* <Route path="/community" element={<CommunityMain />} /> 
+        {/* 커뮤니티 페이지들 */}
+        <Route path="/community" element={<CommunityMain />} />
         <Route path="/community/write" element={<PostWrite />} />
-        <Route path="/community/comment" element={<CommentSection />} /> */}
+        <Route path="/community/comment" element={<CommentSection />} />
       </Routes>
     </MainLayout>
   );
