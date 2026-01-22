@@ -1,49 +1,75 @@
-import { Home } from "lucide-react";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import MainRoute from "../MainRoute/MainRoute";
 import { useMeQuery } from "../../react-query/queries/usersQueries";
 import { useEffect } from "react";
 import Loading from "../../components/common/Loading";
+import Login from "../../pages/auth/Login/Login";
+import Home from "../../pages/Home/Home";
+import Signup from "../../pages/auth/Signup/Signup";
 
 function AuthRoute() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const meQuery = useMeQuery();
+  const user = meQuery.data?.data;
+  const isAuthenticated = meQuery.data?.status === 200;
 
   useEffect(() => {
     if (!meQuery.isLoading) {
-      if (meQuery.data?.status !== 200) {
-        // 비로그인 상태일 때 /auth 로 시작하지 않는 주소로 오면 로그인으로 보냄
+      if (!isAuthenticated) {
+        // 비로그인 시 /auth 로 시작하지 않으면 홈으로
         if (!pathname.startsWith("/auth")) {
-          navigate("/auth/login");
+          navigate("/");
         }
       } else {
-        // 로그인 상태일 때 /auth 주소로 오면 홈으로 보냄
-        if (pathname.startsWith("/auth")) {
+        // 로그인 상태인데 닉네임이 없다면 (신규 가입)
+        if (!user?.nickname && pathname !== "/auth/signup/details") {
+          navigate("/auth/signup/details");
+        }
+        // 닉네임은 있는데 반려동물 정보가 없다면
+        else if (
+          user?.nickname &&
+          !user?.hasPet &&
+          pathname !== "/auth/signup/pet"
+        ) {
+          navigate("/auth/signup/pet");
+        }
+        // 모든 정보가 있으면 /auth 접근 시 홈으로
+        else if (
+          user?.nickname &&
+          user?.hasPet &&
+          pathname.startsWith("/auth")
+        ) {
           navigate("/");
         }
       }
     }
-  }, [pathname, meQuery.data, meQuery.isLoading]);
+  }, [pathname, user, isAuthenticated, meQuery.isLoading]);
 
-  // 1. 로딩 중 처리
-  if (meQuery.isLoading) {
-    return <Loading />;
-  }
+  if (meQuery.isLoading) return <Loading />;
 
-  // 2. 실패한 경우 (비로그인 상태) - 요청하신 대로 여기서 직접 리턴
-  if (meQuery.isSuccess && meQuery.data?.status !== 200) {
+  // 1. 비로그인 상태
+  if (!isAuthenticated) {
     return (
       <Routes>
-        {/* <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/login/oauth2" element={<OAuth2 />} /> */}
-        {/* 필요한 비로그인 전용 페이지(회원가입 등)를 여기에 추가 */}
+        <Route path="/" element={<Home />} />
+        <Route path="/auth/login" element={<Login />} />
       </Routes>
     );
   }
 
-  // 3. 로그인 상태 - MainRoute(사이드바 + 홈/커뮤니티 등)를 보여줌
-  return <MainRoute />;
+  // 2. 로그인 상태 (추가 정보 입력 단계 포함)
+  return (
+    <Routes>
+      {/* 정보 미입력 시 보여줄 페이지들 */}
+      <Route path="/auth/signup" element={<Signup />} />
+      {/* <Route path="/auth/signup/details" element={<UserRegistration />} /> */}
+      {/* <Route path="/auth/signup/pet" element={<PetRegistration />} /> */}
+
+      {/* 모든 정보 입력 후 접근 가능한 메인 서비스 */}
+      <Route path="/*" element={<MainRoute />} />
+    </Routes>
+  );
 }
 
 export default AuthRoute;

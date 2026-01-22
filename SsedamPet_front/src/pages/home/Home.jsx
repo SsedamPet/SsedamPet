@@ -99,6 +99,7 @@ const Home = () => {
 
   return (
     <div css={s.rootContainer}>
+        <Header />
       {/* 프로필 섹션 */}
       <section css={s.profileSection}>
         <div css={s.sliderContainer}>
