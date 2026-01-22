@@ -1,5 +1,5 @@
-import MainRoute from "./routes/MainRouter/MainRoute";
+import AuthRoute from "./routes/AuthRoute/AuthRoute";
 
 export default function App() {
-  return <MainRoute />;
+  return <AuthRoute />;
 }
