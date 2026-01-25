@@ -10,24 +10,6 @@ export const rootContainer = css`
   overflow: hidden;
 `;
 
-export const headerBar = css`
-  width: 100%;
-  max-width: 600px;
-  background-color: #b7f2c9;
-  padding: 15px 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  flex-shrink: 0;
-  z-index: 10;
-`;
-
-export const title = css`
-  color: #ffffff;
-  font-size: 28px;
-  font-weight: 800;
-`;
 
 export const bellIcon = css`
   position: absolute;

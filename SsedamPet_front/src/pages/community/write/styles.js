@@ -80,6 +80,7 @@ export const submitButton = css`
     align-self: center;
     margin: 40px 0;
     flex-shrink: 0;
+    
     &:active {
         opacity: 0.8;
     }

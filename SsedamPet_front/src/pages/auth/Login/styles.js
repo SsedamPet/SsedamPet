@@ -8,23 +8,6 @@ export const rootContainer = css`
   min-height: 100vh;
 `;
 
-export const headerBar = css`
-  width: 100%;
-  max-width: 600px;
-  height: 60px;
-  background-color: #b7f2c9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
-export const headerTitle = css`
-  color: white;
-  font-size: 32px;
-  font-weight: 700;
-  margin: 0;
-`;
 
 export const loginContent = css`
   width: 100%;
@@ -91,51 +74,5 @@ export const iconCircle = css`
   transition: transform 0.2s ease;
   &:hover {
     transform: scale(1.05);
-  }
-`;
-
-export const bottomNavBar = css`
-  width: 100%;
-  max-width: 600px;
-  height: 90px;
-  background-color: #f8fcf5;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.03);
-  padding: 0 10px 10px 10px;
-  box-sizing: border-box;
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    color: #444444;
-    cursor: pointer;
-    flex: 1;
-    transition: all 0.2s ease;
-    &:hover {
-      opacity: 0.7;
-    }
-  }
-  .nav-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-      stroke-width: 1.5;
-    }
-  }
-  .nav-label {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: -0.5px;
-  }
-  .nav-item.active {
-    color: #000000;
-    .nav-label {
-      font-weight: 800;
-    }
   }
 `;

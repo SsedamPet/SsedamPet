@@ -7,7 +7,6 @@ export const rootContainer = css`
     align-items: center; 
     width: 100%;
     min-height: 100vh;
-    background-color: #fff;
     gap: 0; 
 `;
 
@@ -82,7 +81,7 @@ export const dateRowInside = css`
 
     .current-date { 
         color: #656565; 
-        font-size: 28px; 
+        font-size: 27px; 
         font-style: italic; 
         font-weight: 600; 
         }
@@ -98,7 +97,7 @@ export const arrowBtn = css`
     background: none;
     border: none;
     font-size: 33px;
-    color: #B7F2C9;
+    color: #B1E686;
     cursor: pointer;
 `;
 
@@ -106,7 +105,7 @@ export const petInfoBox = css`
     width: 473px;
     height: 233px;
     background-color: #EDFCE0;
-    border-radius: 45px;
+    border-radius: 35px;
     padding: 25px;
     box-sizing: border-box;
     display: flex;
@@ -142,7 +141,7 @@ export const textInfo = css`
         }
     }
     .breed-row { 
-        font-size: 24px; 
+        font-size: 36px; 
         color: #656565; 
         margin-top: 5px; 
         }
@@ -158,7 +157,7 @@ export const healthRecordSection = css`
 export const healthRecordBox = css`
     width: 100%;
     background-color: #EDFCE0;
-    border-radius: 40px;
+    border-radius: 50px;
     padding: 30px;
     box-sizing: border-box;
 `;
@@ -361,59 +360,5 @@ export const postListWrapper = css`
         font-weight: 300;
         cursor: pointer;
         padding-left: 10px;
-    }
-`;
-
-export const bottomNavBar = css`
-    position: relative; 
-    margin-top: 50px; 
-    width: 100%;
-    max-width: 600px; 
-    height: 90px; 
-    background-color: #F8FCF5; 
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.03);
-    padding: 0 10px 10px 10px;
-    box-sizing: border-box;
-
-    .nav-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        color: #444444;
-        cursor: pointer;
-        flex: 1;
-        transition: all 0.2s ease;
-
-        &:hover {
-            opacity: 0.7;
-        }
-    }
-
-    .nav-icon {
-        font-size: 28px; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        svg {
-            stroke-width: 1.5;
-        }
-    }
-
-    .nav-label {
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: -0.5px;
-    }
-
-    .nav-item.active {
-        color: #000000;
-        .nav-label {
-            font-weight: 800;
-        }
     }
 `;

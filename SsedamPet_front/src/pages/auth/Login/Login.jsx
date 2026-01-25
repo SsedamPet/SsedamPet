@@ -4,13 +4,12 @@ import { FcGoogle } from "react-icons/fc";
 import { RiKakaoTalkFill } from "react-icons/ri";
 import { SiNaver } from "react-icons/si";
 import { Home, Users, Image, User } from "lucide-react";
-import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
+import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar.jsx";
 
 function Login() {
   return (
     <div css={s.rootContainer}>
       <header css={s.headerBar}>
-        <h1 css={s.headerTitle}>LOGIN</h1>
       </header>
 
       <main css={s.loginContent}>

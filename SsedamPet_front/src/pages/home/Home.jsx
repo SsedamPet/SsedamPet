@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import * as s from "./styles.js"; // style.js 파일이 같은 폴더에 있어야 함
 import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react"; // Home 아이콘 이름 중복 방지
-import Header from "../../components/layout/Header/Header.jsx";
 import BottomNav from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 
@@ -99,7 +98,6 @@ const Home = () => {
 
   return (
     <div css={s.rootContainer}>
-        <Header />
       {/* 프로필 섹션 */}
       <section css={s.profileSection}>
         <div css={s.sliderContainer}>
