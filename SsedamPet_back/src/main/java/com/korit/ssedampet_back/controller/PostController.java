@@ -86,16 +86,7 @@ public class PostController {
         }
     }
 
-    @PostMapping("/post/{postId}/like")
-    public ResponseEntity<?> toggleLike(
-            @PathVariable("postId") int postId,
-            @RequestBody Map<String, Object> requestData) {
 
-        int userId = ((Number) requestData.get("userId")).intValue();
-        boolean isLiked = likeService.toggleLike(userId, postId); // 서비스 호출
-
-        return ResponseEntity.ok(Map.of("status", isLiked ? "liked" : "unliked"));
-    }
 }
 
 

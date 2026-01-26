@@ -33,7 +33,7 @@ public class LikeServiceImpl implements LikeService {
         likeMapper.insertLike(userId, postId);
         postMapper.updateLikeCount(postId, 1);  // post_tb 숫자 증가
 
-        int receiverUserId = likeMapper.findPostOwnerUserId(postId);
+        int receiverUserId = postMapper.findPostOwnerUserId(postId);
 
         if (receiverUserId > 0 && receiverUserId != userId) {
             NoticeDto notice = NoticeDto.builder()
