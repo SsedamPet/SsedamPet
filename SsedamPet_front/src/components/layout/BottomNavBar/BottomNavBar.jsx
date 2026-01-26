@@ -33,9 +33,9 @@ const BottomNavBar = () => {
         <span css={s.navText(isActive("/community"))}>커뮤니티</span>
       </div>
 
-      <div css={s.navItem} onClick={() => navigate("/profile")}>
-        <User size={24} color={isActive("/profile") ? "#333" : "#AAA"} />
-        <span css={s.navText(isActive("/profile"))}>마이페이지</span>
+      <div css={s.navItem} onClick={() => navigate("/mypage")}>
+        <User size={24} color={isActive("/mypage") ? "#333" : "#AAA"} />
+        <span css={s.navText(isActive("/mypage"))}>마이페이지</span>
       </div>
     </nav>
   );

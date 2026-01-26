@@ -1,8 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import * as s from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const PetAddModal = ({ onClose }) => {
+    const navigate = useNavigate();
     return (
         <div css={s.modalOverlay} onClick={onClose}>
             <div css={s.modalContainer} onClick={(e) => e.stopPropagation()}>

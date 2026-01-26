@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import MainLayout from "../../components/layout/MainLayout";
 import Home from "../../pages/home/Home";
 import Login from "../../pages/auth/Login/Login";
@@ -17,6 +17,17 @@ import HealthLog from "../../pages/healthlog/HealthLog";
 // import HealthLog from "../../pages/checklist/Checklist";
 
 function MainRoute() {
+  function PetAddRoute() {
+    const navigate = useNavigate();
+
+    return (
+      <>
+        <MyPage />
+        <PetAddModal onClose={() => navigate(-1)} />
+      </>
+    );
+  }
+
   return (
     <Routes>
       <Route element={<MainLayout />}>
@@ -34,15 +45,7 @@ function MainRoute() {
 
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/posts" element={<LikedPosts />} />
-        <Route
-          path="/pet/add"
-          element={
-            <>
-              <MyPage />
-              <PetAddModal />
-            </>
-          }
-        />
+        <Route path="/pet/add" element={<PetAddRoute />} />
         <Route
           path="/mypage/alert"
           element={
