@@ -1,5 +1,6 @@
 package com.korit.ssedampet_back.service;
 
+import com.korit.ssedampet_back.dto.response.main.NoticeDto;
 import com.korit.ssedampet_back.mapper.LikeMapper;
 import com.korit.ssedampet_back.mapper.PostMapper;
 import com.korit.ssedampet_back.service.LikeService;
@@ -14,6 +15,7 @@ public class LikeServiceImpl implements LikeService {
 
     private final LikeMapper likeMapper;
     private final PostMapper postMapper;
+    private final NoticeService noticeService;
 
     @Override
     @Transactional
@@ -26,12 +28,29 @@ public class LikeServiceImpl implements LikeService {
             likeMapper.deleteLike(userId, postId);
             postMapper.updateLikeCount(postId, -1); // post_tb 숫자 감소
             return false;
-        } else {
-            // 3. 없다면 추가 로직
-            likeMapper.insertLike(userId, postId);
-            postMapper.updateLikeCount(postId, 1);  // post_tb 숫자 증가
-            return true;
         }
+        // 3. 없다면 추가 로직
+        likeMapper.insertLike(userId, postId);
+        postMapper.updateLikeCount(postId, 1);  // post_tb 숫자 증가
+
+        int receiverUserId = postMapper.findPostOwnerUserId(postId);
+
+        if (receiverUserId > 0 && receiverUserId != userId) {
+            NoticeDto notice = NoticeDto.builder()
+                    .userId(receiverUserId)          // receiver
+                    .senderUserId(userId)            // sender
+                    .noticeType("LIKE")
+                    .title("좋아요")
+                    .noticeMessage("회원님의 게시글에 좋아요가 눌렸습니다.")
+                    .refId(postId)
+                    .linkUrl("/posts/" + postId)
+                    .isRead(0)
+                    .status(1)
+                    .build();
+
+            noticeService.createAndPush(notice);
+        }
+        return true;
     }
     }
 

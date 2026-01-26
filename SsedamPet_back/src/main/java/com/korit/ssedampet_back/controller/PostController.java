@@ -33,7 +33,7 @@ public class PostController {
         // Mapper에게 데이터 가져오라 시키고 그 결과를 이액트에게 200(ok) 신호와 함께 보낸다.
     }
     @GetMapping("/post/{postId}")
-    public ResponseEntity<?> getPostById(@PathVariable("postId") Long postId) {
+    public ResponseEntity<?> getPostById(@PathVariable("postId") int postId) {
         // 이 ID 번호 게시글 하나 가져오기 Mapper 에게
         Map<String, Object> post = postMapper.getPostById(postId);
 
@@ -86,16 +86,7 @@ public class PostController {
         }
     }
 
-    @PostMapping("/post/{postId}/like")
-    public ResponseEntity<?> toggleLike(
-            @PathVariable("postId") int postId,
-            @RequestBody Map<String, Object> requestData) {
 
-        int userId = ((Number) requestData.get("userId")).intValue();
-        boolean isLiked = likeService.toggleLike(userId, postId); // 서비스 호출
-
-        return ResponseEntity.ok(Map.of("status", isLiked ? "liked" : "unliked"));
-    }
 }
 
 

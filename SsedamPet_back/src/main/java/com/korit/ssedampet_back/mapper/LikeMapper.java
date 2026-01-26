@@ -10,4 +10,6 @@ public interface LikeMapper {
     int insertLike(@Param("userId") int userId, @Param("postId") int postId);
 
     int deleteLike(@Param("userId") int userId, @Param("postId") int postId);
+
+    int findPostOwnerUserId(@Param("postId") int postId);
 }

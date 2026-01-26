@@ -1,6 +1,7 @@
 package com.korit.ssedampet_back.mapper;
 
 import com.korit.ssedampet_back.dto.response.post.PostResponseDto;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
@@ -12,9 +13,11 @@ public interface PostMapper {
     List<PostResponseDto> getPostList(@Param("sortBy") String sortBy);
     //sortBy : 정렬
     // 상세 조회 (게시글 한 개)
-    Map<String, Object> getPostById(Long postId);
+    Map<String, Object> getPostById(@Param("postId") int postId);
     // 피드 작성
     void savePost(Map<String, Object> postData);
+    // 게시글 작성자 ID
+    int findPostOwnerUserId(@Param("postId") int postId);
 
 //    // 좋아요 기능
 //    int checkLike(@Param("postId") int postId, @Param("userId") int userId);
