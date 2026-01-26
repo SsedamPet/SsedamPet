@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import Login from "../../pages/auth/Login/Login";
 import Home from "../../pages/home/Home";
 import Signup from "../../pages/auth/Signup/Signup";
+import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
 
 const UserRegistration = () => <div>유저 정보 입력 페이지 디자인</div>;
 const PetRegistration = () => <div>반려동물 등록 페이지 디자인</div>;
@@ -67,6 +68,8 @@ function AuthRoute() {
   // 2. 로그인 상태 (추가 정보 입력 단계 포함)
   return (
     <Routes>
+      <Route path="/auth/oauth2/success" element={<OAuth2 />} />  
+
       {/* 정보 미입력 시 보여줄 페이지들 */}
       <Route path="/auth/signup" element={<Signup />} />
       <Route path="/auth/signup/details" element={<UserRegistration />} /> 
