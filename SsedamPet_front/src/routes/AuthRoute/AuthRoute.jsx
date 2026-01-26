@@ -68,7 +68,8 @@ function AuthRoute() {
   // 2. 로그인 상태 (추가 정보 입력 단계 포함)
   return (
     <Routes>
-      <Route path="/auth/oauth2/success" element={<OAuth2 />} />  
+      <Route path="/auth/oauth2/success" element={<OAuth2 />} /> 
+      <Route path="/auth/signup/details" element={<OAuth2 />} /> 
 
       {/* 정보 미입력 시 보여줄 페이지들 */}
       <Route path="/auth/signup" element={<Signup />} />
