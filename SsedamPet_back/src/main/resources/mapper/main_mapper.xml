@@ -28,18 +28,19 @@
     </select>
     <select id="getTodayHealthLog" resultType="com.korit.ssedampet_back.dto.response.main.HealthLogSummaryDto">
         select
-            healthlog_id,
-            water_status,
-            food_status,
-            poop_cnt
+            h.healthlog_id,
+            h.water_status,
+            h.food_status,
+            h.poop_cnt
         from
-            healthlog_tb
-        where
-            user_id = #{userId}
-            and DATE(created_dt) = curdate()
-        limit
-            1
+            healthlog_tb h
+            join pet_tb p on h.pet_id = p.pet_id  where
+            p.user_id = #{userId}               and DATE(h.created_dt) = curdate()
+        order by
+            h.created_dt DESC
+        limit 1
     </select>
+
     <select id="getPopularPosts" resultType="com.korit.ssedampet_back.dto.response.main.PostPreviewDto">
         select
             p.post_id,
