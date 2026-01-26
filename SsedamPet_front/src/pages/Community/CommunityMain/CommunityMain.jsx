@@ -1,16 +1,27 @@
 /** @jsxImportSource @emotion/react */
-import { Bell, Heart, MessageSquare, Plus, Search } from "lucide-react";
-import * as s from "./styles"; 
+import { useState } from "react";
+import { Bell, Heart, MessageSquare, Plus, Search, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import * as s from "./styles";
+import Header from "../../../components/layout/Header/Header";
+import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
+import CommentSection from "../Comment/CommentSection";
 
 function CommunityMain() {
+
+    const navigate = useNavigate();
+    const [isCommentOpen, setIsCommentOpen] = useState(false);
+    const [isLatest, setIsLatest] = useState(true);
+
   return (
     <div css={s.rootContainer}>
       <div css={s.filterRow}>
         <div css={s.headerTab}>
-          <button css={s.tabButton(true)}>최신순</button>
-          <button css={s.tabButton(false)}>인기순</button>
+          <button css={s.tabButton(isLatest)} onClick={() => setIsLatest(true)}>최신순</button>
+          <button css={s.tabButton(!isLatest)} onClick={() => setIsLatest(false)}>인기순</button>
         </div>
-        <button css={s.writeTextButton}>글 작성하기</button>
+        <button css={s.writeTextButton}
+        onClick={() => navigate("/community/write")}>글 작성하기</button>
       </div>
 
       <main css={s.content}>
@@ -35,13 +46,32 @@ function CommunityMain() {
               <Heart size={20} fill="black" />
               <span>12</span>
             </div>
-            <div css={s.statItem}>
+            <div css={s.statItem}
+                onClick={() => setIsCommentOpen(true)}
+                    style={{ cursor: "pointer", position: "relative", zIndex: 10 }}
+            >
               <MessageSquare size={20} />
               <span>5</span>
             </div>
           </div>
         </div>
       </main>
+
+    {/* X 클릭해서 모달 창 닫기 */}
+    {isCommentOpen && (
+        <div css={s.modalOverlay} onClick={() => setIsCommentOpen(false)}>
+            <div css={s.modalContent} onClick={(e) => e.stopPropagation()}>
+                <div css={s.modalHeader}>
+                  <span>댓글</span>
+                  <X size={24} onClick={() => {
+                      setIsCommentOpen(false);}} />
+                </div>
+                <div css={s.modalBody}>
+                  <CommentSection />
+                </div>
+              </div>
+            </div>
+          )}
 
       <button css={s.floatingButton}>
         <Plus size={32} color="#AAA" />

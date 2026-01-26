@@ -155,10 +155,23 @@ export const inputField = css`
 `;
 
 export const submitBtn = css`
-    color: #B7F2C9;
+    width: 10%;
+    height: 90%;
+    background-color: #111;
+    color: #CCC;
     font-weight: 800;
     cursor: pointer;
     border: none;
     background: none;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.2s ease;
+    background-color: #f0f0f0;
 `;
 
+export const submitBtnActive = css`
+    background-color: #FFD54F !important;
+    color: #000 !important;
+`;
