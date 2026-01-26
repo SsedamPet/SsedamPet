@@ -49,7 +49,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         boolean needAdditionalInfo = user.getPhone() == null || user.getUserBirth() == null;
 
         String targetUrl = needAdditionalInfo
-                ? "http://localhost:5173/signup/details?accessToken=" + accessToken
+                ? "http://localhost:5173/auth/signup/details?accessToken=" + accessToken
                 : "http://localhost:5173/auth/oauth2/success?accessToken=" + accessToken;
 
 //        // 기존 가입 여부 확인
