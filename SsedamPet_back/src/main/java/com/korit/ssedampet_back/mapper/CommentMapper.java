@@ -16,4 +16,7 @@ public interface CommentMapper {
 
     // 댓글 작성 시 post_tb의 댓글 수가 증가
     void updatePostCommentCount(@Param("postId") int postId, @Param("amount") int amount);
+
+    int insertComment(@Param("userId") int userId, @Param("postId") int postId, @Param("content") String content);
+
 }

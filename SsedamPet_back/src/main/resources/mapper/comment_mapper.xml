@@ -52,4 +52,9 @@
         WHERE post_id = #{postId}
     </update>
 
+    <insert id="insertComment" useGeneratedKeys="true" keyProperty="commentId">
+        insert into comment_tb (user_id, post_id, comment_content, created_dt, updated_dt, is_deleted)
+        values (#{userId}, #{postId}, #{content}, now(), now(), 2)
+    </insert>
+
 </mapper>
