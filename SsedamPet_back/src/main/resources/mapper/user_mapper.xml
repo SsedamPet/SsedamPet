@@ -10,18 +10,20 @@
             email,
             display_nickname,
             user_profile_img_url,
-            created_dt
+            last_login_dt,
+            created_dt,
+            updated_dt
         )
         values (
             #{username},
             #{email},
             #{displayNickname},
             #{userProfileImgUrl},
+            NOW(),
+            NOW(),
             NOW()
         )
     </insert>
-
-
 
     <select id="findByUserId" resultType="com.korit.ssedampet_back.entity.User">
         select
@@ -54,5 +56,15 @@
         where
             user_id = #{userId}
     </insert>
+
+    <update id="updateLastLoginDt">
+        update
+            user_tb
+        set
+            last_login_dt = NOW(),
+            updated_dt = NOW()
+        where
+            user_id = #{userId}
+    </update>
 
 </mapper>
