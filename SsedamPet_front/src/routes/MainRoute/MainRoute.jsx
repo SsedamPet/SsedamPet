@@ -13,9 +13,8 @@ import PetAddModal from "../../pages/mypage/pet/PetAddModal";
 import ChatBot from "../../pages/Chatbot/ChatBot";
 import AlertModal from "../../pages/mypage/alert/AlertModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import HealthLog from "../../pages/healthlog/HealthLog";
 import CommentSection from "../../pages/community/Comment/CommentSection";
-// import HealthLog from "../../pages/checklist/Checklist";
+import HealthLog from "../../pages/Healthlog/HealthLog";
 
 function MainRoute() {
   function PetAddRoute() {
