@@ -4,7 +4,9 @@ import * as s from "./styles.js"; // style.js 파일이 같은 폴더에 있어�
 import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react"; // Home 아이콘 이름 중복 방지
 import BottomNav from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { api } from "../../configs/axiosConfig.js";
 
 // 주간 리포트 카드 컴포넌트 (내부 헬퍼)
 const WeeklyReportCard = ({ title, today, last }) => {
@@ -66,9 +68,49 @@ const WeeklyReportCard = ({ title, today, last }) => {
 
 // 메인 Home 컴포넌트
 const Home = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
 
+  const yyyyMMdd = new Date().toISOString().slice(0, 10);
+
+  // 백엔드 조회 API 연결
+  const [dashboardData, setDashboardData] = useState({
+    myPets: [],
+    todayHealthLog: {
+      healthlogId: 0,
+      waterStatus: "-",
+      foodStatus: "-",
+      poopCnt: 0,
+    },
+    weeklySummary: {
+      foodThisWeek: 0,
+      foodLastWeek: 0,
+      poopThisWeek: 0,
+      poopLastWeek: 0,
+    },
+    popularPosts: [],
+  });
+
+  useEffect(() => {
+    console.log("Dashboard useEffect 실행됨");
+    const params = new URLSearchParams(location.search);
+    const accessToken = params.get("accessToken");
+    console.log(accessToken);
+
+    const fetchDashboard = async () => {
+      try {
+        const response = await api.get("/api/main/dashboard");
+        console.log(response.data);
+        setDashboardData(response.data);
+      } catch (error) {
+        console.log("데이터를 불러오는 중 오류 발생", error);
+      }
+    };
+    fetchDashboard();
+  }, []);
+
+  // TODAY 라벨용 (yy / MM / dd)
   useEffect(() => {
     const date = new Date();
     const yy = String(date.getFullYear()).slice(-2);
@@ -77,12 +119,39 @@ const Home = () => {
     setTodayDate(`${yy} / ${mm} / ${dd}`);
   }, []);
 
+  // 1) URL로 전달된 accessToken 저장 + URL 정리
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const accessToken = params.get("accessToken");
+
+    if (accessToken) {
+      localStorage.setItem("AccessToken", accessToken);
+      // 메인 그대로 유지 + 주소창 토큰 제거
+      navigate("/", { replace: true });
+    }
+  }, [location.search, navigate]);
+
+  // 2) 대시보드 조회
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const res = await api.get("/api/main/dashboard");
+        setDashboardData(res.data);
+      } catch (error) {
+        console.log("대시보드 조회 실패:", error);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
   const myPets = [
     { id: 1, name: "냥이 2세", gender: "♂", breed: "샴", icon: "🐱" },
     { id: 2, name: "바둑이", gender: "♀", breed: "진돗개", icon: "🐶" },
     { id: 3, name: "초코", gender: "♂", breed: "푸들", icon: "🐩" },
   ];
 
+  // 현재 선택된 펫 인덱스
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const getPetIndex = (offset) => {
@@ -97,6 +166,24 @@ const Home = () => {
   const handleNext = () => {
     setCurrentIndex((prev) => (prev === myPets.length - 1 ? 0 : prev + 1));
   };
+
+  const currentPet = getPetIndex(0);
+
+  // 오늘 기록 요약(백엔드 todayHealthLog 사용)
+  const todayLog = dashboardData.todayHealthLog ?? {
+    waterStatus: "-",
+    foodStatus: "-",
+    poopCnt: 0,
+  };
+
+  // 주간 요약(없으면 0)
+  const weekly = dashboardData.weeklySummary ?? {
+    foodThisWeek: 0,
+    foodLastWeek: 0,
+    poopThisWeek: 0,
+    poopLastWeek: 0,
+  };
+
 
   return (
     <div css={s.rootContainer}>

@@ -32,6 +32,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         System.out.println("필터 동작!!!");
 
         String bearerToken = request.getHeader("Authorization");
@@ -43,11 +48,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         System.out.println("1. 토큰 추출");
         String accessToken = bearerToken.replaceAll("Bearer ", "");
 
+        System.out.println("검증 시작...");
+
         // 토큰 유효X
         if (!jwtTokenProvider.validateToken(accessToken)) {
             filterChain.doFilter(request, response);
             return;
         }
+        System.out.println("검증 결과: 성공");
 
         //userId 추출
         System.out.println("2. userId추출");

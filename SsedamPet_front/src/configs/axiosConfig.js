@@ -6,8 +6,11 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const accessToken = localStorage.getItem("AccessToken");
-  config.headers.Authorization = `Bearer ${accessToken}`;
+
+  if (accessToken && accessToken !== "null") {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+  // config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
-}); 
-
-
+});
