@@ -100,7 +100,8 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                             .build()
             );
         } else {
-            // 기존 유저
+            // 기존 유저 -> last_login_dt 만 업데이트
+            userMapper.updateLastLoginDt(oauth2UserEntity.getUserId());
             user = userMapper.findByUserId(oauth2UserEntity.getUserId());
         }
 

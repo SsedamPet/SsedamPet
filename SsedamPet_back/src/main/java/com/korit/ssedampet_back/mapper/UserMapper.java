@@ -23,4 +23,6 @@ public interface UserMapper {
             @Param("userProfileImgUrl") String userProfileImgUrl
     );
 
+    int updateLastLoginDt(int userId);
+
 }
