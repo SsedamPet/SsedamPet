@@ -384,3 +384,29 @@ export const postListWrapper = css`
     padding-left: 10px;
   }
 `;
+
+export const postItem = (imgUrl) => css`
+  min-width: 104px;
+  height: 104px;
+  border-radius: 12px;
+  cursor: pointer;
+  background-image: url(${imgUrl || "default_image_url"});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #eee;
+
+  /* 좋아요 수 표시 스타일 추가 */
+  .post-like-cnt {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
+    color: white;
+    font-size: 11px;
+    padding: 3px 0;
+    text-align: center;
+    font-weight: 600;
+  }
+`;

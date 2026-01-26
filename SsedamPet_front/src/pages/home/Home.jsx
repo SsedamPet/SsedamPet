@@ -374,9 +374,34 @@ const Home = () => {
             <span>📸</span> 인기 게시물
           </div>
           <div css={s.postListWrapper}>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="post-item"></div>
-            ))}
+            {/* 백엔드에서 가져온 실시간 인기 게시물 */}
+            {dashboardData.popularPosts && dashboardData.popularPosts.length > 0
+              ? dashboardData.popularPosts.map((post) => (
+                  <div
+                    key={post.postId}
+                    className="post-item"
+                    onClick={() => navigate(`/community/post/${post.postId}`)}
+                    style={{
+                      backgroundImage: `url(${post.postImgUrl || "default_image_url"})`, // DB의 이미지 URL 연결
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {/* 좋아요 수 표시 */}
+                    <div className="post-like-cnt">
+                      <span>❤️ {post.postLikeCnt}</span>
+                    </div>
+                  </div>
+                ))
+              : /* 데이터가 없을 때 */
+                [1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="post-item"
+                    style={{ backgroundColor: "#f0f0f0" }}
+                  ></div>
+                ))}
             <div className="more-btn" onClick={() => navigate("/community")}>
               +
             </div>
