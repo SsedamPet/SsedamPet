@@ -1,14 +1,16 @@
-import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
+/** @jsxImportSource @emotion/react */
+import React, { useState } from "react";
+import { X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import * as s from "./styles"; 
 
 function CommentSection() {
+  const navigate = useNavigate();
+  const [showReplies, setShowReplies] = useState(false); 
+
   return (
     <div css={s.rootContainer}>
-      {/* 1. 최상단 상단바 (피그마 3-4번 상단) */}
-      <header css={s.headerBar}>
-        <span css={s.headerTitle}>커뮤니티</span>
-      </header>
 
-      {/* 2. 중앙 컨텐츠 영역 */}
       <main css={s.mainContent}>
         <div css={s.commentBoxContainer}>
           {/* 박스 내부 헤더 */}
@@ -30,10 +32,11 @@ function CommentSection() {
                     <span className="date">2026.01.06 11:37 AM</span>
                   </div>
                   <div className="text">
-                    댓글1ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+                    댓글1 내용이 표시되는 영역입니다.
                   </div>
                   <div
                     className="reply-toggle"
+                    style={{ cursor: "pointer", color: "#558B2F", fontSize: "12px", marginTop: "5px" }}
                     onClick={() => setShowReplies(!showReplies)}
                   >
                     답글 {showReplies ? "숨기기" : "더보기"}
@@ -58,16 +61,13 @@ function CommentSection() {
             </div>
           </div>
 
-          {/* 댓글 입력창 (박스 하단에 붙음) */}
+          {/* 댓글 입력창 (박스 하단) */}
           <div css={s.inputArea}>
-            <input css={s.inputField} placeholder="댓글 입력창" />
+            <input css={s.inputField} placeholder="댓글을 입력하세요..." />
             <button css={s.submitBtn}>작성</button>
           </div>
         </div>
       </main>
-
-      {/* 3. 최하단 네비게이션 바 */}
-      <BottomNavBar />
     </div>
   );
 }

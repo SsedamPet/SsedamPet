@@ -13,23 +13,8 @@ export const container = css`
     width: 100%;
     max-width: 600px;           
     flex: 1;
-    background-color: #ffffff;
     display: flex;
     flex-direction: column;
-`;
-
-export const headerBar = css`
-    width: 100%;
-    max-width: 600px;
-    height: 60px;
-    background-color: #B7F2C9; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    color: white;
-    font-size: 32px;
-    font-weight: 700;
 `;
 
 export const content = css`
@@ -91,13 +76,12 @@ export const checkButton = css`
     width: 84px;
     height: 42px;       
     background-color: #C2F49B;
-    color: #656565;
+    color: #6B6B6B;
     border: none;
     border-radius: 10px;
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 300;
     cursor: pointer;
-    flex-shrink: 0;
 `;
 
 export const label = css`
@@ -106,7 +90,7 @@ export const label = css`
     left: calc(50% - 181px - 110px);
     font-size: 18px;
     position: absolute;
-    color: #B6B6B6;
+    color: #6B6B6B;
     font-family: 'Inter', sans-serif;
     font-weight: 500;
     text-align: right;
@@ -134,14 +118,14 @@ export const profileCircleArea = css`
 export const profileCircle = css`
     width: 205px;
     height: 205px;
-    background-color: #B7F2C9;
+    background-color: #D1F6DD;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-    color: #656565;
-    font-size: 24px;
+    color: #000000;
+    font-size: 22px;
     cursor: pointer;
 `;
 
@@ -151,7 +135,7 @@ export const submitButton = css`
     margin: 20px auto 30px;
     padding: 15px;
     background-color: #B7F2C9;
-    color: white;
+    color: #6B6B6B;
     border: none;
     border-radius: 10px;
     font-family: 'Noto Sans KR', sans-serif;

@@ -1,49 +1,38 @@
-import * as React from "react";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+/** @jsxImportSource @emotion/react */
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Home, Search, MessageSquare, User } from 'lucide-react';
+import * as s from "./styles";
 
-import { Home, Users, ClipboardList, User } from "lucide-react";
+const BottomNavBar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
 
-export default function BottomNavBar() {
-  const [value, setValue] = React.useState("home");
-
-  // TS 타입(: React.SyntheticEvent, : string)을 제거함
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  // 현재 경로가 해당 메뉴인지 확인하는 함수
+  const isActive = (path) => location.pathname === path;
 
   return (
-    <BottomNavigation
-      sx={{
-        width: "100%",
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        boxShadow: "0 -2px 10px rgba(0,0,0,0.05)",
-      }}
-      value={value}
-      onChange={handleChange}
-    >
-      <BottomNavigationAction
-        label="홈"
-        value="home"
-        icon={<Home size={24} />}
-      />
-      <BottomNavigationAction
-        label="건강기록"
-        value="health"
-        icon={<ClipboardList size={24} />}
-      />
-      <BottomNavigationAction
-        label="커뮤니티"
-        value="community"
-        icon={<Users size={24} />}
-      />
-      <BottomNavigationAction
-        label="마이페이지"
-        value="profile"
-        icon={<User size={24} />}
-      />
-    </BottomNavigation>
+    <nav css={s.navContainer}>
+      <div css={s.navItem} onClick={() => navigate('/')}>
+        <Home size={24} color={isActive('/') ? "#333" : "#AAA"} />
+        <span css={s.navText(isActive('/'))}>홈</span>
+      </div>
+      
+      <div css={s.navItem} onClick={() => navigate('/search')}>
+        <Search size={24} color={isActive('/search') ? "#333" : "#AAA"} />
+        <span css={s.navText(isActive('/search'))}>검색</span>
+      </div>
+
+      <div css={s.navItem} onClick={() => navigate('/community')}>
+        <MessageSquare size={24} color={isActive('/community') ? "#333" : "#AAA"} />
+        <span css={s.navText(isActive('/community'))}>커뮤니티</span>
+      </div>
+
+      <div css={s.navItem} onClick={() => navigate('/profile')}>
+        <User size={24} color={isActive('/profile') ? "#333" : "#AAA"} />
+        <span css={s.navText(isActive('/profile'))}>프로필</span>
+      </div>
+    </nav>
   );
-}
+};
+
+export default BottomNavBar;

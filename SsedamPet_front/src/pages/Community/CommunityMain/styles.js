@@ -8,30 +8,12 @@ export const rootContainer = css`
     min-height: 100vh;
 `;
 
-export const headerBar = css`
-    width: 100%;
-    max-width: 600px;
-    background-color: #B7F2C9;
-    padding: 15px 20px;
-    display: flex;
-    flex-direction: column;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-`;
-
 export const topRow = css`
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
     width: 100%;
-`;
-
-export const title = css`
-    color: #FFFFFF;
-    font-size: 32px;
-    font-weight: 800;
 `;
 
 export const iconGroup = css`
@@ -74,6 +56,7 @@ export const writeTextButton = css`
     padding: 4px 10px;
     font-size: 15px;
     font-weight: 600;
+    cursor: pointer;
 `;
 
 export const content = css`

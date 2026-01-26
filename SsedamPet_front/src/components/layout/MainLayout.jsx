@@ -9,7 +9,7 @@ function MainLayout() {
     >
       <Header />
       <main style={{ width: "100%", maxWidth: "600px", paddingBottom: "80px" }}>
-        <Outlet /> {/* 실제 페이지 내용(Home 등)이 여기에 렌더링됨 */}
+        <Outlet />
       </main>
       <BottomNavBar />
     </div>

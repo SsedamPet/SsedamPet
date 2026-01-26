@@ -11,24 +11,6 @@ export const rootContainer = css`
     overflow: hidden;
 `;
 
-/* 최상단 커뮤니티 바 */
-export const headerBar = css`
-    width: 100%;
-    max-width: 600px;
-    background-color: #B7F2C9;
-    padding: 15px 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    flex-shrink: 0;
-`;
-
-export const headerTitle = css`
-    color: #FFFFFF;
-    font-size: 20px;
-    font-weight: 800;
-`;
 
 /* 중앙 댓글 영역 (박스 형태) */
 export const mainContent = css`
