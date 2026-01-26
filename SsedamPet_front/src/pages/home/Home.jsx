@@ -4,6 +4,7 @@ import * as s from "./styles.js"; // style.js 파일이 같은 폴더에 있어�
 import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react"; // Home 아이콘 이름 중복 방지
 import BottomNav from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
+import { useNavigate } from "react-router-dom";
 
 // 주간 리포트 카드 컴포넌트 (내부 헬퍼)
 const WeeklyReportCard = ({ title, today, last }) => {
@@ -65,6 +66,7 @@ const WeeklyReportCard = ({ title, today, last }) => {
 
 // 메인 Home 컴포넌트
 const Home = () => {
+  const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
 
   useEffect(() => {
@@ -141,7 +143,16 @@ const Home = () => {
               <span className="icon">📄</span>
               <h2>오늘의 건강기록</h2>
             </div>
-            <button css={s.editBtn}>기록/수정</button>
+            <button
+              css={s.editBtn}
+              onClick={() =>
+                navigate(
+                  `/healthlog?petId=${getPetIndex(0).id}&date=${yyyyMMdd}`,
+                )
+              }
+            >
+              기록/수정
+            </button>
           </div>
 
           <div css={s.gridContainer}>
@@ -179,7 +190,9 @@ const Home = () => {
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="post-item"></div>
             ))}
-            <div className="more-btn">+</div>
+            <div className="more-btn" onClick={() => navigate("/community")}>
+              +
+            </div>
           </div>
         </div>
       </section>
