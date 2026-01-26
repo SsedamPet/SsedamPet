@@ -1,6 +1,7 @@
 package com.korit.ssedampet_back.controller;
 
 import com.korit.ssedampet_back.mapper.CommentMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,10 +10,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/community")
+@RequiredArgsConstructor
 public class CommentController {
 
-    @Autowired
-    private CommentMapper commentMapper;
+
+    private final CommentMapper commentMapper;
+
 
     // 댓글 목록 조히ㅗ
     @GetMapping("/post/{postId}/comments")
@@ -42,4 +45,6 @@ public class CommentController {
             return ResponseEntity.internalServerError().body("오류 발생: " + e.getMessage());
         }
     }
+
+
 }
