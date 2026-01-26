@@ -32,7 +32,7 @@ function MainRoute() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Home />} />
         {/* 로그인 없이 접근 가능 */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />

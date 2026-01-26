@@ -92,23 +92,45 @@ const Home = () => {
     popularPosts: [],
   });
 
-  useEffect(() => {
-    console.log("Dashboard useEffect 실행됨");
-    const params = new URLSearchParams(location.search);
-    const accessToken = params.get("accessToken");
-    console.log(accessToken);
+// Home.jsx 상단 useEffect 부분을 아래 하나로 통합
 
-    const fetchDashboard = async () => {
-      try {
-        const response = await api.get("/api/main/dashboard");
-        console.log(response.data);
-        setDashboardData(response.data);
-      } catch (error) {
-        console.log("데이터를 불러오는 중 오류 발생", error);
-      }
+useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tokenFromUrl = params.get("accessToken"); // 백엔드 소문자 파라미터
+
+    const handleLoginAndFetch = async () => {
+        // 1. URL에 토큰이 들어왔다면 무조건 최우선 저장
+        if (tokenFromUrl) {
+            localStorage.setItem("AccessToken", tokenFromUrl);
+            console.log("URL 토큰 발견 및 저장 완료");
+            
+            // 저장 직후 주소창 세탁 (navigate 후에 바로 다음 로직으로 안 넘어가게 return)
+            navigate("/", { replace: true });
+            return; 
+        }
+
+        // 2. 이제 지갑(LocalStorage)에서 토큰을 꺼냄
+        const savedToken = localStorage.getItem("AccessToken");
+
+        // 3. 토큰이 확실히 있을 때만 대시보드 API 호출
+        if (savedToken && savedToken !== "null") {
+            try {
+                console.log("대시보드 데이터 조회 시작...");
+                const response = await api.get("/api/main/dashboard");
+                setDashboardData(response.data);
+                console.log("데이터 로드 성공:", response.data);
+            } catch (error) {
+                console.error("대시보드 조회 실패 (401 등):", error);
+                // 만약 토큰이 만료(401)되었다면 지갑 비우기
+                if (error.response?.status === 401) {
+                    localStorage.removeItem("AccessToken");
+                }
+            }
+        }
     };
-    fetchDashboard();
-  }, []);
+
+    handleLoginAndFetch();
+}, [location.search, navigate]); // 주소창 파라미터가 바뀔 때(로그인 완료 시) 감지
 
   // TODAY 라벨용 (yy / MM / dd)
   useEffect(() => {
@@ -117,32 +139,6 @@ const Home = () => {
     const mm = String(date.getMonth() + 1).padStart(2, "0");
     const dd = String(date.getDate()).padStart(2, "0");
     setTodayDate(`${yy} / ${mm} / ${dd}`);
-  }, []);
-
-  // 1) URL로 전달된 accessToken 저장 + URL 정리
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const accessToken = params.get("accessToken");
-
-    if (accessToken) {
-      localStorage.setItem("AccessToken", accessToken);
-      // 메인 그대로 유지 + 주소창 토큰 제거
-      navigate("/", { replace: true });
-    }
-  }, [location.search, navigate]);
-
-  // 2) 대시보드 조회
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const res = await api.get("/api/main/dashboard");
-        setDashboardData(res.data);
-      } catch (error) {
-        console.log("대시보드 조회 실패:", error);
-      }
-    };
-
-    fetchDashboard();
   }, []);
 
   const myPets = [
@@ -183,7 +179,6 @@ const Home = () => {
     poopThisWeek: 0,
     poopLastWeek: 0,
   };
-
 
   return (
     <div css={s.rootContainer}>
