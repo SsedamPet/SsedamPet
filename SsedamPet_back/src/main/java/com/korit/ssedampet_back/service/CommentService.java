@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -14,10 +17,28 @@ public class CommentService {
     private final NoticeService noticeService;
     private final CommentMapper commentMapper;
 
-    @Transactional
-    public void createComment(int userId, int postId, String content) {
+    public List<Map<String, Object>> getCommentsByPostId(int postId) {
+        return commentMapper.getCommentsByPostId(postId);
+    }
 
-        commentMapper.insertComment(userId, postId, content); // 댓글 저장
+    @Transactional
+    public void createComment(int userId, int postId, Map<String, Object> commentData) {
+
+        commentData.put("userId", userId);
+        commentData.put("postId", postId);
+
+        if (commentData.get("parentCommentId") != null) {
+            commentData.put("depth", 1);
+        } else {
+            commentData.put("parentCommentId", null);
+            commentData.put("depth", 0);
+        }
+
+        commentMapper.saveComment(commentData);
+
+        commentMapper.updatePostCommentCount(postId, 1);
+
+        // commentMapper.insertComment(userId, postId, commentData); // 댓글 저장
 
         int receiverUserId = postMapper.findPostOwnerUserId(postId);
 
