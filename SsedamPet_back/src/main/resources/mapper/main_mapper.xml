@@ -18,6 +18,7 @@
             pet_id,
             pet_name,
             pet_gender,
+            pet_breed,
             pet_profile_img_url,
             pet_birth,
             timestampdiff(year, pet_birth, curdate()) as pet_age

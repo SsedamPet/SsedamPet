@@ -71,6 +71,7 @@ const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
+  const [weeklyData, setWeeklyData] = useState(null);
 
   const yyyyMMdd = new Date().toISOString().slice(0, 10);
 
@@ -92,45 +93,45 @@ const Home = () => {
     popularPosts: [],
   });
 
-// Home.jsx 상단 useEffect 부분을 아래 하나로 통합
-
-useEffect(() => {
+  useEffect(() => {
     const params = new URLSearchParams(location.search);
     const tokenFromUrl = params.get("accessToken"); // 백엔드 소문자 파라미터
 
     const handleLoginAndFetch = async () => {
-        // 1. URL에 토큰이 들어왔다면 무조건 최우선 저장
-        if (tokenFromUrl) {
-            localStorage.setItem("AccessToken", tokenFromUrl);
-            console.log("URL 토큰 발견 및 저장 완료");
-            
-            // 저장 직후 주소창 세탁 (navigate 후에 바로 다음 로직으로 안 넘어가게 return)
-            navigate("/", { replace: true });
-            return; 
-        }
+      // 1. URL에 토큰이 들어왔다면 무조건 최우선 저장
+      if (tokenFromUrl) {
+        localStorage.setItem("AccessToken", tokenFromUrl);
+        console.log("URL 토큰 저장 완료");
 
-        // 2. 이제 지갑(LocalStorage)에서 토큰을 꺼냄
-        const savedToken = localStorage.getItem("AccessToken");
+        // 저장 직후 주소창 세탁 (navigate 후에 바로 다음 로직으로 안 넘어가게 return)
+        navigate("/", { replace: true });
+        return;
+      }
 
-        // 3. 토큰이 확실히 있을 때만 대시보드 API 호출
-        if (savedToken && savedToken !== "null") {
-            try {
-                console.log("대시보드 데이터 조회 시작...");
-                const response = await api.get("/api/main/dashboard");
-                setDashboardData(response.data);
-                console.log("데이터 로드 성공:", response.data);
-            } catch (error) {
-                console.error("대시보드 조회 실패 (401 등):", error);
-                // 만약 토큰이 만료(401)되었다면 지갑 비우기
-                if (error.response?.status === 401) {
-                    localStorage.removeItem("AccessToken");
-                }
-            }
+      // 2. 이제 지갑(LocalStorage)에서 토큰을 꺼냄
+      const savedToken = localStorage.getItem("AccessToken");
+
+      // 3. 토큰이 확실히 있을 때만 대시보드 API 호출
+      if (savedToken && savedToken !== "null") {
+        try {
+          console.log("대시보드 데이터 조회 시작...");
+          const response = await api.get("/api/main/dashboard");
+          setDashboardData(response.data);
+          console.log("데이터 로드 성공:", response.data);
+        } catch (error) {
+          console.error("대시보드 조회 실패:", error);
+          // 만약 토큰이 만료(401)되었다면 지갑 비우기
+          if (error.response?.status === 401) {
+            localStorage.removeItem("AccessToken");
+          }
         }
+      }
     };
 
     handleLoginAndFetch();
-}, [location.search, navigate]); // 주소창 파라미터가 바뀔 때(로그인 완료 시) 감지
+  }, [location.search, navigate]); // 주소창 파라미터가 바뀔 때(로그인 완료 시) 감지
+
+  //===========================펫 슬라이더=========================================
 
   // TODAY 라벨용 (yy / MM / dd)
   useEffect(() => {
@@ -141,18 +142,37 @@ useEffect(() => {
     setTodayDate(`${yy} / ${mm} / ${dd}`);
   }, []);
 
-  const myPets = [
-    { id: 1, name: "냥이 2세", gender: "♂", breed: "샴", icon: "🐱" },
-    { id: 2, name: "바둑이", gender: "♀", breed: "진돗개", icon: "🐶" },
-    { id: 3, name: "초코", gender: "♂", breed: "푸들", icon: "🐩" },
-  ];
+  // const myPets = [
+  //   { id: 1, name: "냥이 2세", gender: "♂", breed: "샴", icon: "🐱" },
+  //   { id: 2, name: "바둑이", gender: "♀", breed: "진돗개", icon: "🐶" },
+  //   { id: 3, name: "초코", gender: "♂", breed: "푸들", icon: "🐩" },
+  // ];
+
+  const myPets = dashboardData.myPets.length > 0 ? dashboardData.myPets : [];
 
   // 현재 선택된 펫 인덱스
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const getPetIndex = (offset) => {
+    if (myPets.length === 0)
+      return {
+        petName: "등록된 펫 없음",
+        icon: "🐾",
+        petGender: "",
+        petBreed: "",
+      };
     const index = (currentIndex + offset + myPets.length) % myPets.length;
     return myPets[index];
+  };
+
+  const getPetIcon = (type) => {
+    return type === "CAT" ? "🐱" : "🐶";
+  };
+
+  const getGenderIcon = (gender) => {
+    if (gender === "M") return "♂";
+    if (gender === "F") return "♀";
+    return "";
   };
 
   const handlePrev = () => {
@@ -165,12 +185,87 @@ useEffect(() => {
 
   const currentPet = getPetIndex(0);
 
+  //===========================건강기록=========================================
+
+  useEffect(() => {
+    const loadPetHealthLog = async () => {
+      const savedToken = localStorage.getItem("AccessToken");
+
+      //토큰 X / 슬라이더 선택된 펫 ID 없으면 중지
+      if (!savedToken || !currentPet?.petId) return;
+
+      try {
+        console.log(
+          `${currentPet.petName} 의 기록 조회중.. ID: ${currentPet.petId}`,
+        );
+
+        const response = await api.get("/api/healthlog/today", {
+          params: {
+            petId: currentPet.petId,
+            writeDate: yyyyMMdd,
+          },
+        });
+
+        const healthData = response.data;
+        if (healthData) {
+          setDashboardData((prev) => ({
+            ...prev,
+            todayHealthLog: healthData,
+          }));
+          console.log("건강기록 교체 완료:", healthData);
+        } else {
+          //데이터 없으면 초기화
+          setDashboardData((prev) => ({
+            ...prev,
+            todayHealthLog: {
+              waterStatus: "-",
+              foodStatus: "-",
+              poopCnt: 0,
+              healthLogMemo: "-",
+            },
+          }));
+        }
+      } catch (error) {
+        console.log("건강기록 조회 실패:", error);
+        //초기화 - 빈 화면 방지용
+        setDashboardData((prev) => ({
+          ...prev,
+          todayHealthLog: {
+            waterStatus: "-",
+            foodStatus: "-",
+            poopCnt: 0,
+            healthLogMemo: "-",
+          },
+        }));
+      }
+    };
+
+    loadPetHealthLog();
+  }, [currentPet.petId, yyyyMMdd]); //펫Id 나 날짜 바뀔때마다 실행
+
   // 오늘 기록 요약(백엔드 todayHealthLog 사용)
   const todayLog = dashboardData.todayHealthLog ?? {
     waterStatus: "-",
     foodStatus: "-",
     poopCnt: 0,
   };
+
+  //=========================== 건강기록 주간 요약 =========================================
+
+  useEffect(() => {
+    const loadWeeklyReport = async () => {
+      if (!currentPet.petId) return;
+
+      try {
+        const response = await api.get(`/api/healthlog/weekly/${currentPet.petId}`);
+        setWeeklyData(response.data);
+        console.log("주간 리포트 조회 성공:", response.data);
+      } catch (error) {
+        console.log("주간 리포트 조회 실패:", error);
+      }
+    };
+    loadWeeklyReport();
+  }, [currentPet.petId]); //펫 슬라이더 넘길 때마다 갱신
 
   // 주간 요약(없으면 0)
   const weekly = dashboardData.weeklySummary ?? {
@@ -198,12 +293,15 @@ useEffect(() => {
                 <span className="current-date">{todayDate}</span>
               </div>
               <div css={s.contentRow}>
-                <div css={s.avatarCircle}>{getPetIndex(0).icon}</div>
+                <div css={s.avatarCircle}>{getPetIcon(getPetIndex(0).petType)}</div>
                 <div css={s.textInfo}>
                   <div className="name-row">
-                    {getPetIndex(0).name} <span>{getPetIndex(0).gender}</span>
+                    {getPetIndex(0).petName}{" "}
+                    <span>{getGenderIcon(getPetIndex(0).petGender)}</span>
                   </div>
-                  <div className="breed-row">품종: {getPetIndex(0).breed}</div>
+                  <div className="breed-row">
+                    품종: {getPetIndex(0).petBreed || "정보없음"}
+                  </div>
                 </div>
               </div>
             </div>
@@ -239,10 +337,30 @@ useEffect(() => {
 
           <div css={s.gridContainer}>
             {[
-              { icon: "💧", label: "음수량", bg: "#E3F2FD" },
-              { icon: "🍴", label: "사료", bg: "#FFF3E0" },
-              { icon: "💩", label: "배변", bg: "#F1F8E9" },
-              { icon: "📝", label: "기타사항", bg: "#F5F5F5" },
+              {
+                icon: "💧",
+                label: "음수량",
+                value: todayLog.waterStatus,
+                bg: "#E3F2FD",
+              },
+              {
+                icon: "🍴",
+                label: "사료",
+                value: todayLog.foodStatus,
+                bg: "#FFF3E0",
+              },
+              {
+                icon: "💩",
+                label: "배변",
+                value: todayLog.poopCnt,
+                bg: "#F1F8E9",
+              },
+              {
+                icon: "📝",
+                label: "기타사항",
+                value: todayLog.healthlogMemo,
+                bg: "#F5F5F5",
+              },
             ].map((item, idx) => (
               <div key={idx} css={s.gridItem}>
                 <div className="icon-label-wrapper">
@@ -252,7 +370,12 @@ useEffect(() => {
                   >
                     {item.icon}
                   </div>
-                  <span className="label">{item.label}</span>
+                  <div className="display-text">
+                    <span className="label">{item.label}</span>
+                    <span className="value" style={{ fontWeight: "bold" }}>
+                      {item.value}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
@@ -260,8 +383,21 @@ useEffect(() => {
         </div>
 
         <div css={s.weeklyStatContainer}>
-          <WeeklyReportCard title="일주일 동안 식사량이" today={4} last={2} />
-          <WeeklyReportCard title="일주일 동안 배변 횟수" today={3} last={5} />
+          {weeklyData ? (<><WeeklyReportCard
+            title="일주일 동안 식사량이"
+            today={weeklyData.thisWeek.avgFoodScore.toFixed(1)}
+            last={weeklyData.lastWeek.avgFoodScore.toFixed(1)}
+          />
+          <WeeklyReportCard
+            title="일주일 동안 배변 횟수"
+            today={weeklyData.thisWeek.avgPoopCnt.toFixed(1)}
+            last={weeklyData.lastWeek.avgPoopCnt.toFixed(1)}
+          />
+          </>
+        ) : (
+          <p>데이터 계산 중..</p>
+        )}
+          
         </div>
 
         <div css={s.popularSection}>
@@ -269,9 +405,30 @@ useEffect(() => {
             <span>📸</span> 인기 게시물
           </div>
           <div css={s.postListWrapper}>
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="post-item"></div>
-            ))}
+            {/* 백엔드에서 가져온 실시간 인기 게시물 */}
+            {dashboardData.popularPosts && dashboardData.popularPosts.length > 0
+              ? dashboardData.popularPosts.map((post) => (
+                  <div
+                    key={post.postId}
+                    className="post-item"
+                    onClick={() => navigate(`/community/post/${post.postId}`)}
+                    style={{
+                      backgroundImage: `url(${post.postImgUrl || "default_image_url"})`, // DB의 이미지 URL 연결
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      cursor: "pointer",
+                    }}
+                  >
+                  </div>
+                ))
+              : /* 데이터가 없을 때 */
+                [1, 2, 3, 4].map((i) => (
+                  <div
+                    key={i}
+                    className="post-item"
+                    style={{ backgroundColor: "#f0f0f0" }}
+                  ></div>
+                ))}
             <div className="more-btn" onClick={() => navigate("/community")}>
               +
             </div>

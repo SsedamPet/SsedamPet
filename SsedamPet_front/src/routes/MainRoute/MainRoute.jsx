@@ -6,16 +6,15 @@ import Signup from "../../pages/auth/Signup/Signup";
 import Registry from "../../pages/information/registration/Registry";
 import CommunityMain from "../../pages/community/communitymain/CommunityMain";
 import PostWrite from "../../pages/community/PostWrite/PostWrite";
-import CommentSection from "../../pages/community/comment/CommentSection";
 import MyPage from "../../pages/mypage/MyPage";
 import LikedPosts from "../../pages/mypage/posts/LikedPosts";
 import PostModal from "../../pages/mypage/posts/PostModal";
 import PetAddModal from "../../pages/mypage/pet/PetAddModal";
-import ChatBot from "../../pages/chatbot/ChatBot";
+import ChatBot from "../../pages/Chatbot/ChatBot";
 import AlertModal from "../../pages/mypage/alert/AlertModal";
-import HealthLog from "../../pages/healthlog/HealthLog";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-// import HealthLog from "../../pages/checklist/Checklist";
+import CommentSection from "../../pages/community/Comment/CommentSection";
+import HealthLog from "../../pages/Healthlog/HealthLog";
 
 function MainRoute() {
   function PetAddRoute() {
