@@ -71,6 +71,7 @@ const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
+  const [weeklyData, setWeeklyData] = useState(null);
 
   const yyyyMMdd = new Date().toISOString().slice(0, 10);
 
@@ -187,7 +188,7 @@ const Home = () => {
   //===========================건강기록=========================================
 
   useEffect(() => {
-    const fetchPetHealthLog = async () => {
+    const loadPetHealthLog = async () => {
       const savedToken = localStorage.getItem("AccessToken");
 
       //토큰 X / 슬라이더 선택된 펫 ID 없으면 중지
@@ -239,7 +240,7 @@ const Home = () => {
       }
     };
 
-    fetchPetHealthLog();
+    loadPetHealthLog();
   }, [currentPet.petId, yyyyMMdd]); //펫Id 나 날짜 바뀔때마다 실행
 
   // 오늘 기록 요약(백엔드 todayHealthLog 사용)
@@ -248,6 +249,23 @@ const Home = () => {
     foodStatus: "-",
     poopCnt: 0,
   };
+
+  //=========================== 건강기록 주간 요약 =========================================
+
+  useEffect(() => {
+    const loadWeeklyReport = async () => {
+      if (!currentPet.petId) return;
+
+      try {
+        const response = await api.get(`/api/healthlog/weekly/${currentPet.petId}`);
+        setWeeklyData(response.data);
+        console.log("주간 리포트 조회 성공:", response.data);
+      } catch (error) {
+        console.log("주간 리포트 조회 실패:", error);
+      }
+    };
+    loadWeeklyReport();
+  }, [currentPet.petId]); //펫 슬라이더 넘길 때마다 갱신
 
   // 주간 요약(없으면 0)
   const weekly = dashboardData.weeklySummary ?? {
@@ -275,7 +293,7 @@ const Home = () => {
                 <span className="current-date">{todayDate}</span>
               </div>
               <div css={s.contentRow}>
-                <div css={s.avatarCircle}>{getPetIndex(0).petType}</div>
+                <div css={s.avatarCircle}>{getPetIcon(getPetIndex(0).petType)}</div>
                 <div css={s.textInfo}>
                   <div className="name-row">
                     {getPetIndex(0).petName}{" "}
@@ -365,8 +383,21 @@ const Home = () => {
         </div>
 
         <div css={s.weeklyStatContainer}>
-          <WeeklyReportCard title="일주일 동안 식사량이" today={4} last={2} />
-          <WeeklyReportCard title="일주일 동안 배변 횟수" today={3} last={5} />
+          {weeklyData ? (<><WeeklyReportCard
+            title="일주일 동안 식사량이"
+            today={weeklyData.thisWeek.avgFoodScore.toFixed(1)}
+            last={weeklyData.lastWeek.avgFoodScore.toFixed(1)}
+          />
+          <WeeklyReportCard
+            title="일주일 동안 배변 횟수"
+            today={weeklyData.thisWeek.avgPoopCnt.toFixed(1)}
+            last={weeklyData.lastWeek.avgPoopCnt.toFixed(1)}
+          />
+          </>
+        ) : (
+          <p>데이터 계산 중..</p>
+        )}
+          
         </div>
 
         <div css={s.popularSection}>
