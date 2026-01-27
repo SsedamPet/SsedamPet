@@ -55,6 +55,8 @@ public class CommentController {
     @PostMapping("/post/{postId}/comments")
     public ResponseEntity<?> createComment(@PathVariable int postId, @RequestBody Map<String, Object> commentData) {
 
+        System.out.println("[COMMENT] controller entered");
+
         int userId = principalUserId();
         if (userId == 0) {
             return ResponseEntity.status(401).body("Unauthorized");
