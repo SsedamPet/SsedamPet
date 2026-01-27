@@ -1,5 +1,6 @@
 package com.korit.ssedampet_back.config.oauth;
 
+import com.korit.ssedampet_back.entity.OAuth2UserEntity;
 import com.korit.ssedampet_back.entity.User;
 import com.korit.ssedampet_back.jwt.JwtTokenProvider;
 import com.korit.ssedampet_back.mapper.OAuth2UserMapper;
@@ -16,7 +17,10 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -24,54 +28,35 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JwtTokenProvider jwtTokenProvider;
     private final OAuth2UserMapper oAuth2UserMapper;
-    private final UserService userService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
 
-//        OAuth2User oauth2User = (OAuth2User) authentication.getPrincipal();
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
         Map<String, Object> attributes = principalUser.getAttributes();
 
-        User user = principalUser.getUser();
+        OAuth2UserEntity oAuth2UserEntity = oAuth2UserMapper.findByProviderAndProviderUserId(attributes.get("provider").toString(), attributes.get("providerUserId").toString());
 
-        String accessToken = jwtTokenProvider.createAccessToken(user.getUserId());
+        if (Objects.isNull(oAuth2UserEntity)) {
+            List<String> params = attributes.entrySet().stream().map(stringObjectEntry -> {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(stringObjectEntry.getKey());
+                stringBuilder.append("=");
+                stringBuilder.append(stringObjectEntry.getKey().equals("displayNickname") ? URLEncoder.encode(stringObjectEntry.getValue().toString()) : stringObjectEntry.getValue());
+                stringBuilder.append("&");
+                return stringBuilder.toString();
+            }).toList();
 
-        String email = (String) attributes.get("email");
-        String provider = (String) attributes.get("provider");
-        String providerUserId = (String) attributes.get("providerUserId");
-        String profileImgUrl = (String) attributes.get("profileImgUrl");
-        String name = (String) attributes.get("name");
+            String paramsString = String.join("", params);
+            paramsString = paramsString.substring(0, paramsString.length() - 1);
 
-        System.out.println("provider = " + provider);
+            response.sendRedirect("http://localhost:5173/auth/signup/oauth2?" + paramsString);
+            return;
+        }
 
-        boolean needAdditionalInfo = user.getPhone() == null || user.getUserBirth() == null;
+        String accessToken = jwtTokenProvider.createAccessToken(oAuth2UserEntity.getUserId());
+        response.sendRedirect("http://localhost:5173/auth/login/oauth2/success?accessToken=" + accessToken);
 
-        String targetUrl = needAdditionalInfo
-                ? "http://localhost:5173/auth/signup/details?accessToken=" + accessToken
-                : "http://localhost:5173/auth/oauth2/success?accessToken=" + accessToken;
-
-//        // 기존 가입 여부 확인
-//        User existingUser = oAuth2UserMapper.findUserByOAuth2Info(provider, providerUserId);
-//        String targetUrl;
-//
-//        if (existingUser == null) {
-//            // 신규 유저- 깡통 계정 생성
-//            User newUser = userService.registerUser(email, name, profileImgUrl, provider, providerUserId);
-//            accessToken = jwtTokenProvider.createAccessToken(newUser);
-//
-//            // 추가 정보 입력 페이지로 리다이렉트 (이미지 URL도 같이 보냄)
-//            targetUrl = "http://localhost:5173/signup/details?accessToken=" + accessToken
-//                    + "&profileImg=" + profileImgUrl;
-//        } else {
-//            // 기존 유저: 로그인 처리
-//            accessToken = jwtTokenProvider.createAccessToken(existingUser);
-//            targetUrl = "http://localhost:5173/auth/oauth2/success?accessToken=" + accessToken;
-//        }
-
-        System.out.println("발급된 서버 JWT 토큰: " + accessToken);
-
-        response.sendRedirect(targetUrl);
     }
 }
