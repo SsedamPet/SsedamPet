@@ -110,15 +110,20 @@ export const buttonGrid = css`
   gap: 10px;
 `;
 
-export const optionButton = css`
-  background-color: #f1fbe9;
-  border: 1px solid #e2d8c5;
+export const optionButton = (isSelected) => css`
+  background-color: ${isSelected ? "#9bd7a9ff" : "#f1fbe9"};
+  border: 1px solid ${isSelected ? "#5fe67fff" : "#e2d8c5"};
   border-radius: 15px;
   padding: 12px 0;
   font-size: 12px;
-  color: #555;
+  color: ${isSelected ? "#ffffff" : "#555"};
   cursor: pointer;
   text-align: center;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: ${isSelected ? "#a7efb8ff" : "#e2f0d4"};
+  }
 `;
 
 export const tagContainer = css`
@@ -128,13 +133,15 @@ export const tagContainer = css`
   margin-bottom: 10px;
 `;
 
-export const tagButton = css`
-  background-color: #c2f49b;
+export const tagButton = (isSelected) => css`
+  background-color: ${isSelected ? "#a7efb8ff" : "#c6f3bfff"};
+  color: ${isSelected ? "#000000ff" : "#000"};
   border: none;
   border-radius: 13px;
   padding: 6px 12px;
   font-size: 10px;
   cursor: pointer;
+  transition: all 0.2s;
 `;
 
 export const textInput = css`
