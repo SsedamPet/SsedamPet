@@ -42,8 +42,25 @@
         where
             user_id = #{userId}
     </select>
+    <select id="findByNickname" resultType="com.korit.ssedampet_back.entity.User">
+        select
+            user_id as userId,
+            username,
+            email,
+            user_birth as userBirth,
+            phone,
+            display_nickname as displayNickname,
+            user_profile_img_url as userProfileImgUrl,
+            last_login_dt as lastLoginDt,
+            created_dt as createdDt,
+            updated_dt as updatedDt
+        from
+            user_tb
+        where
+            display_nickname = #{nickname}
+    </select>
 
-<!--    회원 추가정보 입력-->
+    <!--    회원 추가정보 입력-->
     <update id="addUserInfo">
         update
             user_tb

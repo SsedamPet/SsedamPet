@@ -14,10 +14,9 @@ export const useMeQuery = () => {
         return res;
       } catch (error) {
         console.log("requestMe error:", error);
-        return error?.response ?? { status: 401, data: null };
+        return error.response;
       }
     },
-    retry: false,
-    enabled: !!accessToken, // 토큰이 있을 때만 실행 (로그인 전 불필요한 요청 방지)
+    retry: 0
   });
 };

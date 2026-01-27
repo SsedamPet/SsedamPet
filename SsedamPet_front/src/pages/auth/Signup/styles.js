@@ -115,10 +115,14 @@ export const profileCircleArea = css`
     align-items: center;
 `;
 
-export const profileCircle = css`
+export const profileCircle = img => css`
+    box-sizing: border-box;
+    border: 1px solid #B7F2C9;
     width: 205px;
     height: 205px;
-    background-color: #D1F6DD;
+    background-image: url("${img}");
+    background-position: center;
+    background-size: cover;
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -142,5 +146,11 @@ export const submitButton = css`
     font-size: 24px;
     font-weight: 700;
     cursor: pointer;
+
+    &:disabled { 
+        background-color: #6B6B6B;
+        color: #B7F2C9;
+        cursor: default;
+    }
 `;
 

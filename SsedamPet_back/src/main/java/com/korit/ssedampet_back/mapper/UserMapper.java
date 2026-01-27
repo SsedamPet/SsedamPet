@@ -12,6 +12,8 @@ import java.time.LocalDate;
 public interface UserMapper {
     int addUser(User user);
 
+    User findByNickname(String nickname);
+
     User findByUserId(int userId);
 
     // 추가 정보 입력 단계에서의 정보 업데이트

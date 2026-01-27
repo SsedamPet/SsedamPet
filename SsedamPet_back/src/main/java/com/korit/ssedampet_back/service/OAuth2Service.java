@@ -66,45 +66,6 @@ public class OAuth2Service extends DefaultOAuth2UserService {
                 break;
         }
 
-        // username 추출 로직 (이메일 ID 우선)
-        String extractedUsername;
-        if (email != null && email.contains("@")) {
-            extractedUsername = email.split("@")[0];
-        } else {
-            // 이름도 없으면 최종적으로 [서비스_유저]로 설정
-            extractedUsername = (name != null) ? name : (provider + "_유저");
-        }
-
-        OAuth2UserEntity oauth2UserEntity =
-                oAuth2UserMapper.findByProviderAndProviderUserId(provider, providerUserId);
-
-        User user;
-
-        if (oauth2UserEntity == null) {
-            // 신규 유저 생성 (user_tb)
-            user = User.builder()
-                    .username(name != null ? name : extractedUsername)
-                    .email(email)
-                    .displayNickname(name != null ? name : extractedUsername)
-                    .userProfileImgUrl(profileImgUrl == null ? "default.png" : profileImgUrl)
-                    .build();
-
-            userMapper.addUser(user); // useGeneratedKeys로 userId 세팅
-
-            // oauth2_user_tb 매핑 저장
-            oAuth2UserMapper.addOAuth2User(
-                    OAuth2UserEntity.builder()
-                            .userId(user.getUserId())
-                            .provider(OAuth2UserEntity.Provider.valueOf(provider))
-                            .providerUserId(providerUserId)
-                            .build()
-            );
-        } else {
-            // 기존 유저 -> last_login_dt 만 업데이트
-            userMapper.updateLastLoginDt(oauth2UserEntity.getUserId());
-            user = userMapper.findByUserId(oauth2UserEntity.getUserId());
-        }
-
         // SuccessHandler에서 꺼내 쓰기 좋게 통합 Map 생성
         Map<String, Object> newAttributes = new HashMap<>();
         newAttributes.put("providerUserId", providerUserId);
@@ -116,10 +77,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 
         // 여기 user는 DB에서 조회/생성된 User로 넣어야 안정적
-        return new PrincipalUser(authorities, newAttributes, "providerUserId", user);
-
-
-
+        return new PrincipalUser(authorities, newAttributes, "providerUserId", null);
     }
 }
 
