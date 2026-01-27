@@ -15,12 +15,13 @@
 
     <select id="getMyPets" resultType="com.korit.ssedampet_back.dto.response.mypage.PetDto">
         select
-            pet_id,
-            pet_name,
-            pet_gender,
-            pet_breed,
-            pet_profile_img_url,
-            pet_birth,
+            pet_id as petId,
+            pet_name as petName,
+            pet_gender as petGender,
+            pet_breed as petBreed,
+            pet_type as petType,
+            pet_profile_img_url as petProfileImgUrl,
+            pet_birth as petBirth,
             timestampdiff(year, pet_birth, curdate()) as pet_age
         from
             pet_tb
