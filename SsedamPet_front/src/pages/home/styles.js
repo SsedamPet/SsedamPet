@@ -396,17 +396,4 @@ export const postItem = (imgUrl) => css`
   position: relative;
   overflow: hidden;
   border: 1px solid #eee;
-
-  /* 좋아요 수 표시 스타일 추가 */
-  .post-like-cnt {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.6) 0%, transparent 100%);
-    color: white;
-    font-size: 11px;
-    padding: 3px 0;
-    text-align: center;
-    font-weight: 600;
-  }
 `;

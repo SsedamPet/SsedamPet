@@ -419,10 +419,6 @@ const Home = () => {
                       cursor: "pointer",
                     }}
                   >
-                    {/* 좋아요 수 표시 */}
-                    <div className="post-like-cnt">
-                      <span>❤️ {post.postLikeCnt}</span>
-                    </div>
                   </div>
                 ))
               : /* 데이터가 없을 때 */
