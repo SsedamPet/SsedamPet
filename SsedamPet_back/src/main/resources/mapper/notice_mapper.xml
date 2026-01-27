@@ -78,7 +78,7 @@
         select count(*)
         from notice_tb
         where user_id = #{userId}
-            and is_read = 0
+            and is_read = 2
             and status = 1
     </select>
 
@@ -89,7 +89,7 @@
             updated_dt = now()
         where notice_id = #{noticeId}
             and user_id = #{userId}
-            and is_read = 0
+            and is_read = 2
     </update>
 
     <!-- 전체 읽음 처리 -->
@@ -98,7 +98,7 @@
         set is_read = 1,
             updated_dt = now()
         where user_id = #{userId}
-            and is_read = 0
+            and is_read = 2
             and status = 1
     </update>
 
