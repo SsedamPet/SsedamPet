@@ -9,7 +9,7 @@ export const navContainer = css`
   max-width: 600px;
   height: 70px;
   padding: 20px;
-  background-color: #fff;
+  background-color: #ebfdf1ff;
   display: flex;
   justify-content: space-around;
   align-items: center;

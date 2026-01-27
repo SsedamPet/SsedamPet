@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
-import * as s from "./styles.js"; // style.js 파일이 같은 폴더에 있어야 함
+import * as s from "./styles.js";
 import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react"; // Home 아이콘 이름 중복 방지
 import BottomNav from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
@@ -166,6 +166,7 @@ const Home = () => {
   };
 
   const getPetIcon = (type) => {
+    console.log("가져온 petType 값:", type);
     return type === "CAT" ? "🐱" : "🐶";
   };
 
@@ -257,7 +258,9 @@ const Home = () => {
       if (!currentPet.petId) return;
 
       try {
-        const response = await api.get(`/api/healthlog/weekly/${currentPet.petId}`);
+        const response = await api.get(
+          `/api/healthlog/weekly/${currentPet.petId}`,
+        );
         setWeeklyData(response.data);
         console.log("주간 리포트 조회 성공:", response.data);
       } catch (error) {
@@ -281,7 +284,9 @@ const Home = () => {
       <section css={s.profileSection}>
         <div css={s.sliderContainer}>
           <div css={[s.sideCard, s.leftSide]}>
-            <div className="avatar-mini">{getPetIndex(-1).icon}</div>
+            <div className="avatar-mini">
+              {getPetIcon(getPetIndex(-1).petType)}
+            </div>
           </div>
           <div css={s.mainSliderArea}>
             <button css={s.arrowBtn} onClick={handlePrev}>
@@ -293,7 +298,9 @@ const Home = () => {
                 <span className="current-date">{todayDate}</span>
               </div>
               <div css={s.contentRow}>
-                <div css={s.avatarCircle}>{getPetIcon(getPetIndex(0).petType)}</div>
+                <div css={s.avatarCircle}>
+                  {getPetIcon(getPetIndex(0).petType)}
+                </div>
                 <div css={s.textInfo}>
                   <div className="name-row">
                     {getPetIndex(0).petName}{" "}
@@ -310,7 +317,9 @@ const Home = () => {
             </button>
           </div>
           <div css={[s.sideCard, s.rightSide]}>
-            <div className="avatar-mini">{getPetIndex(1).icon}</div>
+            <div className="avatar-mini">
+              {getPetIcon(getPetIndex(1).petType)}
+            </div>
           </div>
         </div>
       </section>
@@ -325,11 +334,16 @@ const Home = () => {
             </div>
             <button
               css={s.editBtn}
-              onClick={() =>
-                navigate(
-                  `/healthlog?petId=${getPetIndex(0).id}&date=${yyyyMMdd}`,
-                )
-              }
+              onClick={() => {
+                // currentPet에 선택된 petId 전달 -> 페이지 이동
+                if (currentPet && currentPet.petId) {
+                  navigate(
+                    `/healthlog?petId=${currentPet.petId}&date=${yyyyMMdd}`,
+                  );
+                } else {
+                  alert("선택된 반려동물 정보가 없습니다.");
+                }
+              }}
             >
               기록/수정
             </button>
@@ -383,21 +397,22 @@ const Home = () => {
         </div>
 
         <div css={s.weeklyStatContainer}>
-          {weeklyData ? (<><WeeklyReportCard
-            title="일주일 동안 식사량이"
-            today={weeklyData.thisWeek.avgFoodScore.toFixed(1)}
-            last={weeklyData.lastWeek.avgFoodScore.toFixed(1)}
-          />
-          <WeeklyReportCard
-            title="일주일 동안 배변 횟수"
-            today={weeklyData.thisWeek.avgPoopCnt.toFixed(1)}
-            last={weeklyData.lastWeek.avgPoopCnt.toFixed(1)}
-          />
-          </>
-        ) : (
-          <p>데이터 계산 중..</p>
-        )}
-          
+          {weeklyData ? (
+            <>
+              <WeeklyReportCard
+                title="일주일 동안 식사량이"
+                today={weeklyData.thisWeek.avgFoodScore.toFixed(1)}
+                last={weeklyData.lastWeek.avgFoodScore.toFixed(1)}
+              />
+              <WeeklyReportCard
+                title="일주일 동안 배변 횟수"
+                today={weeklyData.thisWeek.avgPoopCnt.toFixed(1)}
+                last={weeklyData.lastWeek.avgPoopCnt.toFixed(1)}
+              />
+            </>
+          ) : (
+            <p>데이터 계산 중..</p>
+          )}
         </div>
 
         <div css={s.popularSection}>
@@ -418,8 +433,7 @@ const Home = () => {
                       backgroundPosition: "center",
                       cursor: "pointer",
                     }}
-                  >
-                  </div>
+                  ></div>
                 ))
               : /* 데이터가 없을 때 */
                 [1, 2, 3, 4].map((i) => (
