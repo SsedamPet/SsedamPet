@@ -49,7 +49,6 @@ jobs:
           cd ~/SsedamPet/SsedamPet_back
           docker build -t ${{env.DOCKER_USERNAME}}/springboot-app:latest . 
              
-
       - name: Springboot Docker image push
         run: |
           echo "${{env.DOCKER_PASSWORD}}" | dpcker login -u ${{env.DOCKER_USERNAME}} --password-stdin
