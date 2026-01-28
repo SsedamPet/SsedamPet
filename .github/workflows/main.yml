@@ -12,7 +12,7 @@ jobs:
     steps:
       - name : "환경변수 세팅"
         run: |
-          if [[ ${{github.ref}} == 'refs/heads/deploy-jiny' ]]; then
+          if [ ${{github.ref}} == 'refs/heads/deploy-jiny' ]; then
 
             echo "GCP_VM_HOST=${{secrets.GCP_vm_HOST_JINY}}" >> $GITHUB_ENV
             echo "GCP_VM_USERNAME=${{secrets.GCP_vm_USERNAME_JINY}}" >> $GITHUB_ENV
@@ -22,9 +22,9 @@ jobs:
             echo "APPLICATION_SECRET=${{secrets.APPLICATION_SECRET_JINY}}" >> $GITHUB_ENV
             echo "REACT_ENV=${{secrets.REACT_ENV_JINY}}" >> $GITHUB_ENV
 
-          # elif [ ${{github.ref}} == 'refs/heads/deploy-jiny' ]; then
+          # else if [ ${{github.ref}} == 'refs/heads/deploy-jiny' ]; then
           #   echo "TEST=abcdef" >> $GITHUB_ENV
-          # fi
+          fi
           
       - name: checkout
         uses: actions/checkout@v6.0.2
