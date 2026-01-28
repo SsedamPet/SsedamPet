@@ -8,7 +8,7 @@
 
     <resultMap id="UserDtoMap" type="com.korit.ssedampet_back.dto.response.mypage.UserDto">
         <id     property="userId"            column="user_id"/>
-        <result property="username"          column="username"/>
+        <result property="name"          column="name"/>
         <result property="email"             column="email"/>
         <result property="userProfileImgUrl" column="user_profile_img_url"/>
     </resultMap>
@@ -38,7 +38,7 @@
     <select id="findMypageUser" resultMap="UserDtoMap">
         select
             user_id,
-            username,
+            name,
             email,
             user_profile_img_url
         from
@@ -51,7 +51,7 @@
     <select id="findAllUsers" resultMap="UserDtoMap">
         select
             user_id,
-            username,
+            name,
             email,
             user_profile_img_url
         from

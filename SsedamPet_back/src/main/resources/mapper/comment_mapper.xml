@@ -14,7 +14,7 @@
             c.is_deleted AS isDeleted,
             c.created_dt AS createdDt,
             c.updated_dt AS updatedDt,
-            u.display_nickname AS displayUsername,
+            u.nickname AS nickname,
             u.user_profile_img_url AS userProfileImgUrl
         FROM comment_tb c
         LEFT JOIN user_tb u ON c.user_id = u.user_id

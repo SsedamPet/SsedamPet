@@ -70,15 +70,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //TODO: UserMapper 내 foundUser 구현
 
         User foundUser = userMapper.findByUserId(userId);
+        if (foundUser == null) {
+            filterChain.doFilter(request, response); // 유저 없으면 그냥 통과(인증 안됨 처리)
+            return;
+        }
 
         Map<String, Object> attributes = Map.of(
-                "username", foundUser.getUsername(), // "username"이라는 열쇠로 실제 이름을 담음
+                "name", foundUser.getName(), // "name"이라는 열쇠로 실제 이름을 담음
                 "userId", foundUser.getUserId()
         );
 
 
         Collection<? extends GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
-        PrincipalUser principalUser = new PrincipalUser(authorities, attributes, "username", foundUser);
+        PrincipalUser principalUser = new PrincipalUser(authorities, attributes, "name", foundUser);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(

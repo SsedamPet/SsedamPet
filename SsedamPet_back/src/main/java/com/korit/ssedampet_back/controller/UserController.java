@@ -4,7 +4,7 @@ import com.korit.ssedampet_back.dto.request.AdditionalInfoReqDto;
 import com.korit.ssedampet_back.dto.request.PetCreateReqDto;
 import com.korit.ssedampet_back.security.PrincipalUser;
 import com.korit.ssedampet_back.service.PetService;
-import com.korit.ssedampet_back.service.UserService;
+import com.korit.ssedampet_back.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final PetService petService;
 
     // 가입 시 최초 펫 정보 등록
@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping("/signup/complete")
     public ResponseEntity<String> completeSignup(@RequestBody AdditionalInfoReqDto dto) {
         // 한 번에 유저 업데이트와 펫 등록
-        userService.completeSignup(dto);
+        authService.completeSignup(dto);
         return ResponseEntity.ok("회원가입 및 반려동물 등록이 완료되었습니다.");
     }
 

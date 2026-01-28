@@ -33,7 +33,7 @@ public class PrincipalUser extends DefaultOAuth2User {
     private static Map<String, Object> defaultAttributes(User user) {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", user.getUserId());          // 최소 1개 필수
-        map.put("username", user.getUsername());
+        map.put("name", user.getName());
         return map;
     }
 
