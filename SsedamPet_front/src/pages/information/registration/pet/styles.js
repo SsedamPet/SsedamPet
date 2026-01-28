@@ -42,6 +42,7 @@ export const buttonGroup = css`
     gap: 15px;
     width: 100%;
     margin-bottom: 40px;
+    cursor: pointer;
 `;
 
 // 선택 상태에 따라 색상이 변하는 함수형 스타일
