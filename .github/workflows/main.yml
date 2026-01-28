@@ -12,7 +12,7 @@ jobs:
     steps:
       - name : "환경변수 세팅"
         run: |
-          if [ ${{github.ref}} == 'refs/heads/deploy-jiny' ]; then
+          if [[ ${{github.ref}} == 'refs/heads/deploy-jiny' ]]; then
 
             echo "GCP_VM_HOST=${{secrets.GCP_vm_HOST_JINY}}" >> $GITHUB_ENV
             echo "GCP_VM_USERNAME=${{secrets.GCP_vm_USERNAME_JINY}}" >> $GITHUB_ENV
