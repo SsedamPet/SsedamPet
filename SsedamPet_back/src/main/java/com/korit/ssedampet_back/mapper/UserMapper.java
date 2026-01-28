@@ -19,8 +19,8 @@ public interface UserMapper {
     // 추가 정보 입력 단계에서의 정보 업데이트
     int addUserInfo(
             @Param("userId") int userId,
-            @Param("displayNickname") String displayNickname,
-            @Param("userBirth") LocalDate userBirth,
+            @Param("nickname") String nickname,
+            @Param("birthDate") LocalDate birthDate,
             @Param("phone") String phone,
             @Param("userProfileImgUrl") String userProfileImgUrl
     );

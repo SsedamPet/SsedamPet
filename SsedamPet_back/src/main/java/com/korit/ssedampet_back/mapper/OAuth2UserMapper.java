@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface OAuth2UserMapper {
 
-    int addOAuth2User(OAuth2UserEntity oAuth2User);
+    int addOAuth2User(@Param("userId") int userId,
+                      @Param("provider") String provider,
+                      @Param("providerUserId") String providerUserId);
 
 
     // provider + provider_user_id 로 OAuth2 유저 조회

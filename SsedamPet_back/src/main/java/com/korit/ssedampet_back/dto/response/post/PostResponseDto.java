@@ -15,6 +15,6 @@ public class PostResponseDto {
     private LocalDateTime createdDt;
     private LocalDateTime updatedDt;
 
-    private String displayUsername; // User에 있는거
+    private String nickname; // User에 있는거
     private String userProfileImgUrl; // User에 있는거
 }

@@ -47,7 +47,7 @@
         select
             p.post_id,
             p.user_id,
-            u.username,
+            u.name,
             p.post_img_url,
             p.post_like_cnt,
             p.created_dt
