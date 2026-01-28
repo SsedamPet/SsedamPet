@@ -15,6 +15,6 @@ public class CommentResponseDto {
     private LocalDateTime createdDt;
     private LocalDateTime updatedDt;
 
-    private String displayUsername;
+    private String nickname;
     private String userProfileImgUrl;
 }

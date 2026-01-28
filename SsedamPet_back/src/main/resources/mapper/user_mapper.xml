@@ -6,18 +6,18 @@
 <mapper namespace="com.korit.ssedampet_back.mapper.UserMapper">
     <insert id="addUser" useGeneratedKeys="true" keyProperty="userId" parameterType="com.korit.ssedampet_back.entity.User">
         insert into user_tb (
-            username,
+            name,
             email,
-            display_nickname,
+            nickname,
             user_profile_img_url,
             last_login_dt,
             created_dt,
             updated_dt
         )
         values (
-            #{username},
+            #{name},
             #{email},
-            #{displayNickname},
+            #{nickname},
             #{userProfileImgUrl},
             NOW(),
             NOW(),
@@ -28,11 +28,11 @@
     <select id="findByUserId" resultType="com.korit.ssedampet_back.entity.User">
         select
             user_id as userId,
-            username,
+            name,
             email,
-            user_birth as userBirth,
+            birth_date,
             phone,
-            display_nickname as displayNickname,
+            nickname,
             user_profile_img_url as userProfileImgUrl,
             last_login_dt as lastLoginDt,
             created_dt as createdDt,
@@ -45,11 +45,11 @@
     <select id="findByNickname" resultType="com.korit.ssedampet_back.entity.User">
         select
             user_id as userId,
-            username,
+            name,
             email,
-            user_birth as userBirth,
+            birth_date,
             phone,
-            display_nickname as displayNickname,
+            nickname,
             user_profile_img_url as userProfileImgUrl,
             last_login_dt as lastLoginDt,
             created_dt as createdDt,
@@ -57,7 +57,7 @@
         from
             user_tb
         where
-            display_nickname = #{nickname}
+            nickname = #{nickname}
     </select>
 
     <!--    회원 추가정보 입력-->
@@ -65,7 +65,7 @@
         update
             user_tb
         set
-            display_nickname = #{displayNickname},
+            nickname = #{nickname},
             user_birth = #{userBirth},
             phone = #{phone},
             user_profile_img_url = #{userProfileImgUrl},

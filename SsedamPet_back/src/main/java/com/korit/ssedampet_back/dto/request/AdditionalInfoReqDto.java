@@ -9,8 +9,8 @@ import java.time.LocalDate;
 public class AdditionalInfoReqDto {
     // 유저 정보 (추가 정보 입력 페이지에서 받는 것들)
     private int userId;
-    private String displayNickname;
-    private LocalDate userBirth; // "2024-01-20" 형태로 받음
+    private String nickname;
+    private LocalDate birthDate; // "2024-01-20" 형태로 받음
     private String phone;
     private String userProfileImgUrl;
 

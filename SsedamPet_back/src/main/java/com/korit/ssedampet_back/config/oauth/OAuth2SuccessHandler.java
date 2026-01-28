@@ -1,18 +1,13 @@
 package com.korit.ssedampet_back.config.oauth;
 
 import com.korit.ssedampet_back.entity.OAuth2UserEntity;
-import com.korit.ssedampet_back.entity.User;
 import com.korit.ssedampet_back.jwt.JwtTokenProvider;
 import com.korit.ssedampet_back.mapper.OAuth2UserMapper;
-import com.korit.ssedampet_back.mapper.UserMapper;
 import com.korit.ssedampet_back.security.PrincipalUser;
-import com.korit.ssedampet_back.service.OAuth2Service;
-import com.korit.ssedampet_back.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +38,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append(stringObjectEntry.getKey());
                 stringBuilder.append("=");
-                stringBuilder.append(stringObjectEntry.getKey().equals("displayNickname") ? URLEncoder.encode(stringObjectEntry.getValue().toString()) : stringObjectEntry.getValue());
+                stringBuilder.append(stringObjectEntry.getKey().equals("nickname") ? URLEncoder.encode(stringObjectEntry.getValue().toString()) : stringObjectEntry.getValue());
                 stringBuilder.append("&");
                 return stringBuilder.toString();
             }).toList();

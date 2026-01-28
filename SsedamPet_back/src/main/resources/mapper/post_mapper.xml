@@ -14,7 +14,7 @@
             p.post_location_tag,
             p.created_dt,
             p.updated_dt,
-            u.display_nickname AS displayUsername,
+            u.nickanane AS nickname,
             u.user_profile_img_url AS userProfileImgUrl
         FROM post_tb p
         LEFT JOIN user_tb u ON p.user_id = u.user_id
@@ -37,7 +37,7 @@
             p.post_img_url AS postImgUrl,
             p.post_like_cnt AS postLikeCnt,
             p.created_dt AS createdDt,
-            u.display_nickname AS displayUsername
+            u.nickname AS nickname
         FROM post_tb p
         LEFT JOIN user_tb u ON p.user_id = u.user_id
         WHERE p.post_id = #{postId}

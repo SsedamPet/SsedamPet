@@ -9,7 +9,7 @@ import lombok.*;
 @Data
 public class UserDto {
     private int userId;
-    private String username;              // user_tb.username
+    private String name;              // user_tb.name
     private String email;                 // user_tb.email
     private String userProfileImgUrl;     // user_tb.user_profile_img_url
 }

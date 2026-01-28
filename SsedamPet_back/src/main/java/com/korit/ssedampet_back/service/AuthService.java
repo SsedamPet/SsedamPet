@@ -12,20 +12,44 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class AuthService {
 
     private final UserMapper userMapper;
     private final OAuth2UserMapper oAuth2UserMapper;
     private final PetService petService;
+    private final FileService fileService;
 
     public boolean isValidNickname(String nickname) {
         return userMapper.findByNickname(nickname) == null;
     }
 
-    // 1단계: 소셜 로그인 직후 '깡통 유저' 생성 (DTO 버전)
+
     @Transactional
-    public User registerUser(SignupReqDto dto) {
-        return null;
+    public User signup(SignupReqDto dto) {
+        String imgUrl = dto.getProfileImgUrl();
+        if (dto.getProfileImgFile() != null && !dto.getProfileImgFile().isEmpty()) {
+            imgUrl = fileService.saveFile(dto.getProfileImgFile());
+        }
+
+
+        User user = User.builder()
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .nickname(dto.getNickname())
+                .userProfileImgUrl(imgUrl)
+                .build();
+
+        userMapper.addUser(user);
+
+        int generatedId = user.getUserId();
+        System.out.println("생성된 유저 ID: " + generatedId);
+
+        oAuth2UserMapper.addOAuth2User(
+                user.getUserId(),
+                dto.getProvider(),
+                dto.getProviderUserId());
+
+        return user;
     }
 
     // 2단계: 추가 정보 입력 완료
@@ -34,8 +58,8 @@ public class UserService {
         // 1. 유저 상세 정보 업데이트
         userMapper.addUserInfo(
                 dto.getUserId(),
-                dto.getDisplayNickname(),
-                dto.getUserBirth(),
+                dto.getNickname(),
+                dto.getBirthDate(),
                 dto.getPhone(),
                 dto.getUserProfileImgUrl()
         );
