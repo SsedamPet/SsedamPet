@@ -10,11 +10,11 @@ import LikedPosts from "../../pages/mypage/posts/LikedPosts";
 import PetAddModal from "../../pages/mypage/pet/PetAddModal";
 import AlertModal from "../../pages/mypage/alert/AlertModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import HealthLog from "../../pages/Healthlog/HealthLog";
 import PostWrite from "../../pages/community/PostWrite/PostWrite.jsx";
 import CommentSection from "../../pages/community/Comment/CommentSection.jsx";
 import MainCommunity from "../../pages/community/MainCommunity/MainCommunity.jsx";
 import AiChat from "../../pages/aichat/AiChat.jsx";
+import HealthLog from "../../pages/healthlog/HealthLog.jsx";
 
 
 
