@@ -3,7 +3,6 @@ import { useState } from "react";
 import * as s from "./styles";
 import { Plus, X } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-import Header from "../../../components/layout/Header/Header";
 import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
 
 const PostWrite = () => {
