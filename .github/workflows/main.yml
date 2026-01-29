@@ -71,7 +71,7 @@ jobs:
              
       - name: Springboot Docker image push
         run: |
-          echo "${{env.DOCKER_PASSWORD}}" | dpcker login -u ${{env.DOCKER_USERNAME}} --password-stdin
+          echo "${{env.DOCKER_PASSWORD}}" | docker login -u ${{env.DOCKER_USERNAME}} --password-stdin
           docker push ${{env.DOCKER_USERNAME}}/springboot-app:latest
 
       - name: React Docker image build
