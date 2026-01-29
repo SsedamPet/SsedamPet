@@ -1,6 +1,7 @@
 import { Routes, Route, useNavigate } from "react-router-dom";
 import MainLayout from "../../components/layout/MainLayout";
 import Home from "../../pages/home/Home";
+import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
 import Login from "../../pages/auth/Login/Login";
 import Signup from "../../pages/auth/Signup/Signup";
 import Registry from "../../pages/information/registration/Registry";
@@ -32,10 +33,13 @@ function MainRoute() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
         {/* 로그인 없이 접근 가능 */}
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
+
+        <Route path="/auth/login/oauth2/success" element={<OAuth2 />} />
+        <Route path="/" element={<Home />} />
+
 
         {/* 로그인 필수 영역 */}
         <Route element={<ProtectedRoute />}>
