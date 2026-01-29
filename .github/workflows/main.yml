@@ -26,7 +26,7 @@ jobs:
             echo "GCP_VM_SSHKEY=${{ secrets.SSHKEY_YUNYEOL }}" >> $GITHUB_ENV
             echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME_YUNYEOL }}" >> $GITHUB_ENV
             echo "DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD_YUNYEOL }}" >> $GITHUB_ENV
-            echo "APPLICATION_SECRET=${{ secrets.APPLICATION_YUNYEOL }}" >> $GITHUB_ENV
+            echo "APPLICATION_SECRET=${{ secrets.APPLICATION_SECRET_YUNYEOL }}" >> $GITHUB_ENV
             echo "REACT_ENV=${{ secrets.REACT_ENV_YUNYEOL }}" >> $GITHUB_ENV
           elif [ "${{ github.ref }}" == "refs/heads/deploy-hyojeong" ]; then
             echo "GCP_VM_HOST=${{ secrets.GCP_vm_HOST_HYOJEONG }}" >> $GITHUB_ENV
