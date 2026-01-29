@@ -215,7 +215,7 @@ export const modalHeader = css`
         font-size: 16px;
         }
 
-    svg, button {
+    /* svg, button {
         margin-left: auto;
         cursor: pointer;
         transition: opacity 0.2s;
@@ -223,7 +223,8 @@ export const modalHeader = css`
         &: hover {
            opacity: 0.6;
            }
-        }
+    } */
+
 `;
 
 export const modalBody = css`

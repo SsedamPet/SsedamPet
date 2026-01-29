@@ -6,7 +6,7 @@ import ProfileInformation from "./profile/ProfileInformation";
 import UserInformation from "./user/UserInformation";
 
 const Registry = () => {
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [petInfo, setPetInfo] = useState({
         type: "", name: "", img: null, birthDate: "", gender: "male", breed: "", weight: ""
     });

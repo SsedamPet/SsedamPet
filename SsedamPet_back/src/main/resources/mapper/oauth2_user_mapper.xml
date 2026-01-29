@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.korit.ssedampet_back.mapper.OAuth2UserMapper">
     <!-- OAuth2 유저 신규추가 -->
     <insert id="addOAuth2User">
         insert into
-            oauth2_user_tb(user_id, provider, provider_user_id, created_dt, updated_dt)
+        oauth2_user_tb(user_id, provider, provider_user_id, created_dt, updated_dt)
         values
         (#{userId}, #{provider}, #{providerUserId}, NOW(), NOW())
     </insert>
@@ -14,27 +14,27 @@
     <!-- OAuth2 유저 조회 -->
     <select id="findUserByOAuth2Info" resultType="com.korit.ssedampet_back.entity.User">
         select
-            u.*
+        u.*
         FROM
-            user_tb u
-            join oauth2_user_tb o ON u.user_id = o.user_id
+        user_tb u
+        join oauth2_user_tb o ON u.user_id = o.user_id
         where
-            o.provider = #{provider}
-            and
-            o.provider_user_id = #{providerUserId}
+        o.provider = #{provider}
+        and
+        o.provider_user_id = #{providerUserId}
     </select>
     <select id="findByProviderAndProviderUserId" resultType="com.korit.ssedampet_back.entity.OAuth2UserEntity">
         select
-            oauth2_user_id,
-            user_id,
-            provider,
-            provider_user_id,
-            created_dt
+        oauth2_user_id,
+        user_id,
+        provider,
+        provider_user_id,
+        created_dt
         from
-            oauth2_user_tb
+        oauth2_user_tb
         where
-            provider = #{provider}
-            and provider_user_id = #{providerUserId}
+        provider = #{provider}
+        and provider_user_id = #{providerUserId}
     </select>
 
 

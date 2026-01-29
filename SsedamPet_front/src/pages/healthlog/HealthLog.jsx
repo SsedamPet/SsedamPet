@@ -63,8 +63,9 @@ const HealthLog = () => {
     console.log("백엔드 전송 데이터:", logData);
     try {
       const requestData = {
-        petId: 1,
+        petId: logData.petId,
         writeDate: logData.date,
+        waterStatus: logData.waterStatus,
         foodStatus: logData.foodStatus,
         poopCnt: logData.poopCnt,
         symptom: logData.symptom,
@@ -98,7 +99,7 @@ const HealthLog = () => {
             <input
               type="date"
               value={logData.date}
-              onChange={() => handleSelect("date", e.target.value)}
+              onChange={(e) => handleSelect("date", e.target.value)}
               css={s.hiddenDateInput}
             />
             <span className="calendarIcon">📅</span>

@@ -1,11 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import React, { use, useEffect, useState } from "react"; // useState 추가
 import * as s from "./styles";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../../../configs/axiosConfig";
 
 function Signup() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   // 1. 에러 해결: formData 상태 변수 정의
   const [signupData, setSignupData] = useState({
     name: searchParams.get("nickname"),
@@ -25,12 +26,19 @@ function Signup() {
 
   // 2. 에러 해결: 클릭 이벤트 함수 정의
   const handleNicknameCheck = async () => {
+    try{
     const response = await api.get(
       "/api/auth/valid/nickname?nickname=" + signupData.nickname,
     );
     setValidNickname(response.data);
-    if (!response.data) {
-      alert("이미 사용중인 닉네임입니다. 다시 입력하세요.");
+    if (response.data) {
+        alert("사용 가능한 닉네임입니다!");
+      } else {
+        alert("이미 사용 중인 닉네임입니다. 다시 입력하세요.");
+      }
+    } catch (error) {
+      console.error("중복 확인 에러:", error);
+      alert("서버와 통신 중 오류가 발생했습니다.");
     }
   };
 
@@ -57,6 +65,20 @@ function Signup() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
+    const birthReg = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/; 
+    const phoneReg = /^010-\d{4}-\d{4}$/;
+
+    if (!isValidNickname) {
+      alert("닉네임 중복 확인을 먼저 해주세요!");
+      return;
+    } else if (!birthReg.test(signupData.birthDate)) {
+      alert("생년월일 형식이 올바르지 않습니다! (예: 19950101)");
+      return;
+    } else if (!phoneReg.test(signupData.phone)) {
+      alert("휴대전화 형식이 올바르지 않습니다! (예: 010-1234-5678)");
+      return;
+    }
+
     formData.append("email", signupData.email);
     formData.append("name", signupData.name);
     formData.append("birthDate", signupData.birthDate);
@@ -78,7 +100,7 @@ function Signup() {
       if (accessToken) {
         localStorage.setItem("AccessToken", accessToken);
         alert("회원가입 완료");
-
+        navigate("/");
       }
     } catch (error) {
       console.error("회원가입 실패:", error);

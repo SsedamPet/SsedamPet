@@ -31,10 +31,17 @@ public class AuthService {
             imgUrl = fileService.saveFile(dto.getProfileImgFile());
         }
 
+        // 2. 생년월일 문자열(20010830)을 LocalDateTime으로 변환
+        // 시간 정보가 없으므로 00:00:00으로 세팅합니다.
+        String birthStr = dto.getBirthDate();
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyyMMdd");
+        java.time.LocalDateTime birthDateTime = java.time.LocalDate.parse(birthStr, formatter).atStartOfDay();
 
         User user = User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
+                .birthDate(birthDateTime)
+                .phone(dto.getPhone())
                 .nickname(dto.getNickname())
                 .userProfileImgUrl(imgUrl)
                 .build();

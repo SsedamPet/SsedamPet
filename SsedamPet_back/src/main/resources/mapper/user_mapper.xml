@@ -1,87 +1,90 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.korit.ssedampet_back.mapper.UserMapper">
     <insert id="addUser" useGeneratedKeys="true" keyProperty="userId" parameterType="com.korit.ssedampet_back.entity.User">
         insert into user_tb (
-            name,
-            email,
-            nickname,
-            user_profile_img_url,
-            last_login_dt,
-            created_dt,
-            updated_dt
+        name,
+        email,
+        birth_date,
+        phone,
+        nickname,
+        user_profile_img_url,
+        last_login_dt,
+        created_dt,
+        updated_dt
         )
         values (
-            #{name},
-            #{email},
-            #{nickname},
-            #{userProfileImgUrl},
-            NOW(),
-            NOW(),
-            NOW()
+        #{name},
+        #{email},
+        #{birthDate},
+        #{phone},
+        #{nickname},
+        #{userProfileImgUrl},
+        NOW(),
+        NOW(),
+        NOW()
         )
     </insert>
 
     <select id="findByUserId" resultType="com.korit.ssedampet_back.entity.User">
         select
-            user_id as userId,
-            name,
-            email,
-            birth_date,
-            phone,
-            nickname,
-            user_profile_img_url as userProfileImgUrl,
-            last_login_dt as lastLoginDt,
-            created_dt as createdDt,
-            updated_dt as updatedDt
+        user_id as userId,
+        name,
+        email,
+        birth_date,
+        phone,
+        nickname,
+        user_profile_img_url as userProfileImgUrl,
+        last_login_dt as lastLoginDt,
+        created_dt as createdDt,
+        updated_dt as updatedDt
         from
-            user_tb
+        user_tb
         where
-            user_id = #{userId}
-    </select>
-    <select id="findByNickname" resultType="com.korit.ssedampet_back.entity.User">
-        select
-            user_id as userId,
-            name,
-            email,
-            birth_date,
-            phone,
-            nickname,
-            user_profile_img_url as userProfileImgUrl,
-            last_login_dt as lastLoginDt,
-            created_dt as createdDt,
-            updated_dt as updatedDt
-        from
-            user_tb
-        where
-            nickname = #{nickname}
+        user_id = #{userId}
     </select>
 
-    <!--    회원 추가정보 입력-->
+    <select id="findByNickname" resultType="com.korit.ssedampet_back.entity.User">
+        select
+        user_id as userId,
+        name,
+        email,
+        birth_date,
+        phone,
+        nickname,
+        user_profile_img_url as userProfileImgUrl,
+        last_login_dt as lastLoginDt,
+        created_dt as createdDt,
+        updated_dt as updatedDt
+        from
+        user_tb
+        where
+        nickname = #{nickname}
+    </select>
+
     <update id="addUserInfo">
         update
-            user_tb
+        user_tb
         set
-            nickname = #{nickname},
-            user_birth = #{userBirth},
-            phone = #{phone},
-            user_profile_img_url = #{userProfileImgUrl},
-            updated_dt = NOW()
+        nickname = #{nickname},
+        birth_date = #{birthDate},
+        phone = #{phone},
+        user_profile_img_url = #{userProfileImgUrl},
+        updated_dt = NOW()
         where
-            user_id = #{userId}
+        user_id = #{userId}
     </update>
 
     <update id="updateLastLoginDt">
         update
-            user_tb
+        user_tb
         set
-            last_login_dt = NOW(),
-            updated_dt = NOW()
+        last_login_dt = NOW(),
+        updated_dt = NOW()
         where
-            user_id = #{userId}
+        user_id = #{userId}
     </update>
-
 </mapper>
