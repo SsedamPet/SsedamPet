@@ -7,6 +7,8 @@ import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx"
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../configs/axiosConfig.js";
+import usePetStore from "../../stores/usePetStore.js";
+
 
 // 주간 리포트 카드 컴포넌트 (내부 헬퍼)
 const WeeklyReportCard = ({ title, today, last }) => {
@@ -98,7 +100,6 @@ const Home = () => {
     const tokenFromUrl = params.get("accessToken"); // 백엔드 소문자 파라미터
 
     const handleLoginAndFetch = async () => {
-      // 1. URL에 토큰이 들어왔다면 무조건 최우선 저장
       if (tokenFromUrl) {
         localStorage.setItem("AccessToken", tokenFromUrl);
         console.log("URL 토큰 저장 완료");
@@ -108,7 +109,6 @@ const Home = () => {
         return;
       }
 
-      // 2. 이제 지갑(LocalStorage)에서 토큰을 꺼냄
       const savedToken = localStorage.getItem("AccessToken");
 
       // 3. 토큰이 확실히 있을 때만 대시보드 API 호출
@@ -142,16 +142,11 @@ const Home = () => {
     setTodayDate(`${yy} / ${mm} / ${dd}`);
   }, []);
 
-  // const myPets = [
-  //   { id: 1, name: "냥이 2세", gender: "♂", breed: "샴", icon: "🐱" },
-  //   { id: 2, name: "바둑이", gender: "♀", breed: "진돗개", icon: "🐶" },
-  //   { id: 3, name: "초코", gender: "♂", breed: "푸들", icon: "🐩" },
-  // ];
-
-  const myPets = dashboardData.myPets.length > 0 ? dashboardData.myPets : [];
-
+  const { setPet } = usePetStore();
   // 현재 선택된 펫 인덱스
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const myPets = dashboardData.myPets.length > 0 ? dashboardData.myPets : [];
 
   const getPetIndex = (offset) => {
     if (myPets.length === 0)
@@ -185,6 +180,14 @@ const Home = () => {
   };
 
   const currentPet = getPetIndex(0);
+
+  useEffect(() => {
+    if (currentPet && currentPet.petId) {
+      //전역에 펫 ID, 이름 저장
+      setPet(currentPet.petId, currentPet.petName);
+      console.log("전역 상태 업데이트:", currentPet.petName);
+    }
+  }, [currentIndex, currentPet, setPet]);
 
   //===========================건강기록=========================================
 
