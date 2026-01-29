@@ -3,9 +3,16 @@ import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom"; // Outlet 추가
 import * as s from "./styles";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar";
+import { useMeQuery } from "../../react-query/queries/usersQueries";
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  const { data: me, isLoading, isError }= useMeQuery();
+
+  const nickname = me?.nickname ?? me?.name ?? "";
+  const email = me?.email ?? "";
+  const userProfileImgUrl = me?.userProfileImgUrl ?? "";
 
   // 공통 주황색 새로고침 SVG
   const OrangeSyncSVG = ({ size = 12 }) => (
@@ -27,12 +34,13 @@ const MyPage = () => {
 
           <div css={s.userMainInfo}>
             <div className="profile-placeholder">
-              🐱
+              {userProfileImgUrl ? ( <img src={userProfileImgUrl} alt="userProfileImgUrl" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
+                /> ) : ( "🐱" )}
               <div css={s.orangeBadge}><OrangeSyncSVG size={12} /></div>
             </div>
             <div className="user-text">
-              <div className="name">냥집사 님</div>
-              <div className="email">testuser@email.com</div>
+              <div className="name">{`${nickname} 님`}</div>
+              <div className="email">{`${email}`}</div>
             </div>
           </div>
 
