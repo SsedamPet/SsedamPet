@@ -37,17 +37,7 @@ function MainRoute() {
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/signup" element={<Signup />} />
 
-        {/* 로그인 필수 영역 */}
-        <Route element={<ProtectedRoute />}>
-          {/* 정보 관리 페이지들 */}
-          <Route path="/info/registry" element={<Registry />} />
-
-          {/* 커뮤니티 페이지들 */}
-          <Route path="/community" element={<CommunityMain />} />
-          <Route path="/community/write" element={<PostWrite />} />
-          <Route path="/community/comment" element={<CommentSection />} />
-
-          {/* 마이페이지 */}
+        {/* 마이페이지 */}
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/posts" element={<LikedPosts />} />
           <Route path="/pet/add" element={<PetAddRoute />} />
@@ -60,6 +50,30 @@ function MainRoute() {
               </>
             }
           />
+
+        {/* 로그인 필수 영역 */}
+        <Route element={<ProtectedRoute />}>
+          {/* 정보 관리 페이지들 */}
+          <Route path="/info/registry" element={<Registry />} />
+
+          {/* 커뮤니티 페이지들 */}
+          <Route path="/community" element={<CommunityMain />} />
+          <Route path="/community/write" element={<PostWrite />} />
+          <Route path="/community/comment" element={<CommentSection />} />
+
+          {/* 마이페이지
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/posts" element={<LikedPosts />} />
+          <Route path="/pet/add" element={<PetAddRoute />} />
+          <Route
+            path="/mypage/alert"
+            element={
+              <>
+                <MyPage />
+                <AlertModal />
+              </>
+            }
+          /> */}
           {/* 건강기록 및 챗봇 */}
           <Route path="/healthlog" element={<HealthLog />} />
           <Route path="/chatbot" element={<ChatBot />} />
