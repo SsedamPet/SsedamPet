@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CommentSection from "../Comment/CommentSection";
 
 function MainCommunity() {
   const navigate = useNavigate();
