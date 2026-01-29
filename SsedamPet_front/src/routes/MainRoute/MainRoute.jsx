@@ -5,8 +5,6 @@ import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
 import Login from "../../pages/auth/Login/Login";
 import Signup from "../../pages/auth/Signup/Signup";
 import Registry from "../../pages/information/registration/Registry";
-import CommunityMain from "../../pages/community/communitymain/CommunityMain";
-import PostWrite from "../../pages/community/PostWrite/PostWrite";
 import MyPage from "../../pages/mypage/MyPage";
 import LikedPosts from "../../pages/mypage/posts/LikedPosts";
 import PostModal from "../../pages/mypage/posts/PostModal";
@@ -14,8 +12,12 @@ import PetAddModal from "../../pages/mypage/pet/PetAddModal";
 import ChatBot from "../../pages/Chatbot/ChatBot";
 import AlertModal from "../../pages/mypage/alert/AlertModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import CommentSection from "../../pages/community/Comment/CommentSection";
 import HealthLog from "../../pages/Healthlog/HealthLog";
+import PostWrite from "../../pages/community/PostWrite/PostWrite.jsx";
+import CommentSection from "../../pages/community/Comment/CommentSection.jsx";
+import MainCommunity from "../../pages/community/MainCommunity/MainCommunity.jsx";
+
+
 
 function MainRoute() {
   
@@ -47,7 +49,7 @@ function MainRoute() {
           <Route path="/info/registry" element={<Registry />} />
 
           {/* 커뮤니티 페이지들 */}
-          <Route path="/community" element={<CommunityMain />} />
+          <Route path="/community" element={<MainCommunity />} />
           <Route path="/community/write" element={<PostWrite />} />
           <Route path="/community/comment" element={<CommentSection />} />
 
