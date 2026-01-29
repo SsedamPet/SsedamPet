@@ -59,14 +59,14 @@ jobs:
 
       - name: Springboot Build
         run: |
-          cd SsedamPet/SsedamPet_back
+          cd SsedamPet_back
           echo ${{env.APPLICATION_SECRET}} | base64 --decode >./src/main/resources/application-secret.yml
           chmod 777 ./mvnw
           ./mvnw clean package -Dtestskip
 
       - name: Springboot Docker image build
         run: 
-          cd SsedamPet/SsedamPet_back
+          cd SsedamPet_back
           docker build -t ${{env.DOCKER_USERNAME}}/springboot-app:latest . 
              
       - name: Springboot Docker image push
