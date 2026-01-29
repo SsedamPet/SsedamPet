@@ -8,6 +8,8 @@
         insert into user_tb (
             name,
             email,
+            birth_date,
+            phone,
             nickname,
             user_profile_img_url,
             last_login_dt,
@@ -17,6 +19,8 @@
         values (
             #{name},
             #{email},
+            #{birthDate},
+            #{phone},
             #{nickname},
             #{userProfileImgUrl},
             NOW(),
@@ -66,7 +70,7 @@
             user_tb
         set
             nickname = #{nickname},
-            user_birth = #{userBirth},
+            birth_date = #{birthDate},
             phone = #{phone},
             user_profile_img_url = #{userProfileImgUrl},
             updated_dt = NOW()
