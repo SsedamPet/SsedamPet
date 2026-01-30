@@ -18,26 +18,29 @@ function AuthRoute() {
   console.log(meQuery.isLoading)
   console.log(meQuery.data)
 
+  const serverStatus = meQuery.data?.status;
+
   useEffect(() => {
-    if (meQuery.status !== 200 && !location.pathname.startsWith("/auth/")) {
+    if (!meQuery.isLoading && serverStatus !== 200 && !location.pathname.startsWith("/auth/")) {
       navigate("/auth/login");
     }
-  }, [location.pathname]);
+  }, [location.pathname, serverStatus, navigate]);
 
   if (meQuery.isLoading) {
     return <Loading />
   }
 
-  if (meQuery.status !== 200) {
+  if (serverStatus === 200 || location.pathname.includes("success")) {
+    return <MainRoute />;
+  }
+
+  if (serverStatus!== 200 || location.pathname.startsWith("/auth/")) {
     return <Routes>
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/login/oauth2/success" element={<OAuth2 />} /> 
       <Route path="/auth/signup/oauth2" element={<Signup />} /> 
     </Routes>
   }
-
-
-  
 }
 
 export default AuthRoute;
