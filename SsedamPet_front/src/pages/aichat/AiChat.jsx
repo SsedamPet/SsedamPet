@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import * as s from "./styles";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar";
+import { api } from "../../configs/axiosConfig";
 
 function AiChat() {
     const [messages, setMessages] = useState([
@@ -20,12 +21,23 @@ function AiChat() {
         }
     }, [messages]);
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (inputText.trim()) {
             const now = new Date();
             setMessages([...messages, { type: 'user', text: inputText,}]);
             setInputText('');
             // 실제 챗봇 API 연동 시 여기에 챗봇 응답 로직 추가
+            try {
+        // 실제 서버로 질문 날리는 코드
+        const response = await api.post("/ai", { text: inputText });
+        
+        // 서버에서 온 대답 추가
+        const botMsg = { type: 'bot', text: response.data };
+        setMessages(prev => [...prev, botMsg]);
+      } catch (error) {
+        console.error("챗봇 통신 에러:", error);
+        setMessages(prev => [...prev, { type: 'bot', text: '서버가 아픈가 봐요... 대답을 못 하겠어요.' }]);
+      }
         }
     };
 

@@ -125,3 +125,43 @@ export const topButtonGroup = css`
     gap: 5px;
   }
 `;
+
+export const fixedBtn = css`
+  position: fixed;
+  bottom: 100px;
+  right: calc(50% - 300px + 20px); 
+  z-index: 9999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (max-width: 600px) {
+    right: 20px;
+  }
+
+  img {
+    width: 65px; 
+    height: 65px;
+    object-fit: contain;
+  }
+
+  .badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: #ff4d4d;
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    border: 2px solid white;
+  }
+`;
+
+
