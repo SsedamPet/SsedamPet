@@ -31,4 +31,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 });
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
+
+    @Override
+    public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
 }
