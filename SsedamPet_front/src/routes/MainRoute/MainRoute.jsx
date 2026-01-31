@@ -1,4 +1,5 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+/** @jsxImportSource @emotion/react */
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import MainLayout from "../../components/layout/MainLayout";
 import Home from "../../pages/home/Home";
 import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
@@ -11,16 +12,31 @@ import MyPage from "../../pages/mypage/MyPage";
 import LikedPosts from "../../pages/mypage/posts/LikedPosts";
 import PostModal from "../../pages/mypage/posts/PostModal";
 import PetAddModal from "../../pages/mypage/pet/PetAddModal";
-import ChatBot from "../../pages/Chatbot/ChatBot";
+import ChatBot from "../../pages/chatbot/ChatBot";
+import * as s from "../../pages/chatbot/styles.js";
 import AlertModal from "../../pages/mypage/alert/AlertModal";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import CommentSection from "../../pages/community/Comment/CommentSection";
 import HealthLog from "../../pages/Healthlog/HealthLog";
 
 function MainRoute() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const GlobalChatBotButton = () => {
+    
+    const hidePaths = ["/chatbot", "/auth/login", "/auth/signup"];
+
+    if (hidePaths.includes(location.pathname)) return null;
+
+    return (
+      <div css={s.fixedBtn} onClick={() => navigate("/chatbot")}>
+        <img src="/chatbot.png" alt="쓰담쌤" />
+      </div>
+    );
+  };
   
   function PetAddRoute() {
-    const navigate = useNavigate();
 
     return (
       <>
@@ -31,6 +47,7 @@ function MainRoute() {
   }
 
   return (
+    <>
     <Routes>
       <Route element={<MainLayout />}>
         {/* 로그인 없이 접근 가능 */}
@@ -70,6 +87,8 @@ function MainRoute() {
         </Route>
       </Route>
     </Routes>
+  <GlobalChatBotButton />
+  </>
   );
 }
 

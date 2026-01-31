@@ -149,7 +149,7 @@ export const statItem = css`
     gap: 8px;
     font-size: 16px;
     font-weight: 700;
-    cursor: pointer
+    cursor: pointer;
     position: relative;
     padding: 5px;
 `;
@@ -220,7 +220,7 @@ export const modalHeader = css`
         cursor: pointer;
         transition: opacity 0.2s;
 
-        &: hover {
+        &:hover {
            opacity: 0.6;
            }
         }
