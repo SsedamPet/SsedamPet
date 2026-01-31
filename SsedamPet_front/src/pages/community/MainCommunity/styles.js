@@ -99,6 +99,7 @@ export const profileImg = css`
     height: 45px;
     background-color: #DDD;
     border-radius: 50%;
+    object-fit: cover;
 `;
 
 export const userDetail = css`
@@ -117,9 +118,19 @@ export const userDetail = css`
 export const postImage = css`
     width: 100%;
     aspect-ratio: 4 / 3;
-    background-color: #CCC;
-    border-radius: 4px;
-    margin-bottom: 15px;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+`;
+
+export const postImgTag = css`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
 `;
 
 export const postText = css`
@@ -185,7 +196,7 @@ export const modalOverlay = css`
 export const modalContent = css`
     width: 100%;
     max-width: 600px;
-    height: 90%; /* 화면의 80% 높이 */
+    height: 93%; /* 화면의 80% 높이 */
     background-color: white;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
@@ -215,7 +226,7 @@ export const modalHeader = css`
         font-size: 16px;
         }
 
-    /* svg, button {
+    svg, button {
         margin-left: auto;
         cursor: pointer;
         transition: opacity 0.2s;
@@ -223,8 +234,7 @@ export const modalHeader = css`
         &: hover {
            opacity: 0.6;
            }
-    } */
-
+        }
 `;
 
 export const modalBody = css`
@@ -232,3 +242,30 @@ export const modalBody = css`
     overflow-y: auto;
 `;
 
+export const loadMoreContainer = css`
+    display: flex;
+    justify-content: center;
+    padding: 30px 0 50px;
+`;
+
+export const loadMoreButton = css`
+    padding: 12px 24px;
+    border-radius: 25px;
+    border: 1px solid #dbdbdb;
+    background-color: white;
+    color: #666;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #f9f9f9;
+        border-color: #ccc;
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+`;

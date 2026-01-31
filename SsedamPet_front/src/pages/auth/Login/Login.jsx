@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-  const BASE_URL = "http://localhost:8080";
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSocialLogin = (provider) => {
     window.location.href = `${BASE_URL}/oauth2/authorization/${provider}`;
