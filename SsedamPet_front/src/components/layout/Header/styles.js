@@ -9,7 +9,8 @@ export const headerBar = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: sticky;
+    top: 0;
 `;
 
 export const headerTitle = css`
