@@ -160,7 +160,7 @@ export const statItem = css`
     gap: 8px;
     font-size: 16px;
     font-weight: 700;
-    cursor: pointer
+    cursor: pointer;
     position: relative;
     padding: 5px;
 `;
