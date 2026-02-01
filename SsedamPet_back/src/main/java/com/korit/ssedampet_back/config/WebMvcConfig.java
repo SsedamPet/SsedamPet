@@ -21,8 +21,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         final String uploadPath = projectPath + "/upload/";
-        System.out.println("file.path = " + projectPath);
-        System.out.println("uploadPath = " + projectPath + "/upload/");
 
         registry.addResourceHandler("/image/**")       //외부에서 localhostL8080/image/** 의 요청이 들어오면
                 .addResourceLocations("file:" + uploadPath)    //스프링부트 서버 PC의 프로젝트 폴더 안의 upload 폴더로
