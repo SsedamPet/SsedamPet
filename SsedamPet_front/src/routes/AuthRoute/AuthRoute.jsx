@@ -40,9 +40,9 @@ function AuthRoute() {
 
   return (
     <Routes>
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/login/oauth2/success" element={<OAuth2 />} />
-      <Route path="/auth/signup/oauth2" element={<Signup />} />
+      <Route path="login" element={<Login />} />
+      <Route path="login/oauth2/success" element={<OAuth2 />} />
+      <Route path="signup/oauth2" element={<Signup />} />
     </Routes>
   );
 }
