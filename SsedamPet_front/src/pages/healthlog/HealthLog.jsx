@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { api } from "../../configs/axiosConfig";
 import usePetStore from "../../stores/usePetStore";
 
-const HealthLog = () => {
+function HealthLog () {
   const [searchParams] = useSearchParams();
   const { selectedPetId, selectedPetName } = usePetStore();
 
