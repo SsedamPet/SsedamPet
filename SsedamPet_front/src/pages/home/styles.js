@@ -238,7 +238,8 @@ export const gridItem = css`
     flex: 1;
     justify-content: space-between;
     flex-direction: column;
-    margin: 20px;
+    white-space: nowrap;
+    margin: 10px;
     align-items: center;
   }
 
@@ -267,7 +268,7 @@ export const weeklyStatContainer = css`
 `;
 
 export const weeklyCard = css`
-  width: 260px;
+  width: 280px;
   background-color: white;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
@@ -277,8 +278,11 @@ export const weeklyCard = css`
   justify-content: space-between;
 
   .card-content {
-    padding: 25px 20px;
+    padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .title {
@@ -290,14 +294,16 @@ export const weeklyCard = css`
 
   .stat-row {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap:8px;
+    width: 100%;
+    white-space: nowrap;
+    margin: 10px 0;
   }
 
   .main-num {
-    font-size: 48px;
+    font-size: 40px;
     font-weight: 900;
     color: #8c96ab;
   }
@@ -306,8 +312,8 @@ export const weeklyCard = css`
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 24px;
-    font-weight: 800;
+    font-size: 18px;
+    font-weight: 700;
   }
 
   .up {

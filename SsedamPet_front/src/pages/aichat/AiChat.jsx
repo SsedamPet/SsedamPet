@@ -22,7 +22,6 @@ function AiChat() {
   ]);
   const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  m; //AI 응답 대기상태
   const chatAreaRef = useRef(null);
 
   useEffect(() => {

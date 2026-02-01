@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header/Header";
 import BottomNavBar from "./BottomNavBar/BottomNavBar";
+import ChatBotButton from "./ChatBotButton/ChatBotButton";
 
 function MainLayout() {
   return (
@@ -12,6 +13,7 @@ function MainLayout() {
         <Outlet />
       </main>
       <BottomNavBar />
+      <ChatBotButton />
     </div>
   );
 }
