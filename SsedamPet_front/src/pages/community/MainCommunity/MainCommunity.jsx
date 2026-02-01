@@ -84,7 +84,6 @@ function CommunityMain() {
 
   return (
     <div css={s.rootContainer}>
-        <Header />
       <div css={s.filterRow}>
         <div css={s.headerTab}>
           <button css={s.tabButton(isLatest)} onClick={() => setIsLatest(true)}>최신순</button>

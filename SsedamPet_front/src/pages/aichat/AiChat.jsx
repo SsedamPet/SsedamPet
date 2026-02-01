@@ -31,16 +31,21 @@ function AiChat() {
     }
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (inputText.trim() || isLoading) {
-      const userMessageText = inputText;
+  const handleSendMessage = async (forcedText = "") => {
+    
+    const textToSend = typeof forcedText === "string" ? forcedText : inputText;
 
-      const now = new Date();
-      // 사용자가 보낸 메시지 즉시 화면에 보여줌
-      setMessages([...prev, { type: "user", text: userMessageText }]);
-      setInputText("");
-      // 실제 챗봇 API 연동 시 여기에 챗봇 응답 로직 추가
-      try {
+    if (!textToSend || typeof textToSend !== "string" || !textToSend.trim() || isLoading) {
+      return;
+    }
+
+    setIsLoading(true); // 로딩 시작
+    const userMsg = { type: "user", text: textToSend };
+
+    setMessages((prev) => [...prev, userMsg]);
+    setInputText("");
+
+    try {
         // 실제 서버로 질문 날리는 코드
         const response = await api.post("/api/ai/chat", { text: inputText });
 
@@ -56,7 +61,6 @@ function AiChat() {
       } finally {
         setIsLoading(false);
       }
-    }
   };
 
   // 상단 퀵 버튼 클릭 시 입력창에 텍스트 세팅
@@ -106,7 +110,7 @@ function AiChat() {
             value={inputText}
             disabled={isLoading}
             onChange={(e) => setInputText(e.target.value)}
-            onKeyPress={(e) => {
+            onKeyDown={(e) => {
               if (e.key === "Enter") handleSendMessage();
             }}
           />
