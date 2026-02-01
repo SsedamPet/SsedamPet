@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { use, useEffect, useState } from "react"; // useState 추가
+import React, { useEffect, useState } from "react"; // useState 추가
 import * as s from "./styles";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../../../configs/axiosConfig";

@@ -15,6 +15,7 @@ import CommentSection from "../../pages/community/Comment/CommentSection.jsx";
 import MainCommunity from "../../pages/community/MainCommunity/MainCommunity.jsx";
 import AiChat from "../../pages/aichat/AiChat.jsx";
 import HealthLog from "../../pages/healthlog/HealthLog.jsx";
+import AuthRoute from "../AuthRoute/AuthRoute.jsx";
 
 
 
@@ -34,11 +35,7 @@ function MainRoute() {
   return (
     <Routes>
       <Route element={<MainLayout />}>
-        {/* 로그인 없이 접근 가능 */}
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/signup" element={<Signup />} />
-
-        <Route path="/auth/login/oauth2/success" element={<OAuth2 />} />
+        <Route path="/auth/*" element={<AuthRoute />} />
         <Route path="/" element={<Home />} />
 
 
