@@ -9,8 +9,8 @@ import axios from "axios";
 import { api } from "../../configs/axiosConfig.js";
 import usePetStore from "../../stores/usePetStore.js";
 
-
 // 주간 리포트 카드 컴포넌트 (내부 헬퍼)
+
 const WeeklyReportCard = ({ title, today, last }) => {
   const diff = today - last;
 
@@ -58,6 +58,7 @@ const WeeklyReportCard = ({ title, today, last }) => {
         </div>
         <div className={`status-msg ${status.class}`}>{status.message}</div>
       </div>
+
       <div
         className="tip-box"
         style={{ backgroundColor: status.tipBg, color: status.tipColor }}
@@ -69,7 +70,7 @@ const WeeklyReportCard = ({ title, today, last }) => {
 };
 
 // 메인 Home 컴포넌트
-const Home = () => {
+function Home() {
   const location = useLocation();
   const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
@@ -369,7 +370,7 @@ const Home = () => {
               {
                 icon: "💩",
                 label: "배변",
-                value: todayLog.poopCnt,
+                value: todayLog.poopCnt + "회",
                 bg: "#F1F8E9",
               },
               {
@@ -455,6 +456,6 @@ const Home = () => {
       <BottomNavBar />
     </div>
   );
-};
+}
 
 export default Home;
