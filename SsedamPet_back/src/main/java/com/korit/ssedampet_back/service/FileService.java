@@ -33,7 +33,7 @@ public class FileService {
             Path filePath = uploadPath.resolve(saveName);
             file.transferTo(filePath.toFile());
 
-            return "/image/" + saveName;
+            return "/image/profile/" + saveName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

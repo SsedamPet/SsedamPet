@@ -2,8 +2,11 @@ spring:
   profiles:
     active: dev
     group:
-      dev: dev, common, secret
-      jiny: jiny-server, common, secret
+      dev: dev, common, secret-dev
+      jiny: jiny-server, common, secret-prod
+      yunyeol: yunyeol-server, common, secret-prod
+      hyojeong: hyojeong-server, common, secret-prod
+      hyunwoo: hyunwoo-server, common, secret-prod
 
 #      local: common, secret
 
@@ -20,14 +23,62 @@ spring:
     activate:
       on-profile: jiny-server
 
-  domain:
-    name:
-      http: http://localhost:80
-      https: http://localhost:443
+domain:
+  name:
+    http: http://ssedampet.shop
+    https: https://ssedampet.shop
 app:
   cors:
     allowed-origins:
-      - "https://aaaa.co.kr"
+      - "https://ssedampet.shop"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: yunyeol-server
+
+domain:
+  name:
+    http: http://ssedampet.store
+    https: https://ssedampet.store
+app:
+  cors:
+    allowed-origins:
+      - "https://ssedampet.store"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: hyojeong-server
+
+domain:
+  name:
+    http: http://ssedampet.
+    https: https://ssedampet.
+app:
+  cors:
+    allowed-origins:
+      - "https://ssedampet."
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: hyunwoo-server
+
+domain:
+  name:
+    http: http://ssedampet.
+    https: https://ssedampet.
+app:
+  cors:
+    allowed-origins:
+      - "https://ssedampet."
 
 ---
 
@@ -56,4 +107,3 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   type-aliases-package: com.korit.ssedampet_back.entity
-
