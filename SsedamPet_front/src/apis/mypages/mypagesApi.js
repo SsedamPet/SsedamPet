@@ -7,3 +7,4 @@ export const getMypage = () => {
 export const getMySummary = () => {
     return api.get("/api/mypage/summary")
 }
+
