@@ -28,6 +28,7 @@ public class HealthLogController {
     // healthlog 신규작성
     @PostMapping("")
     public ResponseEntity<?> createHealthLog(@RequestBody HealthLogCreateReqDto createReqDto) {
+        System.out.println("데이터 수신 확인: " + createReqDto);
         return ResponseEntity.ok(healthLogService.createHealthLog(createReqDto));
     }
 
