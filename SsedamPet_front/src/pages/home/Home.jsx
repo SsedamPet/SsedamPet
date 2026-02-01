@@ -148,6 +148,7 @@ function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const myPets = dashboardData.myPets.length > 0 ? dashboardData.myPets : [];
+  // const myPets = Array.isArray(dashboardData?.myPets) ? dashboardData.myPets : [];
 
   const getPetIndex = (offset) => {
     if (myPets.length === 0)

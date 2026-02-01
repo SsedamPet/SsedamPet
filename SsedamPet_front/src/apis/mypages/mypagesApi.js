@@ -8,3 +8,6 @@ export const getMySummary = () => {
     return api.get("/api/mypage/summary")
 }
 
+export const getMyPets = () => {
+    return api.get("/api/mypage/pets")
+}

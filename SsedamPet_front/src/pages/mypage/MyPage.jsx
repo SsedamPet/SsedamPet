@@ -5,13 +5,16 @@ import * as s from "./styles";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar";
 import { useMeQuery } from "../../react-query/queries/usersQueries";
 import Loading from "../../components/common/Loading";
+import { useMyPetsQuery } from "../../react-query/queries/petsQueries";
 
 const API_BASE_URL = "http://localhost:8080";
+const token = localStorage.getItem("AccessToken");
 
 const MyPage = () => {
   const navigate = useNavigate();
 
   const { data: me, isLoading, isError }= useMeQuery();
+  const { data: pets = [], isLoading: petsLoading } = useMyPetsQuery(!!token);
 
   useEffect(() => {
   console.log("me changed:", me);
@@ -102,21 +105,37 @@ const MyPage = () => {
           </div>
 
           <div css={s.petListContainer}>
-            <div css={s.petCard}>
-              <div className="pet-info">
-                <div className="pet-circle">
-                  🐶
-                  <div css={s.orangeBadge} style={{ width: '18px', height: '18px', bottom: '-2px', right: '-2px' }}>
-                    <OrangeSyncSVG size={10} />
+            {petsLoading ? (
+              <div>불러오는중..</div>
+            ) : pets.length === 0 ? (
+              <div>등록된 반려동물이 없습니다.</div>
+            ) : (
+              pets.map((pet) => (
+                <div key={pet.petId} css={s.petCard}>
+                  <div className="pet-info">
+                    <div className="pet-circle">
+                      {pet.petProfileImgUrl ? (
+                        <img src="{pet.petProfileImgUrl" 
+                        alt="pet.petName" 
+                        style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
+                        />
+                      ) : (
+                        "🐶"
+                      )}
+                    <div css={s.orangeBadge} style={{ width: '18px', height: '18px', bottom: '-2px', right: '-2px' }}>
+                      <OrangeSyncSVG size={10} />
+                    </div>
                   </div>
-                </div>
-                <div>
-                  <div className="p-name">고양이 2세 ♂</div>
-                  <div className="p-desc">오늘 하루도 행복하다냥</div>
-                </div>
+                  <div>
+                    <div className="p-name">{pet.petName} {pet.petAge ? `${pet.petAge}세` : "" {pet.petGender === "M" ? "♂" : pet.petGender === "F" ? "♀" : "" }</div>
+                    <div className="p-desc">{pet.petBreed ?? ""}</div>
+                  </div>
               </div>
               <button className="edit-btn">편집</button>
             </div>
+              ))
+            )}
+            
           </div>
         </section>
       </main>
