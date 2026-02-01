@@ -11,7 +11,7 @@ function ChatBotButton() {
 
   return (
     <div css={s.fixedBtn} onClick={() => navigate("/chatbot")}>
-      <img src="/chatbot.png" alt="쓰담쌤" />
+      <img src="/chatbot.png" alt="멍냥닥터" />
     </div>
   );
 }
