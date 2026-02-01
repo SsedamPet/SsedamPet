@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,27 +32,32 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
         Map<String, Object> attributes = principalUser.getAttributes();
 
+        String provider = attributes.get("provider").toString();
+        String providerUserId = attributes.get("providerUserId").toString();
+
         OAuth2UserEntity oAuth2UserEntity = oAuth2UserMapper.findByProviderAndProviderUserId(attributes.get("provider").toString(), attributes.get("providerUserId").toString());
 
         if (Objects.isNull(oAuth2UserEntity)) {
-            List<String> params = attributes.entrySet().stream().map(stringObjectEntry -> {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(stringObjectEntry.getKey());
-                stringBuilder.append("=");
-                stringBuilder.append(stringObjectEntry.getKey().equals("nickname") ? URLEncoder.encode(stringObjectEntry.getValue().toString()) : stringObjectEntry.getValue());
-                stringBuilder.append("&");
-                return stringBuilder.toString();
-            }).toList();
 
-            String paramsString = String.join("", params);
-            paramsString = paramsString.substring(0, paramsString.length() - 1);
+            String name = Objects.toString(attributes.get("name"), "소셜유저");
+            String email = Objects.toString(attributes.get("email"), "");
+            String profileImgUrl = Objects.toString(attributes.get("profileImgUrl"), "");
 
-            response.sendRedirect("http://localhost:5173/auth/signup/oauth2?" + paramsString);
-            return;
+            StringBuilder sb = new StringBuilder("http://localhost:5173/auth/signup/oauth2?");
+            sb.append("provider=").append(provider)
+                    .append("&providerUserId=").append(providerUserId)
+                    .append("&email=").append(email)
+                    // 한글 이름이나 특수문자가 섞인 URL은 반드시 인코딩
+                    .append("&name=").append(URLEncoder.encode(name, StandardCharsets.UTF_8))
+                    .append("&profileImgUrl=").append(URLEncoder.encode(profileImgUrl, StandardCharsets.UTF_8));
+
+            response.sendRedirect(sb.toString());
+        } else {
+            String accessToken = jwtTokenProvider.createAccessToken(oAuth2UserEntity.getUserId());
+            response.sendRedirect("http://localhost:5173/auth/login/oauth2/success?accessToken=" + accessToken);
         }
 
-        String accessToken = jwtTokenProvider.createAccessToken(oAuth2UserEntity.getUserId());
-        response.sendRedirect("http://localhost:5173/auth/login/oauth2/success?accessToken=" + accessToken);
+
 
     }
 }
