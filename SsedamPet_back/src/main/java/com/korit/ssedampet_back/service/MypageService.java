@@ -23,7 +23,7 @@ public class MypageService {
 
     private final MypageMapper mypageMapper;
     private final PetMapper petMapper;
-    private FileService fileService;
+    private final FileService fileService;
 
     // TODO: 마이페이지 전체 정보 조회
     /*public MypageRespDto getMypage(int userId) {

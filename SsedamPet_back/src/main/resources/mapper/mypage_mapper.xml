@@ -67,7 +67,7 @@
             user_id desc
     </select>
 
-    <update id="updatePetProfileImgUrl">
+    <update id="updatePetProfileImgUrlInt">
         update pet_tb
         set pet_profile_img_url = #{url}
         where pet_id = #{petId}
