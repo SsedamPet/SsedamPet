@@ -147,7 +147,7 @@ function Home() {
   // 현재 선택된 펫 인덱스
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const myPets = dashboardData.myPets.length > 0 ? dashboardData.myPets : [];
+  const myPets = dashboardData?.myPets?.length > 0 ? dashboardData?.myPets : [];
   // const myPets = Array.isArray(dashboardData?.myPets) ? dashboardData.myPets : [];
 
   const getPetIndex = (offset) => {
