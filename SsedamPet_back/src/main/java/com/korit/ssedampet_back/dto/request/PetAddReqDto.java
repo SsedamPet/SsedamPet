@@ -25,5 +25,6 @@ public class PetAddReqDto {
     private LocalDate petBirth;           // "YYYY-MM-DD"
     private String petGender;          // "M" / "F"
     private Double petWeight;
+    private Integer petAge;
     private String petProfileImgUrl;   // URL 방식
 }

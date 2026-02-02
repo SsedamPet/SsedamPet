@@ -8,26 +8,26 @@
         insert into pet_tb
         (
             user_id,
-            post_id,
             pet_type,
             pet_name,
+            pet_breed,
             pet_birth,
             pet_gender,
-            pet_breed,
             pet_weight,
+            pet_age,
             pet_profile_img_url,
             created_dt,
             updated_dt
         )
         values (
             #{userid},
-            #{postId},
             #{petType},
             #{petName},
+            #{petBreed},
             #{petBirth},
             #{petGender},
-            #{petBreed},
             #{petWeight},
+            #{petAge},
             #{petProfileImgUrl},
             NOW(),
             NOW()
