@@ -7,6 +7,7 @@ import com.korit.ssedampet_back.service.MypageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -53,6 +54,15 @@ public class MypageController {
         // int userId = principal.getUserId();
         dto.setUserId(principalUser());
         return ResponseEntity.ok(mypageService.addPet(dto));
+    }
+
+    @PostMapping("/pets/{petId}/pet-profile-image")
+    public ResponseEntity<?> uploadPetProfileImage(@PathVariable int petId, @RequestPart("file")MultipartFile file) {
+        int userId = principalUser();
+
+        String petImageUrl = mypageService.updatePetProfileImage(userId, petId, file);
+
+        return ResponseEntity.ok().body(petImageUrl);
     }
 
     @GetMapping("/my-posts")

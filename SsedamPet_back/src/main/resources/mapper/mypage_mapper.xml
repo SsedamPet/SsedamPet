@@ -14,11 +14,18 @@
     </resultMap>
 
     <resultMap id="PetDtoMap" type="com.korit.ssedampet_back.dto.response.mypage.PetDto">
-        <id     property="petId"             column="pet_id"/>
-        <result property="petName"           column="pet_name"/>
-        <result property="petGender"         column="pet_gender"/>
-        <result property="petProfileImgUrl"  column="pet_profile_img_url"/>
+        <id     property="petId"            column="pet_id"/>
+        <result property="userId"           column="user_id"/>               <!-- (선택) 필요하면 -->
+        <result property="petType"          column="pet_type"/>              <!-- ✅ 추가 -->
+        <result property="petName"          column="pet_name"/>
+        <result property="petBirth"         column="pet_birth"/>             <!-- ✅ 추가 -->
+        <result property="petGender"        column="pet_gender"/>
+        <result property="petBreed"         column="pet_breed"/>             <!-- ✅ 추가 -->
+        <result property="petWeight"        column="pet_weight"/>            <!-- (선택) 필요하면 -->
+        <result property="petProfileImgUrl" column="pet_profile_img_url"/>
+        <result property="petAge"           column="petAge"/>                <!-- ✅ 유지 -->
     </resultMap>
+
 
     <resultMap id="PostDtoMap" type="com.korit.ssedampet_back.dto.response.mypage.PostDto">
         <id     property="postId"            column="post_id"/>
@@ -60,6 +67,14 @@
             user_id desc
     </select>
 
+    <update id="updatePetProfileImgUrl">
+        update pet_tb
+        set pet_profile_img_url = #{url}
+        where pet_id = #{petId}
+          and user_id = #{userId}
+    </update>
+
+
     <!-- 내가 작성한 게시글 수 -->
     <select id="countMyPosts" resultType="int">
         select
@@ -83,10 +98,16 @@
     <!-- 내 반려동물 목록 -->
     <select id="findMyPets" resultMap="PetDtoMap">
         select
-            pet_id,
-            pet_name,
-            pet_gender,
-            pet_profile_img_url
+            pet_id               ,
+            user_id                 ,
+            pet_type               ,
+            pet_name               ,
+            pet_birth              ,
+            pet_gender             ,
+            pet_breed               ,
+            pet_weight              ,
+            pet_profile_img_url     ,
+            IFNULL((YEAR(CURDATE()) - YEAR(pet_birth)), 0) AS petAge
         from
             pet_tb
         where
