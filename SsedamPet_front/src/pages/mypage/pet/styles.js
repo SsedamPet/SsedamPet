@@ -104,44 +104,41 @@ export const inputRow = css`
 
 export const photoSection = css`
   display: flex; 
-  gap: 15px; 
+  gap: 18px; 
   align-items: center; 
 `;
 
-export const photoCircle = css`
-  width: 140px; 
-  height: 140px; 
-  background-color: #E0ECE3; 
-  border-radius: 50%; 
-  flex-shrink: 0;
-`;
+
 
 export const infoInputs = css`
-  flex: 1; 
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  
+  gap: 12px;
+
   .input-item {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    
-    span { 
-      font-size: 10px; 
-      color: #888; 
-    }
-
-    input { 
-        padding: 8px 12px; 
-        border-radius: 12px; 
-        border: none; 
-        background: #FFF; 
-        font-size: 11px; 
-        width: 100%;
-        box-sizing: border-box;
-    }
+    gap: 6px;
   }
+
+  .input-item > span {
+    font-size: 12px;
+    color: #2d4028;
+    font-weight: 700;
+  }
+
+  .input-item input {
+  width: 100%;
+  max-width: 250px;     /* ✅ 추가: 오른쪽 영역에서 넘치지 않게 */
+  box-sizing: border-box; /* ✅ 추가 */
+  height: 38px;
+  border-radius: 12px;
+  border: none;
+  padding: 0 12px;
+  outline: none;
+  }
+
 `;
 
 export const footerButtons = css`
@@ -164,5 +161,70 @@ export const footerButtons = css`
     &.save { 
       background-color: #B7F2C9; 
     }
+  }
+  
+`;
+
+export const selectedButton = css`
+  font-weight: 700 !important;
+  opacity: 1 !important;
+  border: 2px solid #2D4028 !important;
+  background: #ffffff !important;
+  color: #2D4028 !important;
+`;
+
+export const unSelectedButton = css`
+  font-weight: 400 !important;
+  opacity: 0.6 !important;
+  border: 1px solid rgba(0,0,0,0.15) !important;
+  background: #ffffff !important;
+  color: #888 !important;
+`;
+
+
+export const photoCircle = css`
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #e6f0e8;
+  flex: 0 0 140px;
+
+  position: relative;   /* ✅ 유지 */
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+`;
+
+export const photoPlaceholder = css`
+  position: absolute;   /* ✅ 추가: 항상 중앙 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: #2d4028;       /* ✅ 더 진한 색 */
+  font-weight: 700;
+`;
+
+export const photoImage = css`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+export const hiddenFileInput = css`
+  display: none;
+`;
+
+export const genderButtonGroup = css`
+  display: flex;
+  gap: 10px;
+
+  button {
+    flex: 1;
+    height: 38px;
+    border-radius: 12px;
   }
 `;

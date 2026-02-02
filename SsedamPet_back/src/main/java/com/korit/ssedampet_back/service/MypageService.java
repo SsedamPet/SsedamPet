@@ -71,6 +71,10 @@ public class MypageService {
 
     public PetAddRespDto addPet(PetAddReqDto dto) {
 
+        if (dto.getPetProfileImgUrl() == null || dto.getPetProfileImgUrl().trim().isEmpty()) {
+            dto.setPetProfileImgUrl("/images/default_pet.png");
+        }
+
         petMapper.insertPet(dto);
 
         return new PetAddRespDto(dto.getPetId());
