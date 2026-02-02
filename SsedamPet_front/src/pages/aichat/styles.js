@@ -48,32 +48,29 @@ export const messageBase = css`
 
 export const userMessage = css`
   ${messageBase};
-  display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
+  justify-content: flex-end;
   align-self: flex-end;
-  width: fit-content;
-  max-width: 90%;
 
   .message-content {
+    order: 1;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
   }
 
+  .avatar {
+    order: 2;
+    margin-left: 8px;
+  }
+
   .bubble {
     background-color: #c6f6ad;
     color: #6b6b6b;
-    margin-right: 10px;
-    margin-left: 0;
     padding: 10px 15px;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-    display: inline-block;
-  }
-
-  .avatar {
-    margin-right: 0;
-    margin-left: 10px;
+    max-width: 70%;
+    word-break: break-word;
+    white-space: pre-wrap;
   }
 `;
 
