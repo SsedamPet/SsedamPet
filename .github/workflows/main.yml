@@ -64,6 +64,10 @@ jobs:
           chmod 777 ./mvnw
           ./mvnw clean package -Dtestskip
 
+      - name: Debug docker username
+        run: |
+          echo "DOCKER_USERNAME=${{ env.DOCKER_USERNAME }}"
+
       - name: Springboot Docker image build
         run: |
           cd SsedamPet_back
