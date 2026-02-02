@@ -33,7 +33,7 @@
             NOW()
         )
     </insert>
-    <insert id="insertPet">
+    <insert id="insertPet" useGeneratedKeys="true" keyProperty="petId" keyColumn="petId">
         insert into pet_tb
         (
             user_id,

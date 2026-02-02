@@ -70,6 +70,7 @@ public class MypageService {
     }
 
     public PetAddRespDto addPet(PetAddReqDto dto) {
+
         petMapper.insertPet(dto);
 
         return new PetAddRespDto(dto.getPetId());
