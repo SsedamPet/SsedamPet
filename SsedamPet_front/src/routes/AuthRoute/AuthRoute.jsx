@@ -15,32 +15,36 @@ function AuthRoute() {
   const navigate = useNavigate();
   const location = useLocation();
   const meQuery = useMeQuery();
-  console.log(meQuery.isLoading)
-  console.log(meQuery.data)
+  console.log(meQuery.isLoading);
+  console.log(meQuery.data);
 
   const serverStatus = meQuery.data?.status;
 
   useEffect(() => {
-    if (!meQuery.isLoading && serverStatus !== 200 && !location.pathname.startsWith("/auth/")) {
-      navigate("/auth/login");
+    const isNotLoggedIn =
+      !meQuery.isLoading && (!meQuery.data || serverStatus !== 200);
+    if (isNotLoggedIn && !location.pathname.startsWith("/auth/")) {
+      navigate("/auth/login", { replace: true });
     }
-  }, [location.pathname, serverStatus, navigate]);
+  }, [
+    meQuery.isLoading,
+    meQuery.data,
+    serverStatus,
+    location.pathname,
+    navigate,
+  ]);
 
   if (meQuery.isLoading) {
-    return <Loading />
+    return <Loading />;
   }
 
-  if (serverStatus === 200 || location.pathname.includes("success")) {
-    return <MainRoute />;
-  }
-
-  if (serverStatus!== 200 || location.pathname.startsWith("/auth/")) {
-    return <Routes>
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/login/oauth2/success" element={<OAuth2 />} /> 
-      <Route path="/auth/signup/oauth2" element={<Signup />} /> 
+  return (
+    <Routes>
+      <Route path="login" element={<Login />} />
+      <Route path="login/oauth2/success" element={<OAuth2 />} />
+      <Route path="signup/oauth2" element={<Signup />} />
     </Routes>
-  }
+  );
 }
 
 export default AuthRoute;

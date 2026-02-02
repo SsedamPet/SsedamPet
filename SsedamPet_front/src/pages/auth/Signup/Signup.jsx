@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { use, useEffect, useState } from "react"; // useState 추가
+import React, { useEffect, useState } from "react"; // useState 추가
 import * as s from "./styles";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../../../configs/axiosConfig";
@@ -7,9 +7,10 @@ import { api } from "../../../configs/axiosConfig";
 function Signup() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
   // 1. 에러 해결: formData 상태 변수 정의
   const [signupData, setSignupData] = useState({
-    name: searchParams.get("nickname"),
+    name: searchParams.get("name"),
     email: searchParams.get("email"),
     birthDate: "",
     phone: "",
@@ -24,14 +25,14 @@ function Signup() {
   const [isValidNickname, setValidNickname] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
-  // 2. 에러 해결: 클릭 이벤트 함수 정의
+  // 닉네임 중복확인
   const handleNicknameCheck = async () => {
-    try{
-    const response = await api.get(
-      "/api/auth/valid/nickname?nickname=" + signupData.nickname,
-    );
-    setValidNickname(response.data);
-    if (response.data) {
+    try {
+      const response = await api.get(
+        "/api/auth/valid/nickname?nickname=" + signupData.nickname,
+      );
+      setValidNickname(response.data);
+      if (response.data) {
         alert("사용 가능한 닉네임입니다!");
       } else {
         alert("이미 사용 중인 닉네임입니다. 다시 입력하세요.");
@@ -42,9 +43,11 @@ function Signup() {
     }
   };
 
+  // 프로필 이미지 업로드 처리
   const handleProfileImgOnClick = () => {
     const inputElement = document.createElement("input");
     inputElement.setAttribute("type", "file");
+    inputElement.setAttribute("accept", "image/*");
     inputElement.click();
     inputElement.onchange = (e) => {
       const files = e.target.files;
@@ -63,9 +66,10 @@ function Signup() {
     };
   };
 
+  // 회원가입 제출
   const handleSubmit = async () => {
     const formData = new FormData();
-    const birthReg = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/; 
+    const birthReg = /^(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])$/;
     const phoneReg = /^010-\d{4}-\d{4}$/;
 
     if (!isValidNickname) {
@@ -91,20 +95,19 @@ function Signup() {
     try {
       const response = await api.post("/api/auth/signup", formData, {
         headers: {
-          "Content-Type": "multipart/formData",
+          "Content-Type": "multipart/form-data",
         },
       });
 
       console.log(response);
       const accessToken = response.data;
-      if (accessToken) {
+      if (response.status === 200) {
         localStorage.setItem("AccessToken", accessToken);
-        alert("회원가입 완료");
-        navigate("/");
+        navigate("/auth/login", { replace: true });
       }
     } catch (error) {
       console.error("회원가입 실패:", error);
-      alert("회원가입 중 오류가 발생했습니다.")
+      alert("회원가입 중 오류가 발생했습니다.");
     }
   };
 

@@ -72,7 +72,7 @@ public class OAuth2Service extends DefaultOAuth2UserService {
         newAttributes.put("provider", provider);
         newAttributes.put("email", email);
         newAttributes.put("profileImgUrl", profileImgUrl);
-        newAttributes.put("nickname", name);
+        newAttributes.put("name", name);
 
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
 

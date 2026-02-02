@@ -57,13 +57,15 @@ public class HealthLogService {
         if (lastWeekAvg == null) lastWeekAvg = new HealthWeeklyAvgDto();
 
         // 항목별 라벨 (오차 기준 각각 다름)
-        String waterScoreLabel = avgCompare(thisWeekAvg.getAvgWaterScore(), lastWeekAvg.getAvgWaterScore(), 0.3, "음수량");
+        String foodScoreLabel = avgCompare(thisWeekAvg.getAvgWaterScore(), lastWeekAvg.getAvgWaterScore(), 0.3, "음수량");
+        String poopScoreLabel = avgCompare(thisWeekAvg.getAvgFoodScore(), lastWeekAvg.getAvgFoodScore(), 0.3, "식사량");
 
         // 비교 데이터 조립 - 최종 응답 DTO
         return HealthWeeklyComparisonDto.builder()
                 .thisWeek(thisWeekAvg)
                 .lastWeek(lastWeekAvg)
-                .waterCompareLabel(waterScoreLabel)
+                .foodScoreLabel(foodScoreLabel)
+                .poopScoreLabel(poopScoreLabel)
                 .build();
     }
 

@@ -16,11 +16,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${file.path}")
     private String projectPath;
 
+
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        final String uploadPath = projectPath + "/upload";
+        final String uploadPath = projectPath + "/upload/";
+
         registry.addResourceHandler("/image/**")       //외부에서 localhostL8080/image/** 의 요청이 들어오면
-                .addResourceLocations("file:///" + uploadPath)    //스프링부트 서버 PC의 프로젝트 폴더 안의 upload 폴더로
+                .addResourceLocations("file:" + uploadPath)    //스프링부트 서버 PC의 프로젝트 폴더 안의 upload 폴더로
                 .resourceChain(true)                 //연결
                 .addResolver(new PathResourceResolver() {         //요청 URL 에 한글이 들어있을 수 있으니 한글 인코딩
                     @Override
@@ -31,4 +34,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 });
         WebMvcConfigurer.super.addResourceHandlers(registry);
     }
+
+    @Override
+    public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173", "https://ssedampet.shop")
+                .allowedMethods("*")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
+
+
 }

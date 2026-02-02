@@ -3,6 +3,7 @@ package com.korit.ssedampet_back.service;
 import com.korit.ssedampet_back.dto.request.AdditionalInfoReqDto;
 import com.korit.ssedampet_back.dto.request.SignupReqDto;
 import com.korit.ssedampet_back.dto.request.PetCreateReqDto;
+import com.korit.ssedampet_back.entity.OAuth2UserEntity;
 import com.korit.ssedampet_back.entity.User;
 import com.korit.ssedampet_back.mapper.OAuth2UserMapper;
 import com.korit.ssedampet_back.mapper.UserMapper;
@@ -52,10 +53,10 @@ public class AuthService {
         System.out.println("생성된 유저 ID: " + generatedId);
 
         oAuth2UserMapper.addOAuth2User(
-                user.getUserId(),
+                user.getUserId(), // 자동 생성된 ID 사용
                 dto.getProvider(),
-                dto.getProviderUserId());
-
+                dto.getProviderUserId()
+        );
         return user;
     }
 

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    @Value("${user.dir}")
+    @Value("${file.path}")
     private String projectPath;
 
     public String saveFile(MultipartFile file) {
@@ -33,7 +33,7 @@ public class FileService {
             Path filePath = uploadPath.resolve(saveName);
             file.transferTo(filePath.toFile());
 
-            return "/image/" + saveName;
+            return "/image/profile/" + saveName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

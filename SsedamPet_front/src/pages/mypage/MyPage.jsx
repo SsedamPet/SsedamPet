@@ -1,11 +1,57 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom"; // Outlet 추가
 import * as s from "./styles";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar";
+import { useMeQuery } from "../../react-query/queries/usersQueries";
+import Loading from "../../components/common/Loading";
+
+const API_BASE_URL = "http://localhost:8080";
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  const { data: me, isLoading, isError }= useMeQuery();
+
+  useEffect(() => {
+  console.log("me changed:", me);
+  }, [me]);
+
+  if (isLoading) {
+    return (
+      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
+        <main css={s.container}>
+          <Loading/>
+        </main>
+        <BottomNavBar/>
+      </div>
+    );
+  }
+
+  if (isError || !me?.data) {
+    return (
+      <div style={{ width: "100%", maxWidth: "600px", margin: "0 auto" }}>
+        <main css={s.container}>
+          <div style={{padding: 20}}>
+            내 정보를 불러오지 못했습니다.
+            <button onClick={() => window.location.reload()} style={{marginLeft: 10}}>
+              새로고침
+            </button>
+          </div>
+        </main>
+        <BottomNavBar/>
+      </div>
+    );
+  }
+
+
+  const nickname = me?.data?.nickname ?? me?.data?.name ?? "";
+  const email = me?.data?.email ?? "";
+  // const userProfileImgUrl = me?.data?.userProfileImgUrl ?? "";
+  const userProfileImgUrl = me?.data?.userProfileImgUrl 
+  ? me.data.userProfileImgUrl.startsWith("http")
+  ? me.data.userProfileImgUrl
+  : `${API_BASE_URL}${me.data.userProfileImgUrl}` : "";
 
   // 공통 주황색 새로고침 SVG
   const OrangeSyncSVG = ({ size = 12 }) => (
@@ -27,12 +73,13 @@ const MyPage = () => {
 
           <div css={s.userMainInfo}>
             <div className="profile-placeholder">
-              🐱
+              {userProfileImgUrl ? ( <img src={userProfileImgUrl} alt="userProfileImgUrl" style={{ width: "100%", height: "100%", borderRadius: "50%", objectFit: "cover" }}
+                /> ) : ( "🐱" )}
               <div css={s.orangeBadge}><OrangeSyncSVG size={12} /></div>
             </div>
             <div className="user-text">
-              <div className="name">냥집사 님</div>
-              <div className="email">testuser@email.com</div>
+              <div className="name">{`${nickname} 님`}</div>
+              <div className="email">{`${email}`}</div>
             </div>
           </div>
 

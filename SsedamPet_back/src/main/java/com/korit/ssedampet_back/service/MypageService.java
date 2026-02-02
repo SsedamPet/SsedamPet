@@ -5,12 +5,15 @@ import com.korit.ssedampet_back.dto.request.PetCreateReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.mapper.MypageMapper;
 import com.korit.ssedampet_back.mapper.PetMapper;
+import com.korit.ssedampet_back.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -78,6 +81,7 @@ public class MypageService {
         List<PostDto> posts = mypageMapper.findMyLikedPosts(userId);
         return posts == null ? Collections.emptyList() : posts;
     }
+
 
 
 }

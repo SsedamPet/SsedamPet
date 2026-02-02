@@ -11,10 +11,12 @@ export const useMeQuery = () => {
       try {
         const res = await requestMe();
         console.log("requestMe success:", res);
+        console.log("me data:", res.data);
         return res;
       } catch (error) {
         console.log("requestMe error:", error);
-        return error.response;
+        // return error.response;
+        throw error;
       }
     },
     retry: 0

@@ -5,6 +5,7 @@ import com.korit.ssedampet_back.filter.JwtAuthenticationFilter;
 import com.korit.ssedampet_back.security.JwtAuthenticationEntryPoint;
 import com.korit.ssedampet_back.service.OAuth2Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -27,7 +28,10 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    //TODO: OAuth2SuccessHandler 구현하고 가져오기
+//    @Value("${app.cors.allowed-origins}")
+    @Value("${app.cors.allowed-origins:http://localhost:5173}")
+    private String allowedOrigins;
+
 
     @Bean
     public SecurityFilterChain FilterChain(HttpSecurity http, OAuth2SuccessHandler oAuth2SuccessHandler, OAuth2Service oAuth2Service) throws Exception {
@@ -55,15 +59,16 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> {
+            // 모든 사용자 접근 (인증/공개 API)
             auth.requestMatchers("/api/auth/**").permitAll();
             auth.requestMatchers("/v3/api-docs/**").permitAll();
             auth.requestMatchers("/swagger-ui/**").permitAll();
             auth.requestMatchers("/swagger-ui.html").permitAll();
             auth.requestMatchers("/doc").permitAll();
+            auth.requestMatchers("/image/**").permitAll();
 
             auth.requestMatchers("/oauth2/**").permitAll();
             auth.requestMatchers("/login/**").permitAll();
-            auth.requestMatchers("/image/**").permitAll();
             auth.requestMatchers("/api/user/**").permitAll();
             auth.requestMatchers("/api/users/**").permitAll();
             auth.requestMatchers("/api/main/**").permitAll();
@@ -71,7 +76,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/healthlog/**").permitAll();
             auth.requestMatchers("/api/mypage/**").permitAll();
             auth.requestMatchers("/api/posts/**").permitAll();
-
+            auth.requestMatchers("/ai/**").permitAll();
 
             auth.anyRequest().authenticated();
         });
@@ -86,7 +91,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
 
-        cors.setAllowedOrigins(List.of("http://localhost:5173"));
+        cors.setAllowedOrigins(List.of(allowedOrigins.split("\\s*,\\s*")));
         cors.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         cors.setAllowedHeaders(List.of("*"));
         cors.setAllowCredentials(true);

@@ -1,17 +1,17 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as s from "./styles";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar";
 import { useSearchParams } from "react-router-dom";
 import { api } from "../../configs/axiosConfig";
+import usePetStore from "../../stores/usePetStore";
 
-const HealthLog = () => {
-
+function HealthLog () {
   const [searchParams] = useSearchParams();
-  const petIdFromUrl = searchParams.get("petId"); // URL에서 ?petId=1 추출
+  const { selectedPetId, selectedPetName } = usePetStore();
 
   const [logData, setLogData] = useState({
-    petId: petIdFromUrl ? parseInt(petIdFromUrl) : 0,
+    petId: selectedPetId || 0,
     date: new Date().toISOString().split("T")[0], // 초기값 오늘 날짜
     waterStatus: "",
     foodStatus: "",
@@ -21,6 +21,13 @@ const HealthLog = () => {
   });
 
   const [memo, setMemo] = useState("");
+
+  // 스토어 아이디가 바뀌면 즉시 반영
+  useEffect(() => {
+    if (selectedPetId) {
+      setLogData((prev) => ({ ...prev, petId: selectedPetId }));
+    }
+  }, [selectedPetId]);
 
   //오늘 날짜 표시 (2026.01.27 형식)
   const displayTodayDate = logData.date.replace((/-/g, "."));
@@ -65,14 +72,24 @@ const HealthLog = () => {
       const requestData = {
         petId: logData.petId,
         writeDate: logData.date,
-        waterStatus: logData.waterStatus,
-        foodStatus: logData.foodStatus,
+        waterStatus: [
+          "거의 안 마심",
+          "평소보다 적음",
+          "평소와 비슷",
+          "평소보다 많음",
+        ][logData.waterStatus],
+        foodStatus: [
+          "거의 안 먹음",
+          "절반 정도",
+          "대부분 다 먹음",
+          "평소보다 많음",
+        ][logData.foodStatus],
         poopCnt: logData.poopCnt,
-        symptom: logData.symptom,
+        symptom: logData.symptom.join(", "),
         healthLogMemo: logData.healthLogMemo,
       };
 
-      const response = await api.post("/api/healthlog/", requestData);
+      const response = await api.post("/api/healthlog", requestData);
 
       if (response.status === 200) {
         alert("저장이 완료되었습니다");

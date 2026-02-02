@@ -69,23 +69,19 @@
 <!--    주간 평균 비교 -->
     <select id="getWeeklyAverage" resultType="com.korit.ssedampet_back.dto.response.healthlog.HealthWeeklyAvgDto">
         select
-            AVG(poop_cnt) as avgPoopCnt,
-            -- 상태값을 점수로 변환하여 평균 산출 (매우좋음: 3, 보통: 2, 나쁨: 1)
-            AVG(CASE
-                WHEN water_status = '"매우 좋음"' THEN 3
-                WHEN water_status = '"보통"' THEN 2
-                ELSE 1 END)
-                AS avgWaterScore,
-            AVG(CASE
-                WHEN food_status = '"평소보다 많이 먹음"' THEN 3
-                WHEN food_status = '"평소와 같음"' THEN 2
-                ELSE 1 END)
-                AS avgFoodScore
+            /* 배변 횟수 평균 */
+            ifnull(avg(poop_cnt), 0) as avgPoopCnt,
+
+            /* 사료 상태를 점수로 변환하여 평균 산출 */
+            ifnull(avg(case
+            when food_status = '평소보다 많음' then 3
+            when food_status = '평소와 같음' then 2
+            else 1 end), 0) as avgFoodScore
         from
             healthlog_tb
         where
             pet_id = #{petId}
-            and write_date BETWEEN #{startDate} AND #{endDate}
+            and write_date between #{startDate} and #{endDate}
     </select>
 
 </mapper>

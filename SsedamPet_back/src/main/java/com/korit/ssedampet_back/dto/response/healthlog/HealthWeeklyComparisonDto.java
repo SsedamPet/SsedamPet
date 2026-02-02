@@ -14,5 +14,6 @@ public class HealthWeeklyComparisonDto {
     private HealthWeeklyAvgDto thisWeek;  // 이번 주 평균
 
     // 비교 후 상태
-    private String waterCompareLabel;
+    private String foodScoreLabel;
+    private String poopScoreLabel;
 }

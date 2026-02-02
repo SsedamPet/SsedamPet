@@ -8,9 +8,8 @@ api.interceptors.request.use((config) => {
   const accessToken = localStorage.getItem("AccessToken");
 
   if (accessToken && accessToken !== "null") {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-    }
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
-  // config.headers.Authorization = `Bearer ${accessToken}`;
   return config;
 });

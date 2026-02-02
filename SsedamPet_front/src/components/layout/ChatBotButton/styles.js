@@ -163,5 +163,3 @@ export const fixedBtn = css`
     border: 2px solid white;
   }
 `;
-
-
