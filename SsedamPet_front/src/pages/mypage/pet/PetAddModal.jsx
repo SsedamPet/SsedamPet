@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import * as s from "./styles";
 import { api } from "../../../configs/axiosConfig";
+import { useQueryClient } from "@tanstack/react-query";
 
 const petAddForm = {
     petType: "",
@@ -18,6 +19,8 @@ const PetAddModal = ({ onClose }) => {
 
     const [petImageFile, setPetImageFile] = useState(null);
     const [petImagePreview, setPetImagePreview] = useState("");
+    
+    const queryClient = useQueryClient();
 
     const setField = (key, value) => setForm((prev) => ({...prev, [key]: value}));
 
@@ -73,6 +76,7 @@ const PetAddModal = ({ onClose }) => {
         await uploadPetImage(petId);
         alert("반려동물이 성공적으로 등록되었습니다!");
 
+        queryClient.invalidateQueries({queryKey: ["myPets"]});
         onClose?.();
     } catch (e) {
         console.error(e);
