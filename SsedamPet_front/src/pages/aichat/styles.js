@@ -51,6 +51,8 @@ export const userMessage = css`
   flex-direction: row;
   justify-content: flex-end;
   align-self: flex-end;
+  width: fit-content;
+  max-width: 90%;
 
   .message-content {
     order: 1;
@@ -68,9 +70,11 @@ export const userMessage = css`
     background-color: #c6f6ad;
     color: #6b6b6b;
     padding: 10px 15px;
-    max-width: 70%;
-    word-break: break-word;
+
+    max-width: fit-content;
     white-space: pre-wrap;
+    word-break: break-word;
+    display: inline-block;
   }
 `;
 
