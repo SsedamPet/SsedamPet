@@ -9,6 +9,13 @@ const LikedPosts = ({ isOpen, onClose }) => {
     return (
         <div css={s.modalOverlay} onClick={onClose ? onClose : undefined}>
             <div css={s.container} onClick={(e) => e.stopPropagation()}>
+                {/* 1. 이 부분을 추가했습니다 (PostModal의 네비게이션 스타일) */}
+                <div css={s.monthNav}>
+                    <span style={{ color: '#C2F49B', cursor: 'pointer', fontSize: '17px' }}>◀</span>
+                    <span style={{ margin: '0 15px' }}>2026 / 01</span>
+                    <span style={{ color: '#C2F49B', cursor: 'pointer', fontSize: '17px' }}>▶</span>
+                </div>
+
                 <div css={s.postListContainer}>
                     {posts.map((_, index) => (
                         <div key={index} css={s.postItem} />

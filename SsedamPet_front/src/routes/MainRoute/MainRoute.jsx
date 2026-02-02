@@ -16,6 +16,7 @@ import MainCommunity from "../../pages/community/MainCommunity/MainCommunity.jsx
 import AiChat from "../../pages/aichat/AiChat.jsx";
 import HealthLog from "../../pages/healthlog/HealthLog.jsx";
 import AuthRoute from "../AuthRoute/AuthRoute.jsx";
+import PostModal from "../../pages/mypage/posts/PostModal.jsx";
 
 
 
@@ -31,6 +32,37 @@ function MainRoute() {
       </>
     );
   }
+
+  function PostsModalRoute() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <MyPage />
+      <PostModal onClose={() => navigate(-1)} />
+    </>
+  );
+}
+
+  function LikesModalRoute() {
+    const navigate = useNavigate();
+    return (
+      <>
+        <MyPage />
+        <LikedPosts onClose={() => navigate(-1)} />
+      </>
+    );
+  }
+
+  function AlertModalRoute() {
+    const navigate = useNavigate();
+    return (
+      <>
+        <MyPage />
+        <AlertModal onClose={() => navigate(-1)} />
+      </>
+    );
+  }
+
 
   return (
     <Routes>
@@ -51,17 +83,11 @@ function MainRoute() {
 
           {/* 마이페이지 */}
           <Route path="/mypage" element={<MyPage />} />
-          <Route path="/mypage/posts" element={<LikedPosts />} />
           <Route path="/pet/add" element={<PetAddRoute />} />
-          <Route
-            path="/mypage/alert"
-            element={
-              <>
-                <MyPage />
-                <AlertModal />
-              </>
-            }
-          />
+
+          <Route path="/mypage/posts" element={<PostsModalRoute />} />
+          <Route path="/mypage/likes" element={<LikesModalRoute />} />
+
           {/* 건강기록 및 챗봇 */}
           <Route path="/healthlog" element={<HealthLog />} />
           <Route path="/chatbot" element={<AiChat />} />

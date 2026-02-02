@@ -172,11 +172,11 @@ const MyPage = () => {
           </div>
 
           <div css={s.statsContainer}>
-            <div css={s.statBox}>
+            <div css={s.statBox} onClick={() => navigate("/mypage/posts")} style={{ cursor: "pointer" }}>
               <span className="count">0</span>
               <span className="label">게시물</span>
             </div>
-            <div css={s.statBox}>
+            <div css={s.statBox} onClick={() => navigate("/mypage/likes")} style={{ cursor: "pointer" }}>
               <span className="count">0</span>
               <span className="label">좋아요</span>
             </div>
@@ -194,20 +194,28 @@ const MyPage = () => {
             <span style={{ fontSize: "19px", fontWeight: "800", color: "#2D4028" }}>
               🐾 내 반려동물
             </span>
+            <> 
+              <button
+                onClick={() => {
+                  if (pets.length >= 3) {
+                    alert("반려동물은 최대 3마리까지 등록할 수 있습니다.");
+                    return;
+                  }
+                  navigate("/pet/add"); // 👈 세미콜론 위치 확인
+                }} // 👈 함수를 여기서 깔끔하게 닫아줍니다
+                style={{
+                  background: "#b2ebaf",
+                  border: "none",
+                  padding: "6px 18px",
+                  borderRadius: "15px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                + 추가
+              </button>
 
-            <button
-              onClick={() => navigate("/pet/add")}
-              style={{
-                background: "#b2ebaf",
-                border: "none",
-                padding: "6px 18px",
-                borderRadius: "15px",
-                fontWeight: "bold",
-                cursor: "pointer",
-              }}
-            >
-              + 추가
-            </button>
+            </>
           </div>
 
           <div css={s.petListContainer}>
@@ -216,14 +224,7 @@ const MyPage = () => {
             ) : pets.length === 0 ? (
               <div>등록된 반려동물이 없습니다.</div>
             ) : (
-                pets.map((pet) => {
-                  
-                //const rawPetUrl = pet.petProfileImgUrl ?? "";
-                // const petProfileImgUrl = rawPetUrl
-                //   ? rawPetUrl.startsWith("http")
-                //     ? rawPetUrl
-                //     : `${API_BASE_URL}${rawPetUrl}`
-                //   : "";
+                pets.slice(0, 3).map((pet) => {
                 const petProfileImgUrl = resolveImageUrl(pet.petProfileImgUrl, API_BASE_URL);
 
                 return (
