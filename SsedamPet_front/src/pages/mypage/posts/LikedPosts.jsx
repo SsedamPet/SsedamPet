@@ -1,10 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import * as s from "./styles";
+import { useNavigate } from "react-router-dom";
 
 const LikedPosts = ({ isOpen, onClose }) => {
     // PostModal과 동일하게 12개의 그리드 박스 생성
     const posts = Array.from({ length: 12 });
+    const navigate = useNavigate();
 
     return (
         <div css={s.modalOverlay} onClick={onClose ? onClose : undefined}>
@@ -23,7 +25,7 @@ const LikedPosts = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* 하단 점 표시 (...) */}
-                <div css={s.footerDots}>
+                <div css={s.footerDots} onClick={() => navigate("/community")}>
                     <div className="dot" />
                     <div className="dot" />
                     <div className="dot" />

@@ -68,3 +68,10 @@ export const modalOverlay = css`
   align-items: center;
   z-index: 1000;
 `;
+
+export const postImg = css`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+`;

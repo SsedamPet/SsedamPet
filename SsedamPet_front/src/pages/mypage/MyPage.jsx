@@ -16,6 +16,9 @@ const MyPage = () => {
   const token = localStorage.getItem("AccessToken");
   const petsQuery = useMyPetsQuery(!!token);
 
+  const openMyPosts = () => navigate("/mypage/posts");
+  const openLikePosts = () => navigate("/mypage/likes");
+
 
   
   const { data: me, isLoading, isError } = useMeQuery();
@@ -172,11 +175,11 @@ const MyPage = () => {
           </div>
 
           <div css={s.statsContainer}>
-            <div css={s.statBox} onClick={() => navigate("/mypage/posts")} style={{ cursor: "pointer" }}>
+            <div css={s.statBox} onClick={openMyPosts} style={{ cursor: "pointer" }}>
               <span className="count">0</span>
               <span className="label">게시물</span>
             </div>
-            <div css={s.statBox} onClick={() => navigate("/mypage/likes")} style={{ cursor: "pointer" }}>
+            <div css={s.statBox} onClick={openLikePosts} style={{ cursor: "pointer" }}>
               <span className="count">0</span>
               <span className="label">좋아요</span>
             </div>
