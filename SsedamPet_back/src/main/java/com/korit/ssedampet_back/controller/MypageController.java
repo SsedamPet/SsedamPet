@@ -57,23 +57,27 @@ public class MypageController {
     }
 
     @PostMapping(value = "/pets/{petId}/pet-profile-image", consumes = "multipart/form-data")
-    public ResponseEntity<?> uploadPetProfileImage(@PathVariable int petId, @RequestPart("file")MultipartFile file) {
+    public ResponseEntity<?> uploadPetProfileImage(
+            @PathVariable int petId,
+            @RequestPart("file") MultipartFile file
+    ) {
         int userId = principalUser();
-
         String petImageUrl = mypageService.updatePetProfileImage(userId, petId, file);
-
         return ResponseEntity.ok(petImageUrl);
     }
 
+    // 서비스에서 postImgUrl을 "/image/posts/**" 형태로 변환해서 내려줌
     @GetMapping("/my-posts")
     public ResponseEntity<List<PostDto>> posts() {
         return ResponseEntity.ok(mypageService.getMyPosts(principalUser()));
     }
 
+    // 서비스에서 postImgUrl을 "/image/posts/**" 형태로 변환해서 내려줌
     @GetMapping("/liked-posts")
     public ResponseEntity<List<PostDto>> likedPosts() {
         return ResponseEntity.ok(mypageService.getLikedPosts(principalUser()));
     }
+
 
 
 

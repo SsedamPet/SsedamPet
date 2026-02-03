@@ -1,6 +1,9 @@
 
 application-secret-dev.yml
 application-secret-prod.yml
+application-secret-prod-base64.yml
+application-secret-dev-base64.yml
+
 
 HELP.md
 target/

@@ -93,7 +93,7 @@ spring:
 
 file:
   #path: ${user.dir}/upload/profile
-  path: C:\gov\project\SsedamPet\SsedamPet_back
+  path: C:\gov\project\SsedamPet\SsedamPet_back/upload
   servlet:
     multipart:
       max-file-size: 10MB  #?? ??? ??
