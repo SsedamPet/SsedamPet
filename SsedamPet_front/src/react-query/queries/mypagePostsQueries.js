@@ -1,18 +1,18 @@
 import { useQuery } from "@tanstack/react-query"
 import { getLikedPosts, getMyPosts } from "../../apis/mypages/mypagesApi"
 
-export const useMyPostsQuery = (enabled = true) => {
+export const useMyPostsQuery = ( { year, month, enabled = true }) => {
     return useQuery({
-        queryKey: ["myPosts"],
-        queryFn: getMyPosts,
+        queryKey: ["myPosts", year, month ],
+        queryFn: () => getMyPosts({ year, month }),
         enabled,
     });
 }
 
-export const useLikedPostsQuery = (enabled = true) => {
+export const useLikedPostsQuery = ({ year, month, enabled = true }) => {
     return useQuery({
-        queryKey: ["likedPosts"],
-        queryFn: getLikedPosts,
+        queryKey: ["likedPosts", year, month ],
+        queryFn: () => getLikedPosts({ year, month }),
         enabled,
     });
 }

@@ -32,10 +32,10 @@ const PostModal = ({ onClose }) => {
         return [];
     }, [data]);
 
-    const monthKey = `${yearMonth.year} - ${pad2(yearMonth.month)}`;
+    const monthKey = `${yearMonth.year}-${pad2(yearMonth.month)}`;
+
     const filteredDate = useMemo(() => {
         return posts.filter((p) => String(p?.createdDt ?? "").startsWith(monthKey));
-
     }, [posts, monthKey]);
 
     const gridItems = useMemo(() => {
@@ -58,7 +58,7 @@ const PostModal = ({ onClose }) => {
                     <span css={s.monthArrow} onClick={() => setYearMonth((prev) => nextMonth(prev))}>▶</span>
                 </div>
 
-                // 12개의 그리드
+                {/* 12개의 그리드 */}
                 <div css={s.postListContainer}>
                     {isLoading ? (
                         Array.from({ length: 12 }).map((_, i) => (
@@ -69,14 +69,14 @@ const PostModal = ({ onClose }) => {
                             const imgUrl = p?.postImgUrl ? resolveImageUrl(p.postImgUrl, API_BASE_URL) : "";
                             return (
                                 <div key={p?.postId ?? `empty-${i}`} css={s.postItem}>
-                                    {imgUrl ? <img src={imgUrl} alt="" css={s.postImg}></img> : null}
+                                    {imgUrl ? (<img src={imgUrl} alt="" css={s.postImg} onError={(e) => {e.currentTarget.style.display = "none"}}></img>) : null}
                                 </div>
                             )
                         })
                     )}
                 </div>
 
-                <div css={s.footerDots} onClick={handleGoCommunity} role="button" tabIndex={0}>
+                <div css={s.footerDots} onClick={handleGoCommunity} role="button" tabIndex={0} onKeyDown={(e) => {if (e.key === "Enter" || e.key === " ") handleGoCommunity();}}>
                     <div className="dot" />
                     <div className="dot" />
                     <div className="dot" />

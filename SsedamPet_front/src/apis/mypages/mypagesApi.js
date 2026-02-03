@@ -12,10 +12,16 @@ export const getMyPets = async () => {
     return await api.get("/api/mypage/pets")
 }
 
-export const getMyPosts = async () => {
-    return await api.get("/api/mypage/my-posts")
-}
+export const getMyPosts = async ({ year, month }) => {
+    const res = await api.get("/api/mypage/my-posts", {
+        params: {year, month},
+    });
+    return res.data;
+};
 
-export const getLikedPosts = async () => {
-    return await api.get("/api/mypage/liked-posts")
-}
+export const getLikedPosts = async ({ year, month }) => {
+    const res = await api.get("/api/mypage/my-posts", {
+        params: {year, month},
+    });
+    return res.data;
+};
