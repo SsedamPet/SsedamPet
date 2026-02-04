@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"; // useState 추가
 import * as s from "./styles";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { api } from "../../../configs/axiosConfig";
+import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
 
 function Signup() {
   const [searchParams] = useSearchParams();
@@ -207,6 +208,7 @@ function Signup() {
           회원가입
         </button>
       </div>
+      <BottomNavBar />
     </div>
   );
 }
