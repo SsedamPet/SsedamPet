@@ -79,7 +79,7 @@ public class SecurityConfig {
             auth.requestMatchers("/ai/**").permitAll();
             auth.requestMatchers("/api/notices/**").authenticated();
             auth.requestMatchers("/api/community/**").authenticated();
-            //auth.requestMatchers("/api/community/**").permitAll();
+            auth.requestMatchers("/api/auth/logout").authenticated();
 
 
             auth.anyRequest().authenticated();

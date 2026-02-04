@@ -59,6 +59,19 @@ public class MypageController {
         return ResponseEntity.ok(mypageService.addPet(dto));
     }
 
+    @PostMapping(
+            value = "/pets/{petId}/pet-profile-image",
+            consumes = "multipart/form-data"
+    )
+    public ResponseEntity<?> uploadPetProfileImage(
+            @PathVariable int petId,
+            @RequestPart("file") MultipartFile file
+    ) {
+        int userId = principalUser();
+        String imageUrl = mypageService.updatePetProfileImage(userId, petId, file);
+        return ResponseEntity.ok(imageUrl);
+    }
+
 
     @PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostCreateRespDto> createPost(@ModelAttribute PostCreateReqDto dto) {

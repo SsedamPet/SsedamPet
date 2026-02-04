@@ -8,21 +8,46 @@ import Loading from "../../components/common/Loading";
 import { useMyPetsQuery } from "../../react-query/queries/petsQueries";
 import { resolveImageUrl } from "../../utils/resolveImageUrl";
 import { useMypageSummaryQuery } from "../../react-query/queries/mypageSummaryQueries";
+import { useQueryClient } from "@tanstack/react-query"; 
+import { logout } from "../../apis/auth/authApi";       
+
 
 const API_BASE_URL = "http://localhost:8080";
 
 const MyPage = () => {
   const navigate = useNavigate();
 
+  const queryClient = useQueryClient();
+
   const token = localStorage.getItem("AccessToken");
   const petsQuery = useMyPetsQuery(!!token);
   const { data: summary } = useMypageSummaryQuery(true);
 
-  const postCount = summary?.postCount ?? 0;     // ✅ 백엔드 키에 맞춰 수정
-  const likedCount = summary?.likedCount ?? 0;   // ✅ 백엔드 키에 맞춰 수정
+  const postCount = summary?.myPostCnt ?? 0;     // ✅ 백엔드 키에 맞춰 수정
+  const likedCount = summary?.myLikedPostCnt ?? 0;   // ✅ 백엔드 키에 맞춰 수정
 
   const openMyPosts = () => navigate("/mypage/posts");
   const openLikePosts = () => navigate("/mypage/likes");
+
+  const handleLogout = async () => {
+    try {
+      // 서버에 로그아웃 요청 (세션/쿠키 정리)
+      await logout();
+    } catch (e) {
+      // 서버가 꺼져있거나 에러나도 프론트 토큰은 지워야 해서 무시 가능
+      console.log("logout api error:", e);
+    } finally {
+      // 로컬 토큰 제거
+      localStorage.removeItem("AccessToken");
+      localStorage.removeItem("RefreshToken"); // 쓰는 경우에만
+
+      // react-query 캐시 초기화(다른 유저로 바뀔 때 잔상 방지)
+      queryClient.clear();
+
+      // 로그인 페이지로 이동
+      navigate("/auth/login");
+    }
+  };
 
 
   
@@ -145,6 +170,13 @@ const MyPage = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              onClick={handleLogout}           // ✅ [추가] 로그아웃 클릭 이벤트
+              style={{ cursor: "pointer" }}    // ✅ [추가] 클릭 가능한 느낌
+              role="button"                    // ✅ [추가] 접근성
+              tabIndex={0}                     // ✅ [추가]
+              onKeyDown={(e) => {              // ✅ [추가] 엔터로도 로그아웃
+                if (e.key === "Enter" || e.key === " ") handleLogout();
+              }}
             >
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
               <polyline points="16 17 21 12 16 7"></polyline>
