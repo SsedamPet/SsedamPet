@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import * as s from "./styles.js";
-import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react"; 
+import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -74,6 +74,8 @@ function Home() {
   const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
   const [weeklyData, setWeeklyData] = useState(null);
+
+  const IMAGE_SERVER = "http://localhost:8080";
 
   const yyyyMMdd = new Date().toISOString().slice(0, 10);
 
@@ -432,7 +434,7 @@ function Home() {
                     className="post-item"
                     onClick={() => navigate(`/community/post/${post.postId}`)}
                     style={{
-                      backgroundImage: `url(${post.postImgUrl || "default_image_url"})`, // DB의 이미지 URL 연결
+                      backgroundImage: `url(${post.postImgUrl})`, // DB의 이미지 URL 연결
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       cursor: "pointer",

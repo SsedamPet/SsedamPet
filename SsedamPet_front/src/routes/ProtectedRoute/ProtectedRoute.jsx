@@ -3,11 +3,9 @@ import { useMeQuery } from "../../react-query/queries/usersQueries";
 import Loading from "../../components/common/Loading";
 
 export default function ProtectedRoute() {
-  const { data, isLoading, isError } = useMeQuery();
+  const token = localStorage.getItem("AccessToken");
 
-  if (isLoading) return <Loading />;
-
-  if (!data || isError) {
+  if (!token || token === "null") {
     return <Navigate to="/auth/login" replace />;
   }
 
