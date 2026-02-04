@@ -48,10 +48,15 @@ public class PostController {
     @PostMapping("/post")
     public ResponseEntity<?> createPost(
             @RequestParam("content") String content,
-            @RequestParam("userId") int userId, // 타입을 int로 변경
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
         try {
+            PrincipalUser principalUser = PrincipalUser.getAuthenticatedPrincipalUser();
+            if (principalUser == null) {
+                return ResponseEntity.status(401).body("인증 정보가 없습니다.");
+            }
+            int userId = principalUser.getUserId();
+
             String imageUrl = fileService.savePostFile(image);
 
             Map<String, Object> postData = new HashMap<>();
