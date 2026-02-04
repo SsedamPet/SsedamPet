@@ -5,17 +5,14 @@ import { useNotice } from "../../../contexts/NoticeContext";
 import NoticeModal from "../../../pages/mypage/notice/NoticeModal";
 import { Bell } from "lucide-react";
 
-
 const Header = () => {
   const [noticeOpen, setNoticeOpen] = useState(false);
 
-  const { unreadCount } = useNotice(); 
-
-
+  const { unreadCount } = useNotice();
 
   return (
     <header css={s.headerBar}>
-      <h1 css={s.headerTitle}>멍냥일기</h1>
+      <h1 css={s.headerTitle}>쓰담펫</h1>
       <div
         css={s.noticeBellInCard}
         onClick={() => setNoticeOpen(true)}
@@ -25,10 +22,10 @@ const Header = () => {
           if (e.key === "Enter" || e.key === " ") setNoticeOpen(true);
         }}
       >
-      <Bell size={26} color="#FFD400" /> 
-      <NoticeModal open={noticeOpen} onClose={() => setNoticeOpen(false)} />
+        <Bell size={26} color="#131210" />
+        <NoticeModal open={noticeOpen} onClose={() => setNoticeOpen(false)} />
 
-      {unreadCount > 0 && <span css={s.noticeBadge}>{unreadCount}</span>}
+        {unreadCount > 0 && <span css={s.noticeBadge}>{unreadCount}</span>}
       </div>
     </header>
   );

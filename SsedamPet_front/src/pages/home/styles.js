@@ -20,7 +20,6 @@ export const profileSection = css`
   overflow: hidden;
 `;
 
-
 export const mainSliderArea = css`
   display: flex;
   align-items: center;
@@ -124,16 +123,16 @@ export const avatarCircle = css`
 
 export const textInfo = css`
   .name-row {
-    font-size: 32px;
+    font-size: 28px;
     font-weight: bold;
     color: #656565;
 
     span {
-      font-size: 24px;
+      font-size: 25px;
     }
   }
   .breed-row {
-    font-size: 36px;
+    font-size: 23px;
     color: #656565;
     margin-top: 5px;
   }
@@ -289,7 +288,7 @@ export const weeklyCard = css`
     display: flex;
     align-items: baseline;
     justify-content: center;
-    gap:8px;
+    gap: 8px;
     width: 100%;
     white-space: nowrap;
     margin: 10px 0;
@@ -406,10 +405,10 @@ export const noticeBellWrap = css`
   cursor: pointer;
 `;
 
-
-
-
 export const sliderContainer = css`
+  display: flex; /* 자식들을 가로로 배치 */
+  align-items: center; /* 세로 중앙 정렬 */
+  justify-content: center;
   position: relative; /* ✅ 벨 absolute의 기준 */
 `;
 
