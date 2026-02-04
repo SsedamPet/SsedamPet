@@ -32,6 +32,8 @@ jobs:
               echo "${{ secrets.REACT_ENV_JINY }}"
               echo "EOF"
             } >> $GITHUB_ENV
+            echo "ACTIVE_PROFILE=jiny" >> $GITHUB_ENV
+            
           elif [ "${{ github.ref }}" == "refs/heads/deploy-yunyeol" ]; then
             echo "GCP_VM_HOST=${{ secrets.GCP_vm_HOST_YUNYEOL }}" >> $GITHUB_ENV
             echo "GCP_VM_USERNAME=${{ secrets.GCP_vm_USERNAME_YUNYEOL }}" >> $GITHUB_ENV
@@ -52,6 +54,8 @@ jobs:
               echo "${{ secrets.REACT_ENV_YUNYEOL }}"
               echo "EOF"
             } >> $GITHUB_ENV
+            echo "ACTIVE_PROFILE=yunyeol" >> $GITHUB_ENV
+            
           elif [ "${{ github.ref }}" == "refs/heads/deploy-hyojeong" ]; then
             echo "GCP_VM_HOST=${{ secrets.GCP_vm_HOST_HYOJEONG }}" >> $GITHUB_ENV
             echo "GCP_VM_USERNAME=${{ secrets.GCP_vm_USERNAME_HYOJEONG }}" >> $GITHUB_ENV
@@ -72,6 +76,8 @@ jobs:
               echo "${{ secrets.REACT_ENV_HYOJEONG }}"
               echo "EOF"
             } >> $GITHUB_ENV
+            echo "ACTIVE_PROFILE=hyojeong" >> $GITHUB_ENV
+            
           elif [ "${{ github.ref }}" == "refs/heads/deploy-hyunwoo" ]; then
             echo "GCP_VM_HOST=${{ secrets.GCP_vm_HOST_HYUNWOO }}" >> $GITHUB_ENV
             echo "GCP_VM_USERNAME=${{ secrets.GCP_vm_USERNAME_HYUNWOO }}" >> $GITHUB_ENV
@@ -92,6 +98,7 @@ jobs:
               echo "${{ secrets.REACT_ENV_HYUNWOO }}"
               echo "EOF"
             } >> $GITHUB_ENV
+            echo "ACTIVE_PROFILE=hyunwoo" >> $GITHUB_ENV
           fi
           
       - name: checkout
@@ -110,7 +117,7 @@ jobs:
           cd SsedamPet_back
           echo "${{ env.APPLICATION_SECRET }}" | base64 --decode > ./src/main/resources/application-secret-prod.yml
           chmod 777 ./mvnw
-          ./mvnw clean package -DskipTests
+          ./mvnw clean package -DskipTests -Dactive.profile=${{env.ACTIVE_PROFILE}}
 
       - name: Debug docker username
         run: |
