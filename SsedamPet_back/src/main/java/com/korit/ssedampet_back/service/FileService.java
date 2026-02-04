@@ -63,4 +63,8 @@ public class FileService {
     public String savePetProfile(MultipartFile file) {
         return saveFile(file, "pet");
     }
+
+    public String savePostImage(MultipartFile file) {
+        return saveFile(file, "posts");
+    }
 }

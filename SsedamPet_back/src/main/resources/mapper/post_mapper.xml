@@ -75,4 +75,38 @@
         WHERE post_id = #{postId}
     </update>
 
+    <insert id="insertPost" useGeneratedKeys="true" keyProperty="postId" keyColumn="post_id">
+        INSERT INTO post_tb (
+            user_id,
+            pet_id,
+            post_img_url,
+            post_content,
+            post_like_cnt,
+            post_comment_cnt,
+            post_location_tag,
+            created_dt,
+            updated_dt
+        ) VALUES (
+            #{userId},
+            #{petId},
+            #{postImgUrl},
+            #{postContent},
+            #{postLikeCnt},
+            #{postCommentCnt},
+            #{postLocationTag},
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+
+    <update id="updatePostImgUrl">
+        UPDATE post_tb
+        SET
+            post_img_url = #{postImgUrl},
+            updated_dt = NOW()
+        WHERE post_id = #{postId}
+          AND user_id = #{userId}
+    </update>
+
 </mapper>

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -41,7 +43,7 @@ public class AuthService {
         User user = User.builder()
                 .name(dto.getName())
                 .email(dto.getEmail())
-                .birthDate(birthDateTime)
+                .birthDate(LocalDate.from(birthDateTime))
                 .phone(dto.getPhone())
                 .nickname(dto.getNickname())
                 .userProfileImgUrl(imgUrl)

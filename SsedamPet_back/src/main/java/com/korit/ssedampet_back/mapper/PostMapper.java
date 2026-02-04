@@ -1,6 +1,7 @@
 package com.korit.ssedampet_back.mapper;
 
 import com.korit.ssedampet_back.dto.response.post.PostResponseDto;
+import com.korit.ssedampet_back.entity.Post;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +30,17 @@ public interface PostMapper {
     // 좋아요 추가/삭제 시 post_tb에 카운트 업뎃
     void updateLikeCount(@Param("postId") int postId, @Param("amount") int amount);
 
+    // ✅ [추가] PostMapper.java
+
+    int updatePostImgUrl(@Param("userId") int userId,
+                         @Param("postId") int postId,
+                         @Param("postImgUrl") String postImgUrl);
+
+
+    int insertPost(Post post);
+
+
 }
+
+
+

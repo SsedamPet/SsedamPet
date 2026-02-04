@@ -1,10 +1,13 @@
 package com.korit.ssedampet_back.controller;
 
 import com.korit.ssedampet_back.dto.request.PetAddReqDto;
+import com.korit.ssedampet_back.dto.request.PostCreateReqDto;
 import com.korit.ssedampet_back.dto.response.mypage.*;
 import com.korit.ssedampet_back.security.PrincipalUser;
 import com.korit.ssedampet_back.service.MypageService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -56,15 +59,29 @@ public class MypageController {
         return ResponseEntity.ok(mypageService.addPet(dto));
     }
 
-    @PostMapping(value = "/pets/{petId}/pet-profile-image", consumes = "multipart/form-data")
-    public ResponseEntity<?> uploadPetProfileImage(
-            @PathVariable int petId,
+
+    @PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostCreateRespDto> createPost(@ModelAttribute PostCreateReqDto dto) {
+        int userId = principalUser();
+
+        dto.setUserId(userId);
+
+        return ResponseEntity.ok(mypageService.createPostWithImage(dto, dto.getFile()));
+    }
+
+
+    // ✅ [추가] MypageController.java
+
+    @PostMapping(value = "/posts/{postId}/post-image", consumes = "multipart/form-data")
+    public ResponseEntity<?> updatePostImage(
+            @PathVariable int postId,
             @RequestPart("file") MultipartFile file
     ) {
-        int userId = principalUser();
-        String petImageUrl = mypageService.updatePetProfileImage(userId, petId, file);
-        return ResponseEntity.ok(petImageUrl);
+        int userId = principalUser(); // ✅ 로그인 유저
+        String postImgUrl = mypageService.updatePostImage(userId, postId, file); // ✅ 저장 + DB 업데이트
+        return ResponseEntity.ok(postImgUrl); // ✅ "/image/posts/xxxx.jpg" 반환
     }
+
 
     // 서비스에서 postImgUrl을 "/image/posts/**" 형태로 변환해서 내려줌
     @GetMapping("/my-posts")
