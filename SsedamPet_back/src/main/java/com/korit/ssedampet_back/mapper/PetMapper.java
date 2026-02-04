@@ -13,3 +13,5 @@ public interface PetMapper {
     // 마이페이지 내 펫 정보 추가
     int insertPet(PetAddReqDto dto);
 }
+
+

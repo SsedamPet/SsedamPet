@@ -19,11 +19,9 @@ export const container = css`
 export const monthNav = css`
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
-  font-weight: 600px;
-  font-size: 24px;
-  color: #656565;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 14px;
 `;
 
 export const postListContainer = css`
@@ -68,3 +66,33 @@ export const modalOverlay = css`
   align-items: center;
   z-index: 1000;
 `;
+
+
+export const postImg = css`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+`;
+
+
+export const monthArrow = css`
+  cursor: pointer;
+  font-size: 18px;
+  color: #2d4028;
+  user-select: none;
+`;
+
+export const monthTitle = css`
+  font-size: 16px;
+  font-weight: 700;
+  color: #2d4028;
+`;
+
+export const postThumb = css`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+`;
+

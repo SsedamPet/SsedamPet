@@ -22,3 +22,5 @@ public class NoticeDto {
     private LocalDateTime createdDt;
     private LocalDateTime updatedDt;
 }
+
+

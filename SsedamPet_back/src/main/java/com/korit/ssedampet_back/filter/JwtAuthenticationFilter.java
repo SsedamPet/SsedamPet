@@ -42,8 +42,55 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String bearerToken = request.getHeader("Authorization");
         if (bearerToken == null || !bearerToken.startsWith("Bearer ")) {        //토큰 없거나 Bearer 형식 아니면
+            String uri = request.getRequestURI();
+
+            if ("/api/notices/stream".equals(uri)) {
+                String queryToken = request.getParameter("token");
+                if (queryToken != null && !queryToken.isBlank()) {
+                    if (queryToken.startsWith("Bearer ")) {
+                        queryToken = queryToken.replaceFirst("Bearer\\s+", "");
+                    }
+
+                    String accessToken = queryToken;
+                    if (!jwtTokenProvider.validateToken(accessToken)) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+
+                    int userId = jwtTokenProvider.getUserId(accessToken);
+                    User foundUser = userMapper.findByUserId(userId);
+                    if (foundUser == null) {
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+
+                    Map<String, Object> attributes = Map.of(
+                            "name", foundUser.getName(),
+                            "userId", foundUser.getUserId()
+                    );
+
+                    Collection<? extends GrantedAuthority> authorities =
+                            List.of(new SimpleGrantedAuthority("ROLE_USER"));
+                    PrincipalUser principalUser =
+                            new PrincipalUser(authorities, attributes, "name", foundUser);
+
+                    Authentication authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    principalUser,
+                                    null,
+                                    principalUser.getAuthorities()
+                            );
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    filterChain.doFilter(request, response);
+                    return;
+
+                }
+            }
             filterChain.doFilter(request, response);   // 다음 filter로 넘겨버림 - 인증되지않은 상태
             return;
+
+
 
         }
         System.out.println("1. 토큰 추출");

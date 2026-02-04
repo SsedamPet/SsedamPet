@@ -29,6 +29,7 @@ public class PetService {
                 .petProfileImgUrl(dto.getPetProfileImgUrl() == null ? "default_pet.png" : dto.getPetProfileImgUrl())
                 .build();
 
+
         petMapper.addPet(pet);
     }
 }

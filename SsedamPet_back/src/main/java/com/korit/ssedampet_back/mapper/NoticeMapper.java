@@ -16,3 +16,5 @@ public interface NoticeMapper {
     // SSE 유실 복구용: lastNoticeId 이후 알림 재전송
     List<NoticeDto> findAfterId(@Param("userId") int userId, @Param("lastNoticeId") int lastNoticeId);
 }
+
+

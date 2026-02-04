@@ -123,4 +123,6 @@
             and notice_id &gt; #{lastNoticeId}
         order by notice_id asc
     </select>
+
 </mapper>
+

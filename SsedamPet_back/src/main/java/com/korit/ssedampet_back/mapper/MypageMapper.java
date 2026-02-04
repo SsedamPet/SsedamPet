@@ -28,3 +28,5 @@ public interface MypageMapper {
     List<PostDto> findMyLikedPosts(@Param("userId") int userId);
 
 }
+
+

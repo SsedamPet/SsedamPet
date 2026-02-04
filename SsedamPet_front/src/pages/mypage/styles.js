@@ -10,6 +10,7 @@ export const container = css`
   padding-bottom: 100px;
 `;
 
+
 export const profileSection = css`
   background-color: #d9f2d9;
   border-radius: 35px;

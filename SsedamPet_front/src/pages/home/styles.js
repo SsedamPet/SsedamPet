@@ -20,13 +20,6 @@ export const profileSection = css`
   overflow: hidden;
 `;
 
-export const sliderContainer = css`
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-`;
 
 export const mainSliderArea = css`
   display: flex;
@@ -402,4 +395,46 @@ export const postItem = (imgUrl) => css`
   position: relative;
   overflow: hidden;
   border: 1px solid #eee;
+`;
+
+// 알림(종) 버튼 래퍼
+export const noticeBellWrap = css`
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 9997;
+  cursor: pointer;
+`;
+
+
+
+
+export const sliderContainer = css`
+  position: relative; /* ✅ 벨 absolute의 기준 */
+`;
+
+export const noticeBellInCard = css`
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 20;
+  cursor: pointer;
+
+  /* ✅ 노란 아이콘 느낌 보강 */
+  background: rgba(255, 212, 0, 0.18);
+  border-radius: 999px;
+  padding: 6px;
+`;
+
+export const noticeBadge = css`
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff3b30;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
 `;

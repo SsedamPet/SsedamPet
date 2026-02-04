@@ -7,6 +7,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../configs/axiosConfig.js";
 import usePetStore from "../../stores/usePetStore.js";
+import { Bell } from "lucide-react";
+import { useNotice } from "../../contexts/NoticeContext.jsx";
+import NoticeModal from "../mypage/notice/NoticeModal.jsx";
+
+
 
 // 주간 리포트 카드 컴포넌트 (내부 헬퍼)
 
@@ -75,7 +80,11 @@ function Home() {
   const [todayDate, setTodayDate] = useState("");
   const [weeklyData, setWeeklyData] = useState(null);
 
-  const IMAGE_SERVER = "http://localhost:8080";
+  const [ noticeOpen, setNoticeOpen ] = useState(false);
+
+  const { unreadCount /*, setUnreadCount */ } = useNotice(); 
+
+
 
   const yyyyMMdd = new Date().toISOString().slice(0, 10);
 
@@ -289,6 +298,7 @@ function Home() {
       {/* 프로필 섹션 */}
       <section css={s.profileSection}>
         <div css={s.sliderContainer}>
+          
           <div css={[s.sideCard, s.leftSide]}>
             <div className="avatar-mini">
               {getPetIcon(getPetIndex(-1).petType)}
@@ -402,6 +412,8 @@ function Home() {
             ))}
           </div>
         </div>
+
+        
 
         <div css={s.weeklyStatContainer}>
           {weeklyData ? (
