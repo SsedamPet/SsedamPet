@@ -134,6 +134,7 @@ export const postImgTag = css`
 `;
 
 export const postText = css`
+    padding: 0 15px;
     margin-bottom: 15px;
     .description { 
         font-size: 15px; 

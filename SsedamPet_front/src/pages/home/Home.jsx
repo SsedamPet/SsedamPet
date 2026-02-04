@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React, { useState, useEffect } from "react";
 import * as s from "./styles.js";
-import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react"; // Home 아이콘 이름 중복 방지
-import BottomNav from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
+import { Home as HomeIcon, Users, Image, User, Bell } from "lucide-react";
 import BottomNavBar from "../../components/layout/BottomNavBar/BottomNavBar.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -75,6 +74,8 @@ function Home() {
   const navigate = useNavigate();
   const [todayDate, setTodayDate] = useState("");
   const [weeklyData, setWeeklyData] = useState(null);
+
+  const IMAGE_SERVER = "http://localhost:8080";
 
   const yyyyMMdd = new Date().toISOString().slice(0, 10);
 
@@ -330,7 +331,8 @@ function Home() {
       </section>
 
       {/* 건강 기록 및 통계 섹션 */}
-      <section css={s.healthRecordSection}>
+      {/* 펫 바뀔때마다 섹션 전체를 초기화하고 새로 그림 */}
+      <section css={s.healthRecordSection} key={currentPet.petId}>
         <div css={s.healthRecordBox}>
           <div css={s.recordHeader}>
             <div className="title-group">
@@ -433,7 +435,7 @@ function Home() {
                     className="post-item"
                     onClick={() => navigate(`/community/post/${post.postId}`)}
                     style={{
-                      backgroundImage: `url(${post.postImgUrl || "default_image_url"})`, // DB의 이미지 URL 연결
+                      backgroundImage: `url(${post.postImgUrl})`, // DB의 이미지 URL 연결
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                       cursor: "pointer",

@@ -11,10 +11,9 @@
             p.post_content,
             p.post_like_cnt,
             p.post_comment_cnt,
-            p.post_location_tag,
             p.created_dt,
             p.updated_dt,
-            u.nickanane AS nickname,
+            u.nickname AS nickname,
             u.user_profile_img_url AS userProfileImgUrl
         FROM post_tb p
         LEFT JOIN user_tb u ON p.user_id = u.user_id
@@ -74,5 +73,15 @@
         SET post_like_cnt = post_like_cnt + #{amount}
         WHERE post_id = #{postId}
     </update>
+
+    <delete id="deletePost">
+        DELETE FROM post_tb
+        WHERE post_id = #{postId} AND user_id = #{userId}
+    </delete>
+
+    <delete id="deleteComment">
+        DELETE FROM comment_tb
+        WHERE comment_id = #{commentId} AND user_id = #{userId}
+    </delete>
 
 </mapper>

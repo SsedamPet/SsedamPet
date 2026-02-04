@@ -41,7 +41,7 @@
             #{parentCommentId},
             #{depth},
             #{content},
-            2,
+            0,
             NOW()
         )
     </insert>

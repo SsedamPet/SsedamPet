@@ -23,6 +23,27 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         final String uploadPath = projectPath + "/upload/";
 
+        // 게시글 전용 경로 (upload/post 폴더)
+        registry.addResourceHandler("/image/post/**")
+                .addResourceLocations("file:" + uploadPath + "post/")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        return super.getResource(URLDecoder.decode(resourcePath, StandardCharsets.UTF_8), location);
+                    }
+                });
+        // 프로필 전용 경로 (upload/profile 폴더)
+        registry.addResourceHandler("/image/profile/**")
+                .addResourceLocations("file:" + uploadPath + "profile/")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        return super.getResource(URLDecoder.decode(resourcePath, StandardCharsets.UTF_8), location);
+                    }
+                });
+
         registry.addResourceHandler("/image/**")       //외부에서 localhostL8080/image/** 의 요청이 들어오면
                 .addResourceLocations("file:" + uploadPath)    //스프링부트 서버 PC의 프로젝트 폴더 안의 upload 폴더로
                 .resourceChain(true)                 //연결
@@ -39,7 +60,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173", "https://ssedampet.shop")
+                .allowedOrigins("http://localhost:5173", "https://ssedampet.store")
+                .allowedOrigins("http://localhost:5173", "https://ssedampet.shop", "https://ssedampet.store")
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);

@@ -28,7 +28,7 @@ public class FileService {
 
         String originName = file.getOriginalFilename();
         String extension = originName.substring(originName.lastIndexOf("."));
-        String saveName = UUID.randomUUID().toString().replaceAll("-", "") + extension;
+        String saveName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString().substring(0,8) + extension;
 
         Path uploadPath = Paths.get(projectPath, "upload", "profile");
 
@@ -46,7 +46,10 @@ public class FileService {
 
     }
 
-    public String savePetProfile(MultipartFile file) {
+
+    
+
+    public String savePostFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {
             return null;
         }
@@ -57,9 +60,9 @@ public class FileService {
             extension = originName.substring(originName.lastIndexOf("."));
         }
 
-        String saveName = UUID.randomUUID().toString().replaceAll("-", "") + extension;
+        String saveName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8) + extension;
 
-        Path uploadPath = Paths.get(projectPath, "upload", "pet");
+        Path uploadPath = Paths.get(projectPath, "upload", "post");
 
         try {
             Files.createDirectories(uploadPath);
@@ -67,7 +70,7 @@ public class FileService {
             Path filePath = uploadPath.resolve(saveName);
             file.transferTo(filePath.toFile());
 
-            return "/image/pet/" + saveName;
+            return "/image/post/" + saveName;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
