@@ -6,7 +6,7 @@
     <!-- OAuth2 유저 신규추가 -->
     <insert id="addOAuth2User">
         insert into
-        oauth2_user_tb(user_id, provider, provider_user_id, created_dt, updated_dt)
+        oauth2_user_tb(user_id, provider, provider_user_id, create_dt, update_dt)
         values
         (#{userId}, #{provider}, #{providerUserId}, NOW(), NOW())
     </insert>
@@ -29,7 +29,7 @@
         user_id,
         provider,
         provider_user_id,
-        created_dt
+        create_dt
         from
         oauth2_user_tb
         where

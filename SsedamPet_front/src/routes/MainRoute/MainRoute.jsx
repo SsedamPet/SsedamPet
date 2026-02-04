@@ -16,6 +16,7 @@ import MainCommunity from "../../pages/community/MainCommunity/MainCommunity.jsx
 import AiChat from "../../pages/aichat/AiChat.jsx";
 import HealthLog from "../../pages/healthlog/HealthLog.jsx";
 import AuthRoute from "../AuthRoute/AuthRoute.jsx";
+import PostDetailPage from "../../pages/community/PostDetailPage/PostDetailPage.jsx"
 
 
 
@@ -47,6 +48,7 @@ function MainRoute() {
           {/* 커뮤니티 페이지들 */}
           <Route path="/community" element={<MainCommunity />} />
           <Route path="/community/write" element={<PostWrite />} />
+          <Route path="/community/post/:postId" element={<PostDetailPage />} />
           <Route path="/community/comment" element={<CommentSection />} />
 
           {/* 마이페이지 */}

@@ -11,6 +11,7 @@ export const headerBar = css`
     align-items: center;
     position: sticky;
     top: 0;
+    z-index: 1000;
 `;
 
 export const headerTitle = css`
