@@ -60,11 +60,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(org.springframework.web.servlet.config.annotation.CorsRegistry registry) {
         registry.addMapping("/**")
-<<<<<<< newFeedDb
                 .allowedOrigins("http://localhost:5173", "https://ssedampet.store")
-=======
                 .allowedOrigins("http://localhost:5173", "https://ssedampet.shop", "https://ssedampet.store")
->>>>>>> main
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .allowCredentials(true);

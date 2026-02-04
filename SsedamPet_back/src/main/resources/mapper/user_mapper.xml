@@ -8,6 +8,8 @@
         insert into user_tb (
         name,
         email,
+        birth_date,
+        phone,
         nickname,
         user_profile_img_url,
         last_login_dt,
@@ -17,6 +19,8 @@
         values (
         #{name},
         #{email},
+        #{birthDate},
+        #{phone},
         #{nickname},
         #{userProfileImgUrl},
         NOW(),
@@ -42,6 +46,7 @@
         where
         user_id = #{userId}
     </select>
+
     <select id="findByNickname" resultType="com.korit.ssedampet_back.entity.User">
         select
         user_id as userId,
@@ -60,7 +65,6 @@
         nickname = #{nickname}
     </select>
 
-    <!--    회원 추가정보 입력-->
     <update id="addUserInfo">
         update
         user_tb
