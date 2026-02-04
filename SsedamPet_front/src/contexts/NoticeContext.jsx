@@ -7,6 +7,8 @@ export const useNotice = () => useContext(NoticeContext);
 
 
 
+
+
 export const NoticeProvider = ({ children }) => {
     const [notices, setNotices] = useState([]);         // ✅ [추가] 알림 리스트
     const [unreadCount, setUnreadCount] = useState(0);  // ✅ [추가] 미읽음 뱃지 숫자

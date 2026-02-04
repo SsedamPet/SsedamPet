@@ -9,6 +9,7 @@ export const useMyPostsQuery = ( { year, month, enabled = true }) => {
     });
 }
 
+
 export const useLikedPostsQuery = ({ year, month, enabled = true }) => {
     return useQuery({
         queryKey: ["likedPosts", year, month ],

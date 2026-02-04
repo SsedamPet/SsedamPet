@@ -24,6 +24,7 @@ export const useReadNoticeMutation = () => {
   });
 };
 
+
 /**
  * ✅ 알림 전체 읽음 처리 mutation
  */

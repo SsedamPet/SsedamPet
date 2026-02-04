@@ -51,6 +51,7 @@ const LikedPosts = ({ onClose }) => {
     onClose?.();
     navigate("/community");
   };
+  
 
   return (
     <div css={s.modalOverlay} onClick={onClose}>

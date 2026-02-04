@@ -10,3 +10,5 @@ public class PostCreateRespDto {
     private int postId;
     private String postImgUrl;
 }
+
+

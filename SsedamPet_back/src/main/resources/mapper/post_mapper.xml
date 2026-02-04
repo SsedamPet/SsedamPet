@@ -97,6 +97,7 @@
             NOW(),
             NOW()
         )
+
     </insert>
 
 

@@ -27,6 +27,10 @@ export const bellIcon = css`
     justify-content: center;
     cursor: pointer;
 
+
+    
+
+
     svg {
         fill: white;
         width: 24px;

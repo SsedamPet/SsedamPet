@@ -67,4 +67,6 @@ public class FileService {
     public String savePostImage(MultipartFile file) {
         return saveFile(file, "posts");
     }
+
+
 }

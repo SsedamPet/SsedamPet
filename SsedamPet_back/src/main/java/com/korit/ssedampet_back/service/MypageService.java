@@ -85,6 +85,8 @@ public class MypageService {
         return new PetAddRespDto(dto.getPetId());
     }
 
+
+
     public PostCreateRespDto createPostWithImage(PostCreateReqDto dto, MultipartFile file) {
 
         // 1) 이미지 저장 (없어도 글은 등록될 수 있게 하고 싶으면 null 허용)

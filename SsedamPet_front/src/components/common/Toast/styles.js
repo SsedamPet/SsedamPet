@@ -10,6 +10,8 @@ export const toastWrap = css`
   max-width: 520px;
 `;
 
+
+
 export const toastBox = css`
   background: rgba(0, 0, 0, 0.82);
   color: #fff;

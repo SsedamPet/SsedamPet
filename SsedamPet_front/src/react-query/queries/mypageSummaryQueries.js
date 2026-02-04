@@ -9,3 +9,4 @@ export const useMypageSummaryQuery = (enabled = true) => {
     staleTime: 1000 * 30,
     });
 }
+

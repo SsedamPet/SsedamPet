@@ -169,6 +169,8 @@ public class NoticeService {
             }
         });
     }
+
+
     // NoticeService.java
     public void testPush(int userId) {
         // 1) DB 저장도 하고

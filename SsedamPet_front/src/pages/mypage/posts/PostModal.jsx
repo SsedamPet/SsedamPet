@@ -23,6 +23,7 @@ const PostModal = ({ onClose }) => {
         const now = new Date();
         return { year: now.getFullYear(), month: now.getMonth() + 1 };
     })
+    
 
     const { data, isLoading } = useMyPostsQuery({
         year: yearMonth.year,

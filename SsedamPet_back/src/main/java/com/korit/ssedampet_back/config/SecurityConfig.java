@@ -82,6 +82,7 @@ public class SecurityConfig {
             auth.requestMatchers("/api/auth/logout").authenticated();
 
 
+
             auth.anyRequest().authenticated();
         });
 

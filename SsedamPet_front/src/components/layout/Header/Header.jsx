@@ -9,7 +9,9 @@ import { Bell } from "lucide-react";
 const Header = () => {
   const [noticeOpen, setNoticeOpen] = useState(false);
 
-  const { unreadCount } = useNotice(); // ✅ 뱃지 숫자
+  const { unreadCount } = useNotice(); 
+
+
 
   return (
     <header css={s.headerBar}>

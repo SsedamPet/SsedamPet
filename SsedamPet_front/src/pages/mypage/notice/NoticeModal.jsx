@@ -77,4 +77,6 @@ const NoticeModal = ({ open, onClose }) => {
     );
 };
 
+
 export default NoticeModal;
+

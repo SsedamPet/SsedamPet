@@ -9,6 +9,7 @@ export const resolveImageUrl = (url, apiBaseUrl = "http://localhost:8080") => {
 
   // /image/... 같은 서버 상대경로면 baseURL 붙이기
     if (cleaned.startsWith("/")) return `${apiBaseUrl}${cleaned}`;
+    
 
   // windows 경로(C:\...)는 프론트에서 직접 접근 불가 → 빈 문자열 처리(기본 이미지로 대체)
     if (/^[a-zA-Z]:\\/.test(cleaned)) return "";

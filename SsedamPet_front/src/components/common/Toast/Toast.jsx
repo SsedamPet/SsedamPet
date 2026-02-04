@@ -9,6 +9,8 @@ const Toast = ({ message, visible, onClose, duration = 2500 }) => {
         return () => clearTimeout(t);
     }, [visible, duration, onClose]);
 
+    
+
     if (!visible) return null;
 
     return (

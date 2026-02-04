@@ -11,3 +11,5 @@ public class PostCreateReqDto {
     private String postLocationTag;
     private MultipartFile file;
 }
+
+

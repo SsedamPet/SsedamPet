@@ -26,3 +26,5 @@ public class Post {
     private LocalDateTime createdDt;  // created_dt
     private LocalDateTime updatedDt;  // updated_dt
 }
+
+

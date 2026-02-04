@@ -38,6 +38,8 @@ public class NoticeEmitterRepository {
         emitters.put(emitterId, emitter);
     }
 
+
+
     public void removeEmitter(String emitterId) {
         emitters.remove(emitterId);
     }

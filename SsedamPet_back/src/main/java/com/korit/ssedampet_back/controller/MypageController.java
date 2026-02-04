@@ -73,6 +73,8 @@ public class MypageController {
     }
 
 
+
+
     @PostMapping(value = "/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<PostCreateRespDto> createPost(@ModelAttribute PostCreateReqDto dto) {
         int userId = principalUser();

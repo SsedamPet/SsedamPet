@@ -407,6 +407,8 @@ export const noticeBellWrap = css`
 `;
 
 
+
+
 export const sliderContainer = css`
   position: relative; /* ✅ 벨 absolute의 기준 */
 `;

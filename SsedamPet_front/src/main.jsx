@@ -12,6 +12,7 @@ const queryClient = new QueryClient({
   },
 });
 
+
 const root = document.getElementById("root");
 createRoot(root).render(
   <QueryClientProvider client={queryClient}>

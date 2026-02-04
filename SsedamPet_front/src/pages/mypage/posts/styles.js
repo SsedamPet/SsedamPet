@@ -67,6 +67,7 @@ export const modalOverlay = css`
   z-index: 1000;
 `;
 
+
 export const postImg = css`
   width: 100%;
   height: 100%;

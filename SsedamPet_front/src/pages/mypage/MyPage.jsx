@@ -16,7 +16,6 @@ const API_BASE_URL = "http://localhost:8080";
 
 const MyPage = () => {
   const navigate = useNavigate();
-
   const queryClient = useQueryClient();
 
   const token = localStorage.getItem("AccessToken");

@@ -37,6 +37,8 @@ export const getLatestNotices = async ({ limit = 20, offset = 0 } = {}) => {
     return res.data;
 };
 
+
+
 // 미읽음 카운트
 export const getUnreadCount = async () => {
     const res = await api.get("/api/notices/unread-count");

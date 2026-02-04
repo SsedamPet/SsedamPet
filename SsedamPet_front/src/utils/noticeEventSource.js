@@ -13,14 +13,15 @@ export const connectNoticeSSE = ({ onOpen, onNotice, onError }) => {
         onOpen?.();
     };
 
-    const noticeHandler = (e) => {
-    try {
-        const data = JSON.parse(e.data);
-        onNotice?.(data);
-    } catch {
-        onNotice?.(e.data);
-    }
-    };
+    // const noticeHandler = (e) => {
+    // try {
+    //     const data = JSON.parse(e.data);
+    //     onNotice?.(data);
+    // } catch {
+    //     onNotice?.(e.data);
+    
+    // }
+    // };
     // notice 이벤트만 수신 (서버: event().name("notice"))
     eventSource.addEventListener("notice", (e) => {
         try {

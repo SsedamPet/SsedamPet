@@ -413,6 +413,8 @@ function Home() {
           </div>
         </div>
 
+        
+
         <div css={s.weeklyStatContainer}>
           {weeklyData ? (
             <>

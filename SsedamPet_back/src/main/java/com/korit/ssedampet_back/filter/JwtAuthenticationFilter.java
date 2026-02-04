@@ -90,6 +90,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);   // 다음 filter로 넘겨버림 - 인증되지않은 상태
             return;
 
+
+
         }
         System.out.println("1. 토큰 추출");
         String accessToken = bearerToken.replaceAll("Bearer ", "");
