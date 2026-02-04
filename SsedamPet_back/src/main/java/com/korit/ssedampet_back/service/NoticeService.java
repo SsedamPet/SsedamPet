@@ -2,6 +2,7 @@ package com.korit.ssedampet_back.service;
 
 import com.korit.ssedampet_back.dto.response.main.NoticeDto;
 import com.korit.ssedampet_back.mapper.NoticeMapper;
+import com.korit.ssedampet_back.repository.NoticeEmitterRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class NoticeService {
     private static final long KEEP_ALIVE_CHECK_TIME = 20L;
 
     private final NoticeMapper noticeMapper;
+    private final NoticeEmitterRepository noticeEmitterRepository;
 
     // 연결 중인 유저들의 연결 객체(Emitter) 저장소
     private final Map<Integer, List<SseEmitter>> emitters = new ConcurrentHashMap<>();
@@ -32,16 +34,17 @@ public class NoticeService {
 
     public SseEmitter connect(int userId, String lastEventId) {
         SseEmitter emitter = new SseEmitter(SSE_CONNECTING_TIME);
-        addEmitter(userId, emitter);
 
-        emitter.onCompletion(() -> removeEmitter(userId, emitter));
-        emitter.onTimeout(() -> removeEmitter(userId, emitter));
-        emitter.onError((e) -> removeEmitter(userId, emitter));
+        noticeEmitterRepository.add(userId, emitter);
+
+        emitter.onCompletion(() -> noticeEmitterRepository.remove(userId, emitter));
+        emitter.onTimeout(() -> noticeEmitterRepository.remove(userId, emitter));
+        emitter.onError((e) -> noticeEmitterRepository.remove(userId, emitter));
 
         try {
             emitter.send(SseEmitter.event().name("connected").data("ok"));
         } catch (IOException e) {
-            removeEmitter(userId, emitter);
+            noticeEmitterRepository.remove(userId, emitter);
             emitter.completeWithError(e);
             return emitter;
         }
@@ -54,7 +57,7 @@ public class NoticeService {
                 emitter.send(SseEmitter.event().name("ping").data("ping"));
             } catch (Exception e) {
                 closed.set(true);
-                removeEmitter(userId, emitter);
+                noticeEmitterRepository.remove(userId, emitter);
                 emitter.complete();
             }
         }, KEEP_ALIVE_CHECK_TIME, KEEP_ALIVE_CHECK_TIME, TimeUnit.SECONDS);
@@ -119,18 +122,7 @@ public class NoticeService {
         }
     }
 
-    // 저장소에 연결 추가
-    private void addEmitter(int userId, SseEmitter emitter) {
-        emitters.computeIfAbsent(userId, k -> new CopyOnWriteArrayList<>()).add(emitter);
-    }
 
-    // 연결 종료 시 저장소에서 제거
-    private void removeEmitter(int userId, SseEmitter emitter) {
-        List<SseEmitter> list = emitters.get(userId);
-        if(list == null) return;
-        list.remove(emitter);
-        if (list.isEmpty()) emitters.remove(userId);
-    }
 
     // 실제 데이터를 전송하는 로직
     private void sendToOneEmitter(int userId, SseEmitter emitter, NoticeDto dto) {
@@ -140,7 +132,7 @@ public class NoticeService {
                     .name("notice")
                     .data(dto));
         } catch (Exception e) {
-            removeEmitter(userId, emitter); // 전송 실패 시 연결 제거
+            noticeEmitterRepository.remove(userId, emitter); // 전송 실패 시 연결 제거
             try {
                 emitter.complete();
             } catch (Exception ignored) {}

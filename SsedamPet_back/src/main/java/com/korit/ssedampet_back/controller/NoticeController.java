@@ -35,7 +35,7 @@ public class NoticeController {
 
 
     // 알림 목록(최신순)
-    @GetMapping("latest")
+    @GetMapping("/latest")
     public ResponseEntity<List<NoticeDto>> list(
             @RequestParam(defaultValue = "20") int limit,
             @RequestParam(defaultValue = "0") int offset
