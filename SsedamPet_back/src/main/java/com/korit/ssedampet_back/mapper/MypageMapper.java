@@ -23,6 +23,8 @@ public interface MypageMapper {
 
     List<PostDto> findMyPosts(@Param("userId") int userId);
 
+    int updatePetProfileImgUrlInt(@Param("userId") int userId, @Param("petId") int petId, @Param("url") String url);
+
     List<PostDto> findMyLikedPosts(@Param("userId") int userId);
 
 }

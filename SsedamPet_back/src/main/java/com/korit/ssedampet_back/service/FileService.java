@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,6 +21,10 @@ public class FileService {
         if (file == null || file.isEmpty()) {
             return null;
         }
+
+        String petDirPath = projectPath + "/upload/pet";
+        File dir = new File(petDirPath);
+        if(!dir.exists()) dir.mkdirs();
 
         String originName = file.getOriginalFilename();
         String extension = originName.substring(originName.lastIndexOf("."));
@@ -40,6 +45,9 @@ public class FileService {
         }
 
     }
+
+
+    
 
     public String savePostFile(MultipartFile file) {
         if (file == null || file.isEmpty()) {

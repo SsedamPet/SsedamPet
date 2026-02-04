@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,17 +16,19 @@ import java.time.LocalDateTime;
 public class Pet {
     private int petId;
     private int userId;
-    public enum PetType {
-        DOG, CAT
-    }
+
+    public enum PetType { DOG, CAT }
+    public enum PetGender { M, F }
+
+    private PetType petType;
     private String petName;
-    private LocalDateTime petBirth;
-    private enum petGender {
-        M, F
-    }
+    private LocalDate petBirth;
+    private PetGender petGender;
     private String petBreed;
     private Double petWeight;
     private String petProfileImgUrl;
+    private int petAge;
+
     private LocalDateTime createdDt;
     private LocalDateTime updatedDt;
 
