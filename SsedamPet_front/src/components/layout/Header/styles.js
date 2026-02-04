@@ -33,3 +33,28 @@ export const bellIcon = css`
         height: 24px;
     }
 `;
+
+export const noticeBellInCard = css`
+  position: absolute;
+  right: 20px;          /* ✅ 오른쪽 끝 */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const noticeBadge = css`
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #ff3b30;
+  color: white;
+  border-radius: 999px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+`;

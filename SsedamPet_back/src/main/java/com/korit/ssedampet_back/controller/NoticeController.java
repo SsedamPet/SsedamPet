@@ -56,6 +56,15 @@ public class NoticeController {
         return ResponseEntity.ok(noticeService.markRead(me(), noticeId));
     }
 
+    // NoticeController.java
+    @PostMapping("/test")
+    public ResponseEntity<?> testNotice() {
+        int userId = me(); // 로그인한 사용자(15)
+        noticeService.testPush(userId); // 아래 서비스 추가
+        return ResponseEntity.ok("ok");
+    }
+
+
 
     // 전체 읽음 처리
     @PatchMapping("/read-all")
