@@ -16,9 +16,5 @@ export default function App() {
       />
       <MainRoute />
     </>
-
-  return (
-    <MainRoute />
-
-  );
+  )
 }

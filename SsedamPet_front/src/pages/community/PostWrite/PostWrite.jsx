@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { useState, useRef } from "react";
-import axios from "axios";
 import * as s from "./styles";
 import { Plus, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
 import { useMeQuery } from "../../../react-query/queries/usersQueries";
+import { api } from "../../../configs/axiosConfig";
 
 const PostWrite = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const PostWrite = () => {
   };
 
   const handleSubmit = async () => {
-    console.log(meQuery.data)
+    console.log(meQuery.data);
     const userId = meQuery.data?.data?.userId;
     if (!previewUrl || content.trim().length === 0) {
       alert("이미지, 본문 내용을 모두 확인해주세요.");
@@ -52,14 +52,13 @@ const PostWrite = () => {
     const token = localStorage.getItem("AccessToken");
     const formData = new FormData();
     formData.append("content", content);
-    formData.append("image", imageFile); 
-    formData.append("userId", userId); 
+    formData.append("image", imageFile);
+    formData.append("userId", userId);
 
     try {
-      await axios.post("http://localhost:8080/api/community/post", formData, {
+      await api.post("/api/community/post", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
         },
       });
       alert("피드가 작성되었습니다.");
@@ -77,7 +76,6 @@ const PostWrite = () => {
         <div css={s.closeButton} onClick={handleClose}>
           <X size={24} strokeWidth={2.5} color="#333" />
         </div>
-
 
         {/* 이미지 업로드 박스 */}
         <div css={s.imageUploadBox} onClick={handleImageClick}>
