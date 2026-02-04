@@ -264,6 +264,7 @@ function Home() {
     waterStatus: "-",
     foodStatus: "-",
     poopCnt: 0,
+    healthLogMemo:"-",
   };
 
   //=========================== 건강기록 주간 요약 =========================================
