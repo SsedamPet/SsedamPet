@@ -12,6 +12,13 @@ const UserRegistration = () => <div>유저 정보 입력 페이지 디자인</di
 const PetRegistration = () => <div>반려동물 등록 페이지 디자인</div>;
 
 function AuthRoute() {
+
+  useEffect(() => {
+  if (!meQuery.isLoading && meQuery.data?.status === 200) {
+    navigate("/", { replace: true });
+  }
+}, [meQuery.isLoading, meQuery.data]);
+
   return (
     <Routes>
       <Route path="login" element={<Login />} />
