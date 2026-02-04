@@ -8,9 +8,8 @@ import Loading from "../../components/common/Loading";
 import { useMyPetsQuery } from "../../react-query/queries/petsQueries";
 import { resolveImageUrl } from "../../utils/resolveImageUrl";
 import { useMypageSummaryQuery } from "../../react-query/queries/mypageSummaryQueries";
-import { useQueryClient } from "@tanstack/react-query"; 
-import { logout } from "../../apis/auth/authApi";       
-
+import { useQueryClient } from "@tanstack/react-query";
+import { logout } from "../../apis/auth/authApi";
 
 const API_BASE_URL = "http://localhost:8080";
 
@@ -22,41 +21,31 @@ const MyPage = () => {
   const petsQuery = useMyPetsQuery(!!token);
   const { data: summary } = useMypageSummaryQuery(true);
 
-  const postCount = summary?.myPostCnt ?? 0;     // ✅ 백엔드 키에 맞춰 수정
-  const likedCount = summary?.myLikedPostCnt ?? 0;   // ✅ 백엔드 키에 맞춰 수정
+  const postCount = summary?.myPostCnt ?? 0; // ✅ 백엔드 키에 맞춰 수정
+  const likedCount = summary?.myLikedPostCnt ?? 0; // ✅ 백엔드 키에 맞춰 수정
 
   const openMyPosts = () => navigate("/mypage/posts");
   const openLikePosts = () => navigate("/mypage/likes");
 
   const handleLogout = async () => {
-    try {
-      // 서버에 로그아웃 요청 (세션/쿠키 정리)
-      await logout();
-    } catch (e) {
-      // 서버가 꺼져있거나 에러나도 프론트 토큰은 지워야 해서 무시 가능
-      console.log("logout api error:", e);
-    } finally {
-      // 로컬 토큰 제거
-      localStorage.removeItem("AccessToken");
-      localStorage.removeItem("RefreshToken"); // 쓰는 경우에만
+    // 1. 🚨 로컬 스토리지에서 토큰 삭제
+    localStorage.removeItem("AccessToken");
+    localStorage.removeItem("RefreshToken"); // 리프레시 토큰도 있다면 같이 삭제
 
-      // react-query 캐시 초기화(다른 유저로 바뀔 때 잔상 방지)
-      queryClient.clear();
+    // 2. react-query 캐시 초기화
+    // (이걸 안 하면 로그아웃 후에도 이전 유저의 닉네임이나 펫 정보가 잠시 보일 수 있어요)
+    queryClient.clear();
 
-      // 로그인 페이지로 이동
-      navigate("/auth/login");
-    }
+    // 3. ✈️ 로그인 페이지로 이동
+    // replace: true를 쓰면 뒤로가기를 눌러도 다시 마이페이지로 오지 못하게 막아줍니다.
+    navigate("/auth/login", { replace: true });
   };
 
-
-  
   const { data: me, isLoading, isError } = useMeQuery();
   const { data: pets = [], isLoading: petsLoading } = petsQuery ?? {};
-  
 
   useEffect(() => {
     console.log("me changed:", me);
-    
   }, [me]);
 
   if (isLoading) {
@@ -156,24 +145,12 @@ const MyPage = () => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            >
-              <path d="M18.36 6.64a9 9 0 1 1-12.73 0"></path>
-              <line x1="12" y1="2" x2="12" y2="12"></line>
-            </svg>
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              onClick={handleLogout}           // ✅ [추가] 로그아웃 클릭 이벤트
-              style={{ cursor: "pointer" }}    // ✅ [추가] 클릭 가능한 느낌
-              role="button"                    // ✅ [추가] 접근성
-              tabIndex={0}                     // ✅ [추가]
-              onKeyDown={(e) => {              // ✅ [추가] 엔터로도 로그아웃
+              onClick={handleLogout} // ✅ [추가] 로그아웃 클릭 이벤트
+              style={{ cursor: "pointer" }} // ✅ [추가] 클릭 가능한 느낌
+              role="button" // ✅ [추가] 접근성
+              tabIndex={0} // ✅ [추가]
+              onKeyDown={(e) => {
+                // ✅ [추가] 엔터로도 로그아웃
                 if (e.key === "Enter" || e.key === " ") handleLogout();
               }}
             >
@@ -211,11 +188,19 @@ const MyPage = () => {
           </div>
 
           <div css={s.statsContainer}>
-            <div css={s.statBox} onClick={openMyPosts} style={{ cursor: "pointer" }}>
+            <div
+              css={s.statBox}
+              onClick={openMyPosts}
+              style={{ cursor: "pointer" }}
+            >
               <span className="count">{postCount}</span>
               <span className="label">게시물</span>
             </div>
-            <div css={s.statBox} onClick={openLikePosts} style={{ cursor: "pointer" }}>
+            <div
+              css={s.statBox}
+              onClick={openLikePosts}
+              style={{ cursor: "pointer" }}
+            >
               <span className="count">{likedCount}</span>
               <span className="label">좋아요</span>
             </div>
@@ -230,10 +215,12 @@ const MyPage = () => {
               padding: "0 10px",
             }}
           >
-            <span style={{ fontSize: "19px", fontWeight: "800", color: "#2D4028" }}>
+            <span
+              style={{ fontSize: "19px", fontWeight: "800", color: "#2D4028" }}
+            >
               🐾 내 반려동물
             </span>
-            <> 
+            <>
               <button
                 onClick={() => {
                   if (pets.length >= 3) {
@@ -253,7 +240,6 @@ const MyPage = () => {
               >
                 + 추가
               </button>
-
             </>
           </div>
 
@@ -263,8 +249,11 @@ const MyPage = () => {
             ) : pets.length === 0 ? (
               <div>등록된 반려동물이 없습니다.</div>
             ) : (
-                pets.slice(0, 3).map((pet) => {
-                const petProfileImgUrl = resolveImageUrl(pet.petProfileImgUrl, API_BASE_URL);
+              pets.slice(0, 3).map((pet) => {
+                const petProfileImgUrl = resolveImageUrl(
+                  pet.petProfileImgUrl,
+                  API_BASE_URL,
+                );
 
                 return (
                   <div key={pet.petId} css={s.petCard}>
@@ -272,8 +261,8 @@ const MyPage = () => {
                       <div className="pet-circle">
                         {petProfileImgUrl ? (
                           <img
-                            src={petProfileImgUrl} 
-                            alt={pet.petName} 
+                            src={petProfileImgUrl}
+                            alt={pet.petName}
                             style={{
                               width: "100%",
                               height: "100%",
@@ -281,7 +270,7 @@ const MyPage = () => {
                               objectFit: "cover",
                             }}
                             onError={(e) => {
-                            // ✅ 이미지 로드 실패하면 fallback(이모지) 보이게끔 이미지 숨김
+                              // ✅ 이미지 로드 실패하면 fallback(이모지) 보이게끔 이미지 숨김
                               e.currentTarget.style.display = "none";
                             }}
                           />
@@ -304,13 +293,12 @@ const MyPage = () => {
 
                       <div>
                         <div className="p-name">
-                          {pet.petName}{" "}
-                          {pet.petAge ? `${pet.petAge}세` : ""}{" "}
+                          {pet.petName} {pet.petAge ? `${pet.petAge}세` : ""}{" "}
                           {pet.petGender === "M"
                             ? "♂"
                             : pet.petGender === "F"
-                            ? "♀"
-                            : ""}
+                              ? "♀"
+                              : ""}
                         </div>
                         <div className="p-desc">{pet.petBreed ?? ""}</div>
                       </div>
