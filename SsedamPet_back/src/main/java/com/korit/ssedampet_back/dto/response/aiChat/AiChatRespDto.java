@@ -1,4 +1,4 @@
-package com.korit.ssedampet_back.dto.response;
+package com.korit.ssedampet_back.dto.response.aiChat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AiRespDto {
-    private String message;
+public class AiChatRespDto {
+    private String answer;
     private List<String> buttons;
 }
