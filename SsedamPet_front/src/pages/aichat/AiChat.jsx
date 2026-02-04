@@ -8,16 +8,8 @@ function AiChat() {
   const [messages, setMessages] = useState([
     {
       type: "bot",
-      text: "안녕하세요! 저는 반려동물 건강 상담 AI 멍냥닥터라고 해요! 저에게 무슨 기록을 남겨주실래요?",
-    },
-    { type: "user", text: "고양이가 요즘 지쳐 하는데 뭐가 문제일까요?" },
-    {
-      type: "bot",
-      text: "구토는 다양한 원인이 있을 수 있습니다.\n*가벼운 경우**: 너무 빨리 먹어서, 헤어볼(고양이), 빗속에 위산 자극\n**중요가 필요한 경우**: 하루에 3회 이상 반복, 혈액이 섞임, 푹푹 처럼 보이면...",
-    },
-    {
-      type: "bot",
-      text: "최근 어떤 반려동물 추가하시면 무엇이 원인인지 알아볼게요.",
+      text: "안녕하세요! 저는 반려동물 건강 상담 AI 멍냥닥터라고 해요! 무엇이든 물어보세요!",
+      buttons: ["🏥 건강 검진 가이드", "🏠 생활 관리", "🏥 병원 가이드"],
     },
   ]);
   const [inputText, setInputText] = useState("");
@@ -32,35 +24,62 @@ function AiChat() {
   }, [messages]);
 
   const handleSendMessage = async (forcedText = "") => {
-    
-    const textToSend = typeof forcedText === "string" ? forcedText : inputText;
+    // 버튼 클릭 시 텍스트를 더 구체적인 질문으로 변환
+    let textToSend =
+      typeof forcedText === "string" && forcedText.trim() !== ""
+        ? forcedText
+        : inputText;
 
-    if (!textToSend || typeof textToSend !== "string" || !textToSend.trim() || isLoading) {
-      return;
+    // 특정 가이드 버튼 클릭 시 질문을 상세화하여 AI의 고정 답변을 방지합니다
+    if (forcedText === "🏥 건강 검진 가이드") {
+      textToSend =
+        "반려동물의 생애주기별 필수 건강 검진 항목과 연령대별 주의사항을 상세히 알려줘.";
+    } else if (forcedText === "🏠 생활 관리") {
+      textToSend =
+        "반려동물의 건강을 위한 일상적인 사료 관리 및 환경 조성 팁을 알려줘.";
+    } else if (forcedText === "🏥 병원 가이드") {
+      textToSend =
+        "동물병원 방문 전 준비사항과 우리 아이에게 맞는 병원을 고르는 법을 알려줘.";
     }
+
+    if (
+      !textToSend ||
+      typeof textToSend !== "string" ||
+      !textToSend.trim() ||
+      isLoading
+    )
+      return;
 
     setIsLoading(true); // 로딩 시작
     const userMsg = { type: "user", text: textToSend };
-
     setMessages((prev) => [...prev, userMsg]);
     setInputText("");
 
     try {
-        // 실제 서버로 질문 날리는 코드
-        const response = await api.post("/api/ai/chat", { text: inputText });
+      // 실제 서버로 질문 날리는 코드
+      const response = await api.post("/api/ai/chat", { text: textToSend });
 
-        // 서버에서 온 대답 추가
-        const botMsg = { type: "bot", text: response.data };
-        setMessages((prev) => [...prev, botMsg]);
-      } catch (error) {
-        console.error("챗봇 통신 에러:", error);
-        setMessages((prev) => [
-          ...prev,
-          { type: "bot", text: "서버가 아픈가 봐요... 대답을 못 하겠어요." },
-        ]);
-      } finally {
-        setIsLoading(false);
-      }
+      // 서버에서 온 대답 추가
+      console.log(response.data);
+      const botMsg = {
+        type: "bot",
+        text: response.data.answer || "답변을 생성하지 못했습니다.",
+        buttons: response.data.buttons || [],
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } catch (error) {
+      console.error("챗봇 통신 에러:", error);
+      setMessages((prev) => [
+        ...prev,
+        {
+          type: "bot",
+          text: "서버 연결에 실패했어요. 잠시 후 다시 시도해주세요.",
+          buttons: [],
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // 상단 퀵 버튼 클릭 시 입력창에 텍스트 세팅
@@ -77,10 +96,27 @@ function AiChat() {
             css={msg.type === "user" ? s.userMessage : s.botMessage}
           >
             {msg.type === "bot" && <div className="avatar">🤖</div>}
-            <div className="bubble">
-              {msg.text.split("\n").map((line, i) => (
-                <p key={i}>{line}</p>
-              ))}
+
+            <div className="message-content">
+              <div className="bubble">
+                {msg.text?.split("\n").map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+              {/* 챗봇의 답변이면서 버튼 데이터가 있을 때만 해당 말풍선 아래에 버튼 생성 */}
+              {msg.type === "bot" && msg.buttons && msg.buttons.length > 0 && (
+                <div css={s.bubbleButtons}>
+                  {msg.buttons.map((btnText, i) => (
+                    <button
+                      key={i}
+                      className="quick-btn"
+                      onClick={() => handleSendMessage(btnText)}
+                    >
+                      {btnText}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
             {msg.type === "user" && <div className="avatar">🐱</div>}
           </div>
@@ -90,23 +126,21 @@ function AiChat() {
           <div css={s.botMessage}>
             <div className="avatar">🤖</div>
             <div className="bubble">
-              <p>쓰담쌤이 분석 중입니다...</p>
+              <p> 잠시만 기다려주세요...</p>
             </div>
           </div>
         )}
       </div>
 
       <div css={s.inputWrapper}>
-        <div css={s.topButtonGroup}>
-          <button className="topBtn">💊 질병 예방법</button>
-          <button className="topBtn">🐱 생활 습관</button>
-          <button className="topBtn">⚠️ 주의 사항</button>
-        </div>
-
         <div css={s.inputArea}>
           <input
             type="text"
-            placeholder={isLoading ? "답변을 기다리고 있습니다..." : "증상이나 궁금한 점을 입력하세요!"}
+            placeholder={
+              isLoading
+                ? "답변을 기다리고 있습니다..."
+                : "증상이나 궁금한 점을 입력하세요!"
+            }
             value={inputText}
             disabled={isLoading}
             onChange={(e) => setInputText(e.target.value)}
@@ -114,7 +148,12 @@ function AiChat() {
               if (e.key === "Enter") handleSendMessage();
             }}
           />
-          <button onClick={handleSendMessage} disabled={isLoading || !inputText.trim()}>➤</button>
+          <button
+            onClick={() => handleSendMessage()}
+            disabled={isLoading || !inputText.trim()}
+          >
+            ➤
+          </button>
         </div>
       </div>
       <BottomNavBar />

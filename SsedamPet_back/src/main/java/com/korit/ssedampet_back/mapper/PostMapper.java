@@ -11,14 +11,17 @@ import java.util.Map;
 @Mapper
 public interface PostMapper {
     // 목록 조회
-    List<PostResponseDto> getPostList(@Param("sortBy") String sortBy);
+    List<PostResponseDto> getPostList(@Param("sortBy") String sortBy, @Param("userId") Object userId);
     //sortBy : 정렬
     // 상세 조회 (게시글 한 개)
-    Map<String, Object> getPostById(@Param("postId") int postId);
+    Map<String, Object> getPostById(@Param("postId") int postId, @Param("userId") Object userId);
     // 피드 작성
     void savePost(Map<String, Object> postData);
     // 게시글 작성자 ID
     int findPostOwnerUserId(@Param("postId") int postId);
+
+    int deletePost(@Param("postId") int postId, @Param("userId") int userId);
+    int deleteComment(@Param("commentId") int commentId, @Param("userId") int userId);
 
 //    // 좋아요 기능
 //    int checkLike(@Param("postId") int postId, @Param("userId") int userId);

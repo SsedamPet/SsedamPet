@@ -1,9 +1,6 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import MainLayout from "../../components/layout/MainLayout";
 import Home from "../../pages/home/Home";
-import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
-import Login from "../../pages/auth/Login/Login";
-import Signup from "../../pages/auth/Signup/Signup";
 import Registry from "../../pages/information/registration/Registry";
 import MyPage from "../../pages/mypage/MyPage";
 import LikedPosts from "../../pages/mypage/posts/LikedPosts";
@@ -19,9 +16,9 @@ import AuthRoute from "../AuthRoute/AuthRoute.jsx";
 import PostModal from "../../pages/mypage/posts/PostModal.jsx";
 
 
+import PostDetailPage from "../../pages/community/PostDetailPage/PostDetailPage.jsx";
 
 function MainRoute() {
-  
   function PetAddRoute() {
     const navigate = useNavigate();
 
@@ -67,22 +64,21 @@ function MainRoute() {
 
   return (
     <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/auth/*" element={<AuthRoute />} />
-        <Route path="/" element={<Home />} />
+      {/* 인증 영역 (레이아웃 X) */}
+      <Route path="/auth/*" element={<AuthRoute />} />
 
+      {/* 보호된 영역 */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
 
-        {/* 로그인 필수 영역 */}
-        <Route element={<ProtectedRoute />}>
-          {/* 정보 관리 페이지들 */}
           <Route path="/info/registry" element={<Registry />} />
 
-          {/* 커뮤니티 페이지들 */}
           <Route path="/community" element={<MainCommunity />} />
           <Route path="/community/write" element={<PostWrite />} />
+          <Route path="/community/post/:postId" element={<PostDetailPage />} />
           <Route path="/community/comment" element={<CommentSection />} />
 
-          {/* 마이페이지 */}
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/pet/add" element={<PetAddRoute />} />
 
@@ -94,6 +90,9 @@ function MainRoute() {
           <Route path="/chatbot" element={<AiChat />} />
         </Route>
       </Route>
+
+      {/* 나머지는 로그인으로 튕김 */}
+      <Route path="*" element={<Navigate to="/auth/login" replace />} />
     </Routes>
   );
 }

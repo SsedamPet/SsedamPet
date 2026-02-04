@@ -3,6 +3,7 @@ import { useNotice } from "./contexts/NoticeContext";
 import MainRoute from "./routes/MainRoute/MainRoute";
 
 export default function App() {
+
   const { toastMsg, toastVisible, setToastVisible } = useNotice();
 
   
@@ -15,5 +16,9 @@ export default function App() {
       />
       <MainRoute />
     </>
+
+  return (
+    <MainRoute />
+
   );
 }

@@ -8,35 +8,15 @@ import Signup from "../../pages/auth/Signup/Signup";
 import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
 import { useMeQuery } from "../../react-query/queries/usersQueries";
 
-const UserRegistration = () => <div>유저 정보 입력 페이지 디자인</div>;
-const PetRegistration = () => <div>반려동물 등록 페이지 디자인</div>;
-
 function AuthRoute() {
-  const navigate = useNavigate();
-  const location = useLocation();
   const meQuery = useMeQuery();
-  console.log(meQuery.isLoading);
-  console.log(meQuery.data);
-
-  const serverStatus = meQuery.data?.status;
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const isNotLoggedIn =
-      !meQuery.isLoading && (!meQuery.data || serverStatus !== 200);
-    if (isNotLoggedIn && !location.pathname.startsWith("/auth/")) {
-      navigate("/auth/login", { replace: true });
-    }
-  }, [
-    meQuery.isLoading,
-    meQuery.data,
-    serverStatus,
-    location.pathname,
-    navigate,
-  ]);
-
-  if (meQuery.isLoading) {
-    return <Loading />;
+  if (!meQuery.isLoading && meQuery.data?.status === 200) {
+    navigate("/", { replace: true });
   }
+}, [meQuery.isLoading, meQuery.data]);
 
   return (
     <Routes>

@@ -20,6 +20,7 @@ public class FileService {
      * ✅ 기존 로직 유지: 유저 프로필 저장은 기본적으로 /upload/profile 로 저장
      */
     public String saveFile(MultipartFile file) {
+ 
         return saveFile(file, "profile"); // ✅ [추가] 내부적으로 폴더 지정 버전 호출
     }
 
@@ -31,6 +32,40 @@ public class FileService {
      */
     public String saveFile(MultipartFile file, String folder) {
         if (file == null || file.isEmpty()) return null;
+        
+
+        String petDirPath = projectPath + "/upload/pet";
+        File dir = new File(petDirPath);
+        if(!dir.exists()) dir.mkdirs();
+
+        String originName = file.getOriginalFilename();
+        String extension = originName.substring(originName.lastIndexOf("."));
+        String saveName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString().substring(0,8) + extension;
+
+        Path uploadPath = Paths.get(projectPath, "upload", "profile");
+
+        try {
+            Files.createDirectories(uploadPath);
+
+            Path filePath = uploadPath.resolve(saveName);
+            file.transferTo(filePath.toFile());
+
+            return "/image/profile/" + saveName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
+    
+
+    public String savePostFile(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            return null;
+        }
+
 
         String originName = file.getOriginalFilename();
         String extension = "";
@@ -38,7 +73,9 @@ public class FileService {
             extension = originName.substring(originName.lastIndexOf("."));
         }
 
-        String saveName = UUID.randomUUID().toString().replace("-", "") + extension;
+        String saveName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8) + extension;
+
+        Path uploadPath = Paths.get(projectPath, "upload", "post");
 
         try {
             // ✅ 저장 경로: {file.path}/upload/{folder}/
@@ -48,11 +85,10 @@ public class FileService {
             Path filePath = uploadDir.resolve(saveName);
             file.transferTo(filePath.toFile());
 
-            // ✅ 접근 URL 반환 (WebMvcConfig 기준)
-            return "/image/" + folder + "/" + saveName;
-
-        } catch (Exception e) {
-            throw new RuntimeException("파일 저장 실패", e);
+            return "/image/post/" + saveName;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
