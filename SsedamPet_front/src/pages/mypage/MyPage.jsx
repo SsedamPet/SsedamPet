@@ -7,6 +7,7 @@ import { useMeQuery } from "../../react-query/queries/usersQueries";
 import Loading from "../../components/common/Loading";
 import { useMyPetsQuery } from "../../react-query/queries/petsQueries";
 import { resolveImageUrl } from "../../utils/resolveImageUrl";
+import { useMypageSummaryQuery } from "../../react-query/queries/mypageSummaryQueries";
 
 const API_BASE_URL = "http://localhost:8080";
 
@@ -15,6 +16,10 @@ const MyPage = () => {
 
   const token = localStorage.getItem("AccessToken");
   const petsQuery = useMyPetsQuery(!!token);
+  const { data: summary } = useMypageSummaryQuery(true);
+
+  const postCount = summary?.postCount ?? 0;     // ✅ 백엔드 키에 맞춰 수정
+  const likedCount = summary?.likedCount ?? 0;   // ✅ 백엔드 키에 맞춰 수정
 
   const openMyPosts = () => navigate("/mypage/posts");
   const openLikePosts = () => navigate("/mypage/likes");
@@ -176,11 +181,11 @@ const MyPage = () => {
 
           <div css={s.statsContainer}>
             <div css={s.statBox} onClick={openMyPosts} style={{ cursor: "pointer" }}>
-              <span className="count">0</span>
+              <span className="count">{postCount}</span>
               <span className="label">게시물</span>
             </div>
             <div css={s.statBox} onClick={openLikePosts} style={{ cursor: "pointer" }}>
-              <span className="count">0</span>
+              <span className="count">{likedCount}</span>
               <span className="label">좋아요</span>
             </div>
           </div>

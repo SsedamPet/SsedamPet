@@ -4,8 +4,9 @@ export const getMypage = async () => {
     return await api.get("/api/mypage/user");
 };
 
-export const getMySummary = async () => {
-    return await api.get("/api/mypage/summary")
+export const getMypageSummary = async () => {
+    const res = await api.get("/api/mypage/summary");
+    return res.data;
 }
 
 export const getMyPets = async () => {
@@ -20,7 +21,7 @@ export const getMyPosts = async ({ year, month }) => {
 };
 
 export const getLikedPosts = async ({ year, month }) => {
-    const res = await api.get("/api/mypage/my-posts", {
+    const res = await api.get("/api/mypage/liked-posts", {
         params: {year, month},
     });
     return res.data;

@@ -10,38 +10,42 @@ const API_BASE_URL = "http://localhost:8080";
 const pad2 = (n) => String(n).padStart(2, "0");
 
 const prevMonth = ({ year, month }) =>
-  month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
+    month === 1 ? { year: year - 1, month: 12 } : { year, month: month - 1 };
 
 const nextMonth = ({ year, month }) =>
-  month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 };
+    month === 12 ? { year: year + 1, month: 1 } : { year, month: month + 1 };
 
 const LikedPosts = ({ onClose }) => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [yearMonth, setYearMonth] = useState(() => {
-    const now = new Date();
-    return { year: now.getFullYear(), month: now.getMonth() + 1 };
-  });
+    const [yearMonth, setYearMonth] = useState(() => {
+        const now = new Date();
+        return { year: now.getFullYear(), month: now.getMonth() + 1 };
+    });
 
-  const { data, isLoading } = useLikedPostsQuery(true);
+    const { data, isLoading } = useLikedPostsQuery({
+        year: yearMonth.year,
+        month: yearMonth.month,
+        enabled: true,
+    });
 
-  const posts = useMemo(() => {
-    if (Array.isArray(data)) return data;
-    if (Array.isArray(data?.data)) return data.data;
-    return [];
-  }, [data]);
+    const posts = useMemo(() => {
+        if (Array.isArray(data)) return data;
+        if (Array.isArray(data?.data)) return data.data;
+        return [];
+    }, [data]);
 
-  const monthKey = `${yearMonth.year}-${pad2(yearMonth.month)}`;
+    const monthKey = `${yearMonth.year}-${pad2(yearMonth.month)}`;
 
-  const filteredDate = useMemo(() => {
+    const filteredDate = useMemo(() => {
     // 좋아요한 게시물도 createdDt 기준으로 월 필터링
-    return posts.filter((p) => String(p?.createdDt ?? "").startsWith(monthKey));
-  }, [posts, monthKey]);
+        return posts.filter((p) => String(p?.createdDt ?? "").startsWith(monthKey));
+    }, [posts, monthKey]);
 
-  const gridItems = useMemo(() => {
-    const sliced = filteredDate.slice(0, 12);
-    return Array.from({ length: 12 }, (_, i) => sliced[i] ?? null);
-  }, [filteredDate]);
+    const gridItems = useMemo(() => {
+        const sliced = filteredDate.slice(0, 12);
+        return Array.from({ length: 12 }, (_, i) => sliced[i] ?? null);
+    }, [filteredDate]);
 
   const handleGoCommunity = () => {
     onClose?.();

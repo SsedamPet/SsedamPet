@@ -24,7 +24,11 @@ const PostModal = ({ onClose }) => {
         return { year: now.getFullYear(), month: now.getMonth() + 1 };
     })
 
-    const { data, isLoading } = useMyPostsQuery(true);
+    const { data, isLoading } = useMyPostsQuery({
+        year: yearMonth.year,
+        month: yearMonth.month,
+        enabled: true,
+    });
 
     const posts = useMemo(() => {
         if (Array.isArray(data)) return data;
