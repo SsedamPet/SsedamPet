@@ -99,6 +99,15 @@
 
     </insert>
 
+    <select id="getPopularPosts" resultType="com.korit.ssedampet_back.dto.response.post.PostResponseDto">
+        SELECT
+        post_id,
+        post_img_url,
+        post_like_cnt
+        FROM post_tb
+        ORDER BY post_like_cnt DESC, created_dt DESC
+        LIMIT 4
+    </select>
 
     <update id="updatePostImgUrl">
         UPDATE post_tb

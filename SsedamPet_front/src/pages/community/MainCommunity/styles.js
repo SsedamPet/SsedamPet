@@ -240,7 +240,8 @@ export const modalHeader = css`
 
 export const modalBody = css`
     flex: 1;
-    overflow-y: auto;
+    display: flex;
+    overflow: hidden;
 `;
 
 export const loadMoreContainer = css`

@@ -11,7 +11,7 @@ import { Bell } from "lucide-react";
 import { useNotice } from "../../contexts/NoticeContext.jsx";
 import NoticeModal from "../mypage/notice/NoticeModal.jsx";
 
-
+const IMAGE_BASE_URL = "http://localhost:8080";
 
 // 주간 리포트 카드 컴포넌트 (내부 헬퍼)
 
@@ -448,10 +448,14 @@ function Home() {
                     className="post-item"
                     onClick={() => navigate(`/community/post/${post.postId}`)}
                     style={{
-                      backgroundImage: `url(${post.postImgUrl})`, // DB의 이미지 URL 연결
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      cursor: "pointer",
+                      backgroundImage: `url(${
+                       post.postImgUrl?.startsWith('http')
+                       ? post.postImgUrl
+                       : IMAGE_BASE_URL + post.postImgUrl
+                       })`,
+                       backgroundSize: "cover",
+                       backgroundPosition: "center",
+                       cursor: "pointer",
                     }}
                   ></div>
                 ))

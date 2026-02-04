@@ -6,7 +6,7 @@ export const rootContainer = css`
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     background-color: #F8FCF5;
     overflow: hidden;
 `;
@@ -17,7 +17,7 @@ export const mainContent = css`
     flex: 1;
     width: 100%;
     max-width: 600px;
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -65,11 +65,12 @@ export const closeButton = css`
 export const commentScrollArea = css`
     flex: 1;
     overflow-y: auto;
-    padding: 0 20px 20px 20px;
+    padding: 15px 20px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    &::-webkit-scrollbar { display: none; }
+    gap: 10px;
+    align-itmes: center;
+    flex-shirnk: 0;
 `;
 
 export const commentWrapper = css`
@@ -143,6 +144,7 @@ export const inputArea = css`
     gap: 10px;
     align-items: center;
     border-top: 1px solid #f0f0f0;
+    flex-shrink: 0;
 `;
 
 export const inputField = css`
