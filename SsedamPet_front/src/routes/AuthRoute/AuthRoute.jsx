@@ -20,6 +20,10 @@ function AuthRoute() {
 
   const serverStatus = meQuery.data?.status;
 
+  const isAuthProcessingPath =
+    location.pathname.includes("/login/oauth2/success") ||
+    location.pathname.includes("/signup/oauth2");
+
   useEffect(() => {
     const isNotLoggedIn =
       !meQuery.isLoading && (!meQuery.data || serverStatus !== 200);
@@ -34,7 +38,7 @@ function AuthRoute() {
     navigate,
   ]);
 
-  if (meQuery.isLoading) {
+  if (meQuery.isLoading && !isAuthProcessingPath) {
     return <Loading />;
   }
 
