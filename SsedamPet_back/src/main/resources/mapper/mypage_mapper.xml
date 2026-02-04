@@ -131,7 +131,6 @@
             post_content,
             post_like_cnt,
             post_comment_cnt,
-            post_location_tag,
             created_dt,
             updated_dt
         from
@@ -149,7 +148,6 @@
             p.post_content,
             p.post_like_cnt,
             p.post_comment_cnt,
-            p.post_location_tag,
             p.created_dt,
             p.updated_dt
         from
