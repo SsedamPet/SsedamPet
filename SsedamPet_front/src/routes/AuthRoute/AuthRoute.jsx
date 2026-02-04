@@ -12,36 +12,6 @@ const UserRegistration = () => <div>유저 정보 입력 페이지 디자인</di
 const PetRegistration = () => <div>반려동물 등록 페이지 디자인</div>;
 
 function AuthRoute() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const meQuery = useMeQuery();
-  console.log(meQuery.isLoading);
-  console.log(meQuery.data);
-
-  const serverStatus = meQuery.data?.status;
-
-  const isAuthProcessingPath =
-    location.pathname.includes("/login/oauth2/success") ||
-    location.pathname.includes("/signup/oauth2");
-
-  useEffect(() => {
-    const isNotLoggedIn =
-      !meQuery.isLoading && (!meQuery.data || serverStatus !== 200);
-    if (isNotLoggedIn && !location.pathname.startsWith("/auth/")) {
-      navigate("/auth/login", { replace: true });
-    }
-  }, [
-    meQuery.isLoading,
-    meQuery.data,
-    serverStatus,
-    location.pathname,
-    navigate,
-  ]);
-
-  if (meQuery.isLoading && !isAuthProcessingPath) {
-    return <Loading />;
-  }
-
   return (
     <Routes>
       <Route path="login" element={<Login />} />
