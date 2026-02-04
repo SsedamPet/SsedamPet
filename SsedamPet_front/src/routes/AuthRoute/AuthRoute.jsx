@@ -8,10 +8,9 @@ import Signup from "../../pages/auth/Signup/Signup";
 import OAuth2 from "../../pages/auth/OAuth2/OAuth2";
 import { useMeQuery } from "../../react-query/queries/usersQueries";
 
-const UserRegistration = () => <div>유저 정보 입력 페이지 디자인</div>;
-const PetRegistration = () => <div>반려동물 등록 페이지 디자인</div>;
-
 function AuthRoute() {
+  const meQuery = useMeQuery();
+  const navigate = useNavigate();
 
   useEffect(() => {
   if (!meQuery.isLoading && meQuery.data?.status === 200) {
