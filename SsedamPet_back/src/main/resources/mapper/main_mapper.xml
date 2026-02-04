@@ -33,7 +33,8 @@
             h.healthlog_id,
             h.water_status,
             h.food_status,
-            h.poop_cnt
+            h.poop_cnt,
+            h.healthlog_memo
         from
             healthlog_tb h
             join pet_tb p on h.pet_id = p.pet_id  where
