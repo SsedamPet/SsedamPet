@@ -1,86 +1,101 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { connectNoticeSSE } from "../utils/noticeEventSource";
 import { getLatestNotices, getUnreadCount } from "../apis/notices/noticesApi";
 
 const NoticeContext = createContext(null);
 export const useNotice = () => useContext(NoticeContext);
 
-
-
-
-
 export const NoticeProvider = ({ children }) => {
-    const [notices, setNotices] = useState([]);         // ✅ [추가] 알림 리스트
-    const [unreadCount, setUnreadCount] = useState(0);  // ✅ [추가] 미읽음 뱃지 숫자
-    
-    // 토스트 상태
-    const [toastMsg, setToastMsg] = useState("");
-    const [toastVisible, setToastVisible] = useState(false);
+  const [notices, setNotices] = useState([]); // ✅ [추가] 알림 리스트
+  const [unreadCount, setUnreadCount] = useState(0); // ✅ [추가] 미읽음 뱃지 숫자
 
-    const eventSourceRef  = useRef(null);
+  // 토스트 상태
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastVisible, setToastVisible] = useState(false);
 
-    useEffect(() => {
-        const token = localStorage.getItem("AccessToken");
-        if (!token) return;
+  const eventSourceRef = useRef(null);
+  const toastTimerRef = useRef(null);
 
-        // 초기 동기화: 목록/카운트 불러오기
-        (async () => {
-            try {
-                const [list, cnt] = await Promise.all([
-                    getLatestNotices({ limit: 20, offset: 0 }),
-                    getUnreadCount(),
-                ]);
-            setNotices(Array.isArray(list) ? list : []);
-            setUnreadCount(typeof cnt === "number" ? cnt : 0);
-            } catch (e) {
-                console.log("notice init sync error:", e);
-            }
-        })();
+  useEffect(() => {
+    const token = localStorage.getItem("AccessToken");
+    if (!token) return;
 
-        // SSE 연결(notice 이벤트만 수신)
-        const eventSource = connectNoticeSSE({
-            onOpen: () => console.log("✅ notice sse connected"),
-            onNotice: (notice) => {
-                if (!notice || typeof notice !== "object") return;
+    // 초기 동기화: 목록/카운트 불러오기
+    (async () => {
+      try {
+        const [list, cnt] = await Promise.all([
+          getLatestNotices({ limit: 20, offset: 0 }),
+          getUnreadCount(),
+        ]);
+        setNotices(Array.isArray(list) ? list : []);
+        setUnreadCount(typeof cnt === "number" ? cnt : 0);
+      } catch (e) {
+        console.log("notice init sync error:", e);
+      }
+    })();
 
-                setNotices((prev) => [notice, ...prev]);
-                setUnreadCount((c) => c + 1);
+    // SSE 연결(notice 이벤트만 수신)
+    const eventSource = connectNoticeSSE({
+      onOpen: () => console.log("✅ notice sse connected"),
+      onNotice: (notice) => {
+        if (!notice || typeof notice !== "object") return;
 
-                // ✅ [추가] 토스트 띄우기 (메시지 키는 너희 DTO에 맞춰)
-                const msg = notice.noticeMessage ?? notice.title ?? "새 알림이 도착했어요";
-                setToastMsg(msg);
-                setToastVisible(true);
-                
-            },
+        setNotices((prev) => [notice, ...prev]);
+        setUnreadCount((c) => c + 1);
 
-        });
+        // ✅ [추가] 토스트 띄우기 (메시지 키는 너희 DTO에 맞춰)
+        const msg =
+          notice.noticeMessage ?? notice.title ?? "새 알림이 도착했어요";
+        setToastMsg(msg);
+        setToastVisible(true);
 
-        eventSourceRef.current = eventSource;
+        // ✅ [수정] 새로운 알림이 올 때마다 기존에 돌아가던 10초 타이머를 초기화(삭제)
+        if (toastTimerRef.current) {
+          window.clearTimeout(toastTimerRef.current);
+        }
 
-        return () => {
-            // ✅ [수정] eventSource.current가 아니라 eventSourceRef.current를 참조해야 함
-            // ✅ 변수 eventSource에 .current 속성이 없기 때문에 발생하던 오류를 해결
-            if (eventSourceRef.current) {
-                eventSourceRef.current.close();
-                eventSourceRef.current = null;
-                console.log("🚀 notice sse disconnected");
-            }
-        };
-    }, []);
+        // ✅ [수정] 10초 후에 토스트를 자동으로 닫는 타이머 설정
+        toastTimerRef.current = window.setTimeout(() => {
+          setToastVisible(false);
+          console.log("⏰ 10초가 경과하여 알림이 사라집니다.");
+        }, Toast_Duration_ms);
+      },
+    });
 
+    eventSourceRef.current = eventSource;
 
-const value = useMemo(
+    return () => {
+      // ✅ [수정] eventSource.current가 아니라 eventSourceRef.current를 참조해야 함
+      // ✅ 변수 eventSource에 .current 속성이 없기 때문에 발생하던 오류를 해결
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+        console.log("🚀 notice sse disconnected");
+      }
+    };
+  }, []);
+
+  const value = useMemo(
     () => ({
-        notices,
-        unreadCount,
-        toastMsg,              
-        toastVisible,          
-        setToastVisible,   
-        setUnreadCount,
-        setNotices,    
+      notices,
+      unreadCount,
+      toastMsg,
+      toastVisible,
+      setToastVisible,
+      setUnreadCount,
+      setNotices,
     }),
-    [notices, unreadCount, toastMsg, toastVisible]
-);
+    [notices, unreadCount, toastMsg, toastVisible],
+  );
 
-    return <NoticeContext.Provider value={value}>{children}</NoticeContext.Provider>;
+  return (
+    <NoticeContext.Provider value={value}>{children}</NoticeContext.Provider>
+  );
 };
