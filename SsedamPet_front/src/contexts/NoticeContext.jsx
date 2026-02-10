@@ -1,23 +1,27 @@
-import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+    createContext,
+    useContext,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import { connectNoticeSSE } from "../utils/noticeEventSource";
 import { getLatestNotices, getUnreadCount } from "../apis/notices/noticesApi";
 
 const NoticeContext = createContext(null);
 export const useNotice = () => useContext(NoticeContext);
 
-
-
-
-
 export const NoticeProvider = ({ children }) => {
-    const [notices, setNotices] = useState([]);         // ✅ [추가] 알림 리스트
-    const [unreadCount, setUnreadCount] = useState(0);  // ✅ [추가] 미읽음 뱃지 숫자
-    
+    const [notices, setNotices] = useState([]); // ✅ [추가] 알림 리스트
+    const [unreadCount, setUnreadCount] = useState(0); // ✅ [추가] 미읽음 뱃지 숫자
+
     // 토스트 상태
     const [toastMsg, setToastMsg] = useState("");
     const [toastVisible, setToastVisible] = useState(false);
 
-    const eventSourceRef  = useRef(null);
+    const eventSourceRef = useRef(null);
+    const toastTimerRef = useRef(null);
 
     useEffect(() => {
         const token = localStorage.getItem("AccessToken");
@@ -30,8 +34,8 @@ export const NoticeProvider = ({ children }) => {
                     getLatestNotices({ limit: 20, offset: 0 }),
                     getUnreadCount(),
                 ]);
-            setNotices(Array.isArray(list) ? list : []);
-            setUnreadCount(typeof cnt === "number" ? cnt : 0);
+                setNotices(Array.isArray(list) ? list : []);
+                setUnreadCount(typeof cnt === "number" ? cnt : 0);
             } catch (e) {
                 console.log("notice init sync error:", e);
             }
@@ -47,12 +51,24 @@ export const NoticeProvider = ({ children }) => {
                 setUnreadCount((c) => c + 1);
 
                 // ✅ [추가] 토스트 띄우기 (메시지 키는 너희 DTO에 맞춰)
-                const msg = notice.noticeMessage ?? notice.title ?? "새 알림이 도착했어요";
+                const msg =
+                    notice.noticeMessage ??
+                    notice.title ??
+                    "새 알림이 도착했어요";
                 setToastMsg(msg);
                 setToastVisible(true);
-                
-            },
 
+                // ✅ [수정] 새로운 알림이 올 때마다 기존에 돌아가던 10초 타이머를 초기화(삭제)
+                if (toastTimerRef.current) {
+                    window.clearTimeout(toastTimerRef.current);
+                }
+
+                // ✅ [수정] 10초 후에 토스트를 자동으로 닫는 타이머 설정
+                toastTimerRef.current = window.setTimeout(() => {
+                    setToastVisible(false);
+                    console.log("⏰ 10초가 경과하여 알림이 사라집니다.");
+                }, Toast_Duration_ms);
+            },
         });
 
         eventSourceRef.current = eventSource;
@@ -68,19 +84,22 @@ export const NoticeProvider = ({ children }) => {
         };
     }, []);
 
+    const value = useMemo(
+        () => ({
+            notices,
+            unreadCount,
+            toastMsg,
+            toastVisible,
+            setToastVisible,
+            setUnreadCount,
+            setNotices,
+        }),
+        [notices, unreadCount, toastMsg, toastVisible],
+    );
 
-const value = useMemo(
-    () => ({
-        notices,
-        unreadCount,
-        toastMsg,              
-        toastVisible,          
-        setToastVisible,   
-        setUnreadCount,
-        setNotices,    
-    }),
-    [notices, unreadCount, toastMsg, toastVisible]
-);
-
-    return <NoticeContext.Provider value={value}>{children}</NoticeContext.Provider>;
+    return (
+        <NoticeContext.Provider value={value}>
+            {children}
+        </NoticeContext.Provider>
+    );
 };

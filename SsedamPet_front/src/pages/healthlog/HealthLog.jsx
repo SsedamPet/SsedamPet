@@ -6,7 +6,7 @@ import { useSearchParams } from "react-router-dom";
 import { api } from "../../configs/axiosConfig";
 import usePetStore from "../../stores/usePetStore";
 
-function HealthLog () {
+function HealthLog() {
   const [searchParams] = useSearchParams();
   const { selectedPetId, selectedPetName } = usePetStore();
 
@@ -107,7 +107,8 @@ function HealthLog () {
         <div css={s.topBanner}>
           <span className="icon">📋</span>
           <span className="title">
-            OO의 하루 <span className="highlight">건강 기록</span>
+            {selectedPetName || "00"}의 하루{" "}
+            <span className="highlight">건강 기록</span>
           </span>
         </div>
         <div css={s.datePicker}>
@@ -265,6 +266,6 @@ function HealthLog () {
       <BottomNavBar />
     </div>
   );
-};
+}
 
 export default HealthLog;

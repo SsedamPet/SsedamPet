@@ -15,86 +15,89 @@ import HealthLog from "../../pages/healthlog/HealthLog.jsx";
 import AuthRoute from "../AuthRoute/AuthRoute.jsx";
 import PostModal from "../../pages/mypage/posts/PostModal.jsx";
 
-
 import PostDetailPage from "../../pages/community/PostDetailPage/PostDetailPage.jsx";
 
 function MainRoute() {
-  function PetAddRoute() {
-    const navigate = useNavigate();
+    function PetAddRoute() {
+        const navigate = useNavigate();
+
+        return (
+            <>
+                <MyPage />
+                <PetAddModal onClose={() => navigate(-1)} />
+            </>
+        );
+    }
+
+    function PostsModalRoute() {
+        const navigate = useNavigate();
+        return (
+            <>
+                <MyPage />
+                <PostModal onClose={() => navigate(-1)} />
+            </>
+        );
+    }
+
+    function LikesModalRoute() {
+        const navigate = useNavigate();
+        return (
+            <>
+                <MyPage />
+                <LikedPosts onClose={() => navigate(-1)} />
+            </>
+        );
+    }
+
+    function AlertModalRoute() {
+        const navigate = useNavigate();
+        return (
+            <>
+                <MyPage />
+                <AlertModal onClose={() => navigate(-1)} />
+            </>
+        );
+    }
 
     return (
-      <>
-        <MyPage />
-        <PetAddModal onClose={() => navigate(-1)} />
-      </>
+        <Routes>
+            {/* 인증 영역 (레이아웃 X) */}
+            <Route path="/auth/*" element={<AuthRoute />} />
+
+            {/* 보호된 영역 */}
+            <Route element={<ProtectedRoute />}>
+                <Route element={<MainLayout />}>
+                    <Route path="/" element={<Home />} />
+
+                    <Route path="/info/registry" element={<Registry />} />
+
+                    <Route path="/community" element={<MainCommunity />} />
+                    <Route path="/community/write" element={<PostWrite />} />
+                    <Route
+                        path="/community/post/:postId"
+                        element={<PostDetailPage />}
+                    />
+                    <Route
+                        path="/community/comment"
+                        element={<CommentSection />}
+                    />
+
+                    <Route path="/mypage" element={<MyPage />} />
+                    <Route path="/pet/add" element={<PetAddRoute />} />
+
+                    <Route path="/mypage/posts" element={<PostsModalRoute />} />
+                    <Route path="/mypage/likes" element={<LikesModalRoute />} />
+
+                    {/* 건강기록 및 챗봇 */}
+                    <Route path="/healthlog" element={<HealthLog />} />
+                    <Route path="/chatbot" element={<AiChat />} />
+                </Route>
+            </Route>
+
+            {/* 나머지는 로그인으로 튕김 */}
+            <Route path="*" element={<Navigate to="/auth/login" replace />} />
+        </Routes>
     );
-  }
-
-  function PostsModalRoute() {
-  const navigate = useNavigate();
-  return (
-    <>
-      <MyPage />
-      <PostModal onClose={() => navigate(-1)} />
-    </>
-  );
-}
-
-
-  function LikesModalRoute() {
-    const navigate = useNavigate();
-    return (
-      <>
-        <MyPage />
-        <LikedPosts onClose={() => navigate(-1)} />
-      </>
-    );
-  }
-
-  function AlertModalRoute() {
-    const navigate = useNavigate();
-    return (
-      <>
-        <MyPage />
-        <AlertModal onClose={() => navigate(-1)} />
-      </>
-    );
-  }
-
-
-  return (
-    <Routes>
-      {/* 인증 영역 (레이아웃 X) */}
-      <Route path="/auth/*" element={<AuthRoute />} />
-
-      {/* 보호된 영역 */}
-      <Route element={<ProtectedRoute />}>
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-
-          <Route path="/info/registry" element={<Registry />} />
-
-          <Route path="/community" element={<MainCommunity />} />
-          <Route path="/community/write" element={<PostWrite />} />
-          <Route path="/community/post/:postId" element={<PostDetailPage />} />
-          <Route path="/community/comment" element={<CommentSection />} />
-
-          <Route path="/mypage" element={<MyPage />} />
-          <Route path="/pet/add" element={<PetAddRoute />} />
-
-          <Route path="/mypage/posts" element={<PostsModalRoute />} />
-          <Route path="/mypage/likes" element={<LikesModalRoute />} />
-
-          {/* 건강기록 및 챗봇 */}
-          <Route path="/healthlog" element={<HealthLog />} />
-          <Route path="/chatbot" element={<AiChat />} />
-        </Route>
-      </Route>
-
-      {/* 나머지는 로그인으로 튕김 */}
-      <Route path="*" element={<Navigate to="/auth/login" replace />} />
-    </Routes>
-  );
 }
 
 export default MainRoute;
