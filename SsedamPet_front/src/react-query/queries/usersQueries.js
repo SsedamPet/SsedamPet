@@ -1,14 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { requestMe } from "../../apis/users/usersApis";
 
-export const useMeQuery = (enabled = true) => {
+export const useMeQuery = () => {
   const accessToken = localStorage.getItem("AccessToken");
   // console.log("accessToken:", accessToken);
   
 
   return useQuery({
     queryKey: ["me", accessToken],
-    enabled: enabled && !!accessToken,
     queryFn: async () => {
       try {
         const res = await requestMe();
