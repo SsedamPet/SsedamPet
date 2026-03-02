@@ -75,13 +75,15 @@ export default function App() {
 
     useEffect(() => {
         if (!principal.isLoading && principal.isError) {
-            navigate("/auth/login");
+            if (!location.pathname.startsWith("/auth/signup")) {
+                navigate("/auth/login");
+            }
         } else if (!principal.isLoading && principal.isSuccess) {
             if (location.pathname.startsWith("/auth")) {
                 navigate("/");
             }
         }
-    }, [principal.data, principal.isLoading]);
+    }, [principal.data, principal.isLoading, location.pathname, navigate]);
 
     if (principal.isLoading) {
         return (
@@ -102,7 +104,7 @@ export default function App() {
                         path="/auth/login/oauth2/success"
                         element={<OAuth2 />}
                     />
-                    <Route path="signup/oauth2" element={<Signup />} />
+                    <Route path="/auth/signup/oauth2" element={<Signup />} />
                 </Routes>
             </MainFrame>
         );
