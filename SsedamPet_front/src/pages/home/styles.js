@@ -342,7 +342,8 @@ export const popularSection = css`
   background-color: #edfce0;
   border-radius: 35px;
   padding: 20px 25px;
-  margin-top: 25px;
+  margin-top: 40px;
+  margin-bottom: 0;
   box-sizing: border-box;
 
   .section-header {
