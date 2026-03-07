@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useLikedPostsQuery } from "../../../react-query/queries/mypagePostsQueries";
 import { resolveImageUrl } from "../../../utils/resolveImageUrl";
 
-const API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}`;
 
 const pad2 = (n) => String(n).padStart(2, "0");
 
@@ -38,8 +38,10 @@ const LikedPosts = ({ onClose }) => {
     const monthKey = `${yearMonth.year}-${pad2(yearMonth.month)}`;
 
     const filteredDate = useMemo(() => {
-    // 좋아요한 게시물도 createdDt 기준으로 월 필터링
-        return posts.filter((p) => String(p?.createdDt ?? "").startsWith(monthKey));
+        // 좋아요한 게시물도 createdDt 기준으로 월 필터링
+        return posts.filter((p) =>
+            String(p?.createdDt ?? "").startsWith(monthKey),
+        );
     }, [posts, monthKey]);
 
     const gridItems = useMemo(() => {
@@ -47,72 +49,80 @@ const LikedPosts = ({ onClose }) => {
         return Array.from({ length: 12 }, (_, i) => sliced[i] ?? null);
     }, [filteredDate]);
 
-  const handleGoCommunity = () => {
-    onClose?.();
-    navigate("/community");
-  };
-  
+    const handleGoCommunity = () => {
+        onClose?.();
+        navigate("/community");
+    };
 
-  return (
-    <div css={s.modalOverlay} onClick={onClose}>
-      <div css={s.container} onClick={(e) => e.stopPropagation()}>
-        <div css={s.monthNav}>
-          <span css={s.monthArrow} onClick={() => setYearMonth(prevMonth)}>
-            ◀
-          </span>
-          <span css={s.monthTitle}>
-            {yearMonth.year} / {pad2(yearMonth.month)}
-          </span>
-          <span css={s.monthArrow} onClick={() => setYearMonth(nextMonth)}>
-            ▶
-          </span>
-        </div>
-
-        <div css={s.postListContainer}>
-          {isLoading ? (
-            Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} css={s.postItem} />
-            ))
-          ) : (
-            gridItems.map((p, i) => {
-              const imgUrl = p?.postImgUrl
-                ? resolveImageUrl(p.postImgUrl, API_BASE_URL)
-                : "";
-
-              return (
-                <div key={p?.postId ?? `empty-${i}`} css={s.postItem}>
-                  {imgUrl ? (
-                    <img
-                      src={imgUrl}
-                      alt=""
-                      css={s.postImg}
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  ) : null}
+    return (
+        <div css={s.modalOverlay} onClick={onClose}>
+            <div css={s.container} onClick={(e) => e.stopPropagation()}>
+                <div css={s.monthNav}>
+                    <span
+                        css={s.monthArrow}
+                        onClick={() => setYearMonth(prevMonth)}
+                    >
+                        ◀
+                    </span>
+                    <span css={s.monthTitle}>
+                        {yearMonth.year} / {pad2(yearMonth.month)}
+                    </span>
+                    <span
+                        css={s.monthArrow}
+                        onClick={() => setYearMonth(nextMonth)}
+                    >
+                        ▶
+                    </span>
                 </div>
-              );
-            })
-          )}
-        </div>
 
-        <div
-          css={s.footerDots}
-          onClick={handleGoCommunity}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") handleGoCommunity();
-          }}
-        >
-          <div className="dot" />
-          <div className="dot" />
-          <div className="dot" />
+                <div css={s.postListContainer}>
+                    {isLoading
+                        ? Array.from({ length: 12 }).map((_, i) => (
+                              <div key={i} css={s.postItem} />
+                          ))
+                        : gridItems.map((p, i) => {
+                              const imgUrl = p?.postImgUrl
+                                  ? resolveImageUrl(p.postImgUrl, API_BASE_URL)
+                                  : "";
+
+                              return (
+                                  <div
+                                      key={p?.postId ?? `empty-${i}`}
+                                      css={s.postItem}
+                                  >
+                                      {imgUrl ? (
+                                          <img
+                                              src={imgUrl}
+                                              alt=""
+                                              css={s.postImg}
+                                              onError={(e) => {
+                                                  e.currentTarget.style.display =
+                                                      "none";
+                                              }}
+                                          />
+                                      ) : null}
+                                  </div>
+                              );
+                          })}
+                </div>
+
+                <div
+                    css={s.footerDots}
+                    onClick={handleGoCommunity}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ")
+                            handleGoCommunity();
+                    }}
+                >
+                    <div className="dot" />
+                    <div className="dot" />
+                    <div className="dot" />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default LikedPosts;

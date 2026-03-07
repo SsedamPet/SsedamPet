@@ -15,9 +15,14 @@ function PostDetailPage() {
     useEffect(() => {
         const fetchPostDetail = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/community/post/${postId}`, {
-                    headers: { Authorization: `Bearer ${localStorage.getItem("AccessToken")}` }
-                });
+                const response = await axios.get(
+                    `${import.meta.env.VITE_API_BASE_URL}/api/community/post/${postId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("AccessToken")}`,
+                        },
+                    },
+                );
                 setPost(response.data);
             } catch (error) {
                 console.error("로드 실패:", error);
@@ -43,15 +48,25 @@ function PostDetailPage() {
                 {/* 1. 피드 카드 영역 */}
                 <article css={s.postCard}>
                     <div css={commonS.userInfo}>
-                        <img src={`http://localhost:8080${post.postImgUrl}`} alt="프로필" css={commonS.profileImg} />
+                        <img
+                            src={`${import.meta.env.VITE_API_BASE_URL}${post.postImgUrl}`}
+                            alt="프로필"
+                            css={commonS.profileImg}
+                        />
                         <div css={commonS.userDetail}>
                             <span className="userName">{post.nickname}</span>
-                            <span className="postTime">{new Date(post.createdDt).toLocaleDateString()}</span>
+                            <span className="postTime">
+                                {new Date(post.createdDt).toLocaleDateString()}
+                            </span>
                         </div>
                     </div>
 
                     <div css={commonS.postImage}>
-                        <img src={`http://localhost:8080${post.postImgUrl}`} alt="게시글" css={commonS.postImgTag} />
+                        <img
+                            src={`${import.meta.env.VITE_API_BASE_URL}${post.postImgUrl}`}
+                            alt="게시글"
+                            css={commonS.postImgTag}
+                        />
                     </div>
 
                     <div css={commonS.postText}>
