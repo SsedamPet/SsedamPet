@@ -22,8 +22,6 @@ api.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             console.error("인증 실패! 로그인 페이지로 강제 이동합니다.");
 
-            // 잘못된 토큰 청소
-            localStorage.removeItem("AccessToken");
 
             // 리액트 외부(js 파일)이므로 window.location으로 강제 이동
             // 이렇게 하면 무한 로딩 없이 바로 로그인 페이지로 튕깁니다.
