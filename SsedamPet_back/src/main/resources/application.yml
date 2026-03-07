@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: jiny
+    active: dev
     group:
       dev: dev, common, secret-dev
       jiny: jiny-server, common, secret-prod
