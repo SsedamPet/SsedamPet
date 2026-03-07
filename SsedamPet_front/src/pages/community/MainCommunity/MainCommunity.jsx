@@ -7,7 +7,7 @@ import * as s from "./styles";
 import Header from "../../../components/layout/Header/Header";
 import BottomNavBar from "../../../components/layout/BottomNavBar/BottomNavBar";
 import CommentSection from "../Comment/CommentSection";
-
+import noimage from "../../../assets/noimage.jpg";
 function MainCommunity() {
     const navigate = useNavigate();
     const [isCommentOpen, setIsCommentOpen] = useState(false);
@@ -148,12 +148,12 @@ function MainCommunity() {
                                               )
                                                 ? post.userProfileImgUrl
                                                 : `${import.meta.env.VITE_API_BASE_URL}${post.userProfileImgUrl.startsWith("/") ? "" : "/"}${post.userProfileImgUrl}`
-                                            : "/default-profile.png"
+                                            : noimage
                                     }
                                     alt="프로필"
                                     css={s.profileImg}
                                     onError={(e) => {
-                                        e.target.src = "/default-profile.png";
+                                        e.target.src = noimage;
                                     }}
                                 />
                                 <div css={s.userDetail}>
