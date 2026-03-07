@@ -7,6 +7,7 @@ import com.korit.ssedampet_back.security.PrincipalUser;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,9 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final JwtTokenProvider jwtTokenProvider;
     private final OAuth2UserMapper oAuth2UserMapper;
+
+    @Value("${app.cors.allowed-origins[0]}")
+    private String frontUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -43,7 +47,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             String email = Objects.toString(attributes.get("email"), "");
             String profileImgUrl = Objects.toString(attributes.get("profileImgUrl"), "");
 
-            StringBuilder sb = new StringBuilder("http://localhost:5173/auth/signup/oauth2?");
+            StringBuilder sb = new StringBuilder(frontUrl + "/auth/signup/oauth2?");
             sb.append("provider=").append(provider)
                     .append("&providerUserId=").append(providerUserId)
                     .append("&email=").append(email)
@@ -54,7 +58,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             response.sendRedirect(sb.toString());
         } else {
             String accessToken = jwtTokenProvider.createAccessToken(oAuth2UserEntity.getUserId());
-            response.sendRedirect("http://localhost:5173/auth/login/oauth2/success?accessToken=" + accessToken);
+            response.sendRedirect(frontUrl + "/auth/login/oauth2/success?accessToken=" + accessToken);
         }
 
 
