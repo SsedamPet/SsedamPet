@@ -15,9 +15,12 @@ function CommentSection({ postId }) {
     const fetchComments = async () => {
         try {
             const token = localStorage.getItem("AccessToken");
-            const response = await axios.get(`http://localhost:8080/api/community/post/${postId}/comments`, {
-                headers: { Authorization: `Bearer ${token}` } // 조회할 때도 토큰이 필요할 수 있습니다.
-            });
+            const response = await axios.get(
+                `${import.meta.env.VITE_API_BASE_URL}/api/community/post/${postId}/comments`,
+                {
+                    headers: { Authorization: `Bearer ${token}` }, // 조회할 때도 토큰이 필요할 수 있습니다.
+                },
+            );
             setComments(response.data);
         } catch (error) {
             console.error("댓글 로딩 실패", error);
@@ -42,13 +45,17 @@ function CommentSection({ postId }) {
         // 백엔드 CommentController의 Map<String, Object> 구조에 맞춤
         const commentData = {
             content: inputValue,
-            parentCommentId: isReplyMode ? isReplyMode : null // 답글이면 부모 ID, 아니면 null
+            parentCommentId: isReplyMode ? isReplyMode : null, // 답글이면 부모 ID, 아니면 null
         };
 
         try {
-            await axios.post(`http://localhost:8080/api/community/post/${postId}/comments`, commentData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await axios.post(
+                `${import.meta.env.VITE_API_BASE_URL}/api/community/post/${postId}/comments`,
+                commentData,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                },
+            );
 
             setInputValue("");
             setIsReplyMode(null);
@@ -60,13 +67,14 @@ function CommentSection({ postId }) {
     };
 
     const toggleReplies = (commentId) => {
-        setShowReplies(prev => ({ ...prev, [commentId]: !prev[commentId] }));
+        setShowReplies((prev) => ({ ...prev, [commentId]: !prev[commentId] }));
     };
 
     // 백엔드 데이터는 평면 구조(Flat)로 올 수 있으므로,
     // 화면 표시를 위해 부모 댓글만 필터링하는 로직이 필요할 수 있습니다.
-    const parentComments = comments.filter(c => c.depth === 0);
-    const getReplies = (parentId) => comments.filter(c => c.parentCommentId === parentId);
+    const parentComments = comments.filter((c) => c.depth === 0);
+    const getReplies = (parentId) =>
+        comments.filter((c) => c.parentCommentId === parentId);
 
     return (
         <div css={s.rootContainer}>
@@ -74,31 +82,64 @@ function CommentSection({ postId }) {
                 <div css={s.commentBoxContainer}>
                     <div css={s.commentScrollArea}>
                         {parentComments.length === 0 ? (
-                            <div css={s.emptyMessage}>아직 작성된 댓글이 없습니다.</div>
+                            <div css={s.emptyMessage}>
+                                아직 작성된 댓글이 없습니다.
+                            </div>
                         ) : (
                             parentComments.map((comment) => (
-                                <div css={s.commentWrapper} key={comment.commentId}>
+                                <div
+                                    css={s.commentWrapper}
+                                    key={comment.commentId}
+                                >
                                     <div
-                                        css={[s.commentItem, isReplyMode === comment.commentId && { backgroundColor: "#f9f9f9"}]}
-                                        onClick={() => setIsReplyMode(comment.commentId)}
+                                        css={[
+                                            s.commentItem,
+                                            isReplyMode ===
+                                                comment.commentId && {
+                                                backgroundColor: "#f9f9f9",
+                                            },
+                                        ]}
+                                        onClick={() =>
+                                            setIsReplyMode(comment.commentId)
+                                        }
                                         style={{ cursor: "pointer" }}
                                     >
                                         {/* profileImg -> userProfileImgUrl 로 변경 */}
-                                        <img css={s.avatar} src={comment.userProfileImgUrl || "/default.png"} alt="프로필" />
+                                        <img
+                                            css={s.avatar}
+                                            src={
+                                                comment.userProfileImgUrl ||
+                                                "/default.png"
+                                            }
+                                            alt="프로필"
+                                        />
                                         <div css={s.contentBox}>
                                             <div className="author-info">
-                                                <span className="name">{comment.nickname}</span>
-                                                <span className="date">{new Date(comment.createdDt).toLocaleDateString()}</span>
+                                                <span className="name">
+                                                    {comment.nickname}
+                                                </span>
+                                                <span className="date">
+                                                    {new Date(
+                                                        comment.createdDt,
+                                                    ).toLocaleDateString()}
+                                                </span>
                                             </div>
-                                            <div className="text">{comment.content}</div>
+                                            <div className="text">
+                                                {comment.content}
+                                            </div>
                                             <div
                                                 className="reply-toggle"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    toggleReplies(comment.commentId);
+                                                    toggleReplies(
+                                                        comment.commentId,
+                                                    );
                                                 }}
                                             >
-                                                답글 {showReplies[comment.commentId] ? "숨기기" : `더보기 (${getReplies(comment.commentId).length})`}
+                                                답글{" "}
+                                                {showReplies[comment.commentId]
+                                                    ? "숨기기"
+                                                    : `더보기 (${getReplies(comment.commentId).length})`}
                                             </div>
                                         </div>
                                     </div>
@@ -106,22 +147,43 @@ function CommentSection({ postId }) {
                                     {/* 대댓글 영역 */}
                                     {showReplies[comment.commentId] && (
                                         <div css={s.replyList}>
-                                            {getReplies(comment.commentId).map((reply) => (
-                                                <div css={s.replyItem} key={reply.commentId}>
-                                                    <img
-                                                        css={s.avatar}
-                                                        style={{ width: "25px", height: "25px" }}
-                                                        src={reply.userProfileImgUrl || "/default.png"}
-                                                    />
-                                                    <div css={s.contentBox}>
-                                                        <div className="author-info">
-                                                            <span className="name">{reply.nickname}</span>
-                                                            <span className="date">{new Date(reply.createdDt).toLocaleDateString()}</span>
+                                            {getReplies(comment.commentId).map(
+                                                (reply) => (
+                                                    <div
+                                                        css={s.replyItem}
+                                                        key={reply.commentId}
+                                                    >
+                                                        <img
+                                                            css={s.avatar}
+                                                            style={{
+                                                                width: "25px",
+                                                                height: "25px",
+                                                            }}
+                                                            src={
+                                                                reply.userProfileImgUrl ||
+                                                                "/default.png"
+                                                            }
+                                                        />
+                                                        <div css={s.contentBox}>
+                                                            <div className="author-info">
+                                                                <span className="name">
+                                                                    {
+                                                                        reply.nickname
+                                                                    }
+                                                                </span>
+                                                                <span className="date">
+                                                                    {new Date(
+                                                                        reply.createdDt,
+                                                                    ).toLocaleDateString()}
+                                                                </span>
+                                                            </div>
+                                                            <div className="text">
+                                                                {reply.content}
+                                                            </div>
                                                         </div>
-                                                        <div className="text">{reply.content}</div>
                                                     </div>
-                                                </div>
-                                            ))}
+                                                ),
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -131,10 +193,29 @@ function CommentSection({ postId }) {
 
                     {/* 입력창 영역 */}
                     <div css={s.inputArea}>
-                        <div style={{ display: "flex", width: "100%", flexDirection: "column" }}>
+                        <div
+                            style={{
+                                display: "flex",
+                                width: "100%",
+                                flexDirection: "column",
+                            }}
+                        >
                             {isReplyMode && (
-                                <div style={{ fontSize: "11px", color: "#556B2F", marginBottom: "4px", paddingLeft: "10px" }}>
-                                    @{comments.find(c => c.commentId === isReplyMode)?.nickname} 님에게 답글 작성 중...
+                                <div
+                                    style={{
+                                        fontSize: "11px",
+                                        color: "#556B2F",
+                                        marginBottom: "4px",
+                                        paddingLeft: "10px",
+                                    }}
+                                >
+                                    @
+                                    {
+                                        comments.find(
+                                            (c) => c.commentId === isReplyMode,
+                                        )?.nickname
+                                    }{" "}
+                                    님에게 답글 작성 중...
                                 </div>
                             )}
                             <input
@@ -142,11 +223,19 @@ function CommentSection({ postId }) {
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
                                 onKeyDown={handleKeyDown}
-                                placeholder={isReplyMode ? "답글을 입력하세요... (백스페이스로 취소)" : "댓글을 입력하세요..."}
+                                placeholder={
+                                    isReplyMode
+                                        ? "답글을 입력하세요... (백스페이스로 취소)"
+                                        : "댓글을 입력하세요..."
+                                }
                             />
                         </div>
                         <button
-                            css={[s.submitBtn, inputValue.trim().length > 0 && s.submitBtnActive]}
+                            css={[
+                                s.submitBtn,
+                                inputValue.trim().length > 0 &&
+                                    s.submitBtnActive,
+                            ]}
                             disabled={inputValue.trim().length === 0}
                             onClick={handleSubmit}
                         >
