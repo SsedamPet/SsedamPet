@@ -15,7 +15,7 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    @Value("${file.path}")
+    @Value("${user.dir}")
     private String projectPath;
 
     /**
