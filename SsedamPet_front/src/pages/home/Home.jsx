@@ -132,10 +132,6 @@ function Home() {
                     console.log("데이터 로드 성공:", response.data);
                 } catch (error) {
                     console.error("대시보드 조회 실패:", error);
-                    // 만약 토큰이 만료(401)되었다면 지갑 비우기
-                    if (error.response?.status === 401) {
-                        localStorage.removeItem("AccessToken");
-                    }
                 }
             }
         };
