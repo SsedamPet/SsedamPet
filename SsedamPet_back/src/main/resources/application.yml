@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: jiny
     group:
       dev: dev, common, secret-dev
       jiny: jiny-server, common, secret-prod
@@ -93,8 +93,7 @@ spring:
 
 #  path: C:\gov\project\SsedamPet\SsedamPet_back
 file:
-  path: ${user.dir}/upload/profile
-
+  path: ${user.dir}
   servlet:
     multipart:
       max-file-size: 500MB  #?? ??? ??
