@@ -91,9 +91,10 @@ spring:
     activate:
       on-profile: common
 
+#  path: C:\gov\project\SsedamPet\SsedamPet_back
 file:
-  #path: ${user.dir}/upload/profile
-  path: C:\gov\project\SsedamPet\SsedamPet_back
+  path: ${user.dir}/upload/profile
+
   servlet:
     multipart:
       max-file-size: 500MB  #?? ??? ??
