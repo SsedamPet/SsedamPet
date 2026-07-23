@@ -15,6 +15,12 @@
 
 <br/>
 
+<a href="https://ssedampet.shop" target="_blank">
+<img src="https://img.shields.io/badge/🚀_배포_바로가기-ssedampet.shop-FF6B6B?style=for-the-badge" />
+</a>
+
+<br/>
+
 [📄 기능 소개](#-주요-기능) · [🛠 기술 스택](#-개발환경-및-기술스택) · [👥 팀원](#-팀원-소개) · [📁 산출물](#-프로젝트-산출물)
 
 </div>
